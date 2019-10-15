@@ -54,10 +54,6 @@ frontend/
    ├─ plugins           플러그인
    │  ├─ vuetify.js
    │  └─ ...
-   ├─ routes            라우터
-   │  ├─ index.js
-   │  ├─ routes.js
-   │  └─ ...
    ├─ store               상태관리
    │  ├─ index.js
    │  └─ ...
@@ -65,6 +61,7 @@ frontend/
    │  ├─ HomePage.vue
    │  └─ ...
    ├─ main.js
+   ├─ router.js
    ├─ App.vue
    ├─ README.md
    ├─ package.json
