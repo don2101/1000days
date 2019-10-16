@@ -1,15 +1,25 @@
 from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import UserSerializer, BabySerializer
 
 # Create your views here.
 
-def signup(requests):
+@api_view(["POST"])
+def signup(request):
+    
+    serializer = UserSerializer(data=request.data, partial=True)
+    
+    if serializer.is_valid():
+        serializer.save()
+    
+    
+
+
+def login(request):
     pass
 
 
-def login(requests):
-    pass
-
-
-def logout(requests):
+def logout(request):
     pass
 
