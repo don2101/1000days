@@ -14,10 +14,11 @@
           single-line
           color="white"
           hide-details
-          v-bind:value=searchText
+          :value=searchText
           style="margin-left: 16%"
         ></v-text-field><img class="c-pointer" width="20px" height="20px" src="https://img.icons8.com/wired/50/000000/search.png">
       <v-spacer></v-spacer>
+
 
       <!-- 상단 메뉴 -->
       <div class="text-center">
