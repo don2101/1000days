@@ -3,16 +3,24 @@
  <v-btn color="primary" class="mr-3" style="float:right" @click="editinfo()">수정하기</v-btn>
 <div v-if="show==true">
 <h1 class="headline"><strong>개인 정보 수정</strong></h1>
+<v-row>
 <v-col cols="12" sm="6">
 <v-text-field v-model="editname" :readonly="true" label="이름"></v-text-field>
 </v-col>
 <v-col cols="12" sm="6">
 <v-text-field v-model="editnickname" :readonly="false" label="닉네임"></v-text-field>
  </v-col>
+ <v-col cols="12">
  <v-text-field v-model="editemail" :readonly="true" label="이메일"></v-text-field>
+ </v-col>
+  <v-col cols="12">
  <v-text-field v-model="editpassword" :readonly="false" label="비밀번호"></v-text-field>
+ </v-col>
+  <v-col cols="12">
  <v-text-field v-model="editpasswordconfirm" :readonly="false" label="비밀번호 확인"></v-text-field>
+  </v-col>
  <v-btn color="primary" class="mr-3" style="float:right" @click="edit()">저장</v-btn>
+ </v-row>
 </div>
 </div>
 </template>
