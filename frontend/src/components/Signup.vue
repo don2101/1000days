@@ -2,7 +2,7 @@
 <div>
      <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
     <template v-slot:activator="{ on }">
-         <v-btn color="#FBC02D" style="left:35%; margin-top:-60px;" v-on="on">회원가입</v-btn>
+         <v-btn color="#FBC02D" class="ml-3" style="float:left;" v-on="on">회원가입</v-btn>
       </template>
         <v-card>
           <h1 class="headline"><strong>회원 정보</strong></h1>
@@ -121,12 +121,15 @@ import Calendar from './Calendar'
                   type: 'error',
                   text: '모든 항목을 입력해주세요',
         })
-        return
       }
     if (this.pw != this.repw || this.pw.length<10 ){
         alert('비밀번호를 확인해주세요')
     }
-  }
+    else {
+    alert('회원가입이 완료되었습니다')
+    this.dialog = false
+    }
+  },
   }
   }
 </script>
