@@ -1,5 +1,5 @@
 <template>
-<div class="container" style="margin-top:50px;">
+<div class="container" style="margin: auto">
 <div v-if="userInfo=='null'">
 <Error></Error>
 fail
@@ -31,5 +31,7 @@ export default {
   }
 </script>
 <style>
-
+.container{
+   width: 70%;
+}
 </style>

@@ -5,6 +5,7 @@ import HomePage from './views/HomePage'
 import MainPage from './views/MainPage'
 import AccountPage from './views/AccountPage'
 import ConfirmPage from './views/ConfirmPage'
+import RegisterPage from './views/RegisterPage'
 
 Vue.use(Router)
 
@@ -28,10 +29,16 @@ export default new Router({
             name: 'AccountPage',
             component: AccountPage,
         },
-             {
+         {
             path: '/access',
             name: 'ConfirmPage',
             component: ConfirmPage
+        },
+
+             {
+            path: '/signup',
+            name: 'RegisterPage',
+            component: RegisterPage
         },
     ]
 })

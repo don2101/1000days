@@ -2,7 +2,6 @@
   <v-row>
     <v-col
       cols="12"
-      style="left:180%;"
     >
       <v-menu
         ref="nowMenu"
@@ -16,12 +15,10 @@
         full-width
       >
         <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="now"
-            label="아기 생년월일"
-            readonly
-            v-on="on"
-          ></v-text-field>
+            <v-col cols="12" style="left:25%">
+            <span class="icon"><i class="fas fa-calendar-week" style="font-size: 1.5em"></i></span>
+                <input v-model="now" v-on="on" type="text" placeholder="아기 생년월일" readonly >
+            </v-col>
         </template>
         <v-date-picker
           v-model="now"
@@ -34,14 +31,14 @@
             color="primary"
             @click="nowMenu = false"
           >
-            Cancel
+            취소
           </v-btn>
           <v-btn
             text
             color="primary"
             @click="$refs.nowMenu.save(now)"
           >
-            OK
+            선택
           </v-btn>
         </v-date-picker>
       </v-menu>
@@ -62,4 +59,34 @@
   }
 </script>
 <style scoped>
+input{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  box-sizing: border-box;
+  background-color: #EEEEEE;
+  padding-left: 50px;
+  transition: 1s;
+}
+
+input:focus{
+outline: none;
+border-color:#F8BBD0;
+box-shadow: 0 0 8px 0 #F8BBD0;
+}
+
+input::placeholder {
+  font-weight: bold;
+}
+
+.icon{
+  position: absolute;
+  top: 15%;
+  margin-left: 17px;
+  margin-top: 17px;
+  z-index: 1;
+  color: #4f5b66;
+  transition: 1s;
+}
 </style>

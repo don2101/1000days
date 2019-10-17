@@ -1,18 +1,15 @@
 <template>
 <div class="container" style="margin: auto">
-<Passwordconfirm></Passwordconfirm>
+ <Signup></Signup>
 </div>
 </template>
 
-
 <script>
-import Passwordconfirm from '../components/Passwordconfirm'
+import Signup from '../components/Signup'
 export default {
-  name: 'ConfirmPage',
-   data: () => ({
-    }),
+  name: 'RegisterPage',
   components: {
-    Passwordconfirm
+    Signup
   },
   methods: {
   }

@@ -2,19 +2,16 @@
 <div class="container">
 <v-card class="mx-auto"
     max-width="600"
-      height="200"
+      height="220"
     >
+    <v-card-title>
     <h1>비밀번호를 입력해주세요</h1>
-     <v-col cols="12">
-  <v-text-field
-    v-model="repassword"
-    :type="show ? 'text' : 'password'"
-    name="input-10-1"
-    label="password"
-    hint="10자 이상 입력하세요">
-    </v-text-field>
+    </v-card-title>
+   <v-col cols="12">
+     <span class="icon"><v-icon>fas fa-lock</v-icon></span>
+     <input type="repassword" placeholder="비밀번호" v-model="password" required>
     </v-col>
-    <v-btn color="primary" class="mr-3" style="float:right" @click="enter">확인</v-btn>
+    <v-btn color="pink" class="mr-3" style="float:right" @click="enter">확인</v-btn>
     </v-card>
     </div>
 </template>
@@ -22,7 +19,6 @@
 
 <script>
 export default {
-  name: 'AccountPage',
    data: () => ({
       repassword: null,
       show: false,
@@ -55,8 +51,47 @@ export default {
   }
   }
 </script>
-<style>
+<style scoped>
   .container {
       width: 70%;
+}
+
+h1{
+color:#F8BBD0;
+text-align: center;
+}
+
+input{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  box-sizing: border-box;
+  background-color: #EEEEEE;
+  padding-left: 50px;
+  transition: 1s;
+}
+
+input:focus{
+outline: none;
+border-color:#F8BBD0;
+box-shadow: 0 0 8px 0 #F8BBD0;
+}
+
+input::placeholder {
+  font-weight: bold;
+}
+
+.icon{
+  position: absolute;
+  top: 15%;
+  margin-left: 17px;
+  margin-top: 17px;
+  z-index: 1;
+  color: #4f5b66;
+}
+
+.mr-3{
+color:#fff;
 }
 </style>

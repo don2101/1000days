@@ -1,88 +1,94 @@
 <template>
-<div>
-     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-    <template v-slot:activator="{ on }">
-         <v-btn color="#FBC02D" class="ml-3" style="float:left;" v-on="on">회원가입</v-btn>
-      </template>
+      <div class="container">
         <v-card>
           <h1 class="headline"><strong>회원 정보</strong></h1>
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  label="이름*"
-                  v-model="name"
-                  required
-                ></v-text-field>
-              </v-col>
-               <v-col cols="12" sm="6">
-                <v-text-field
-                  label="닉네임*"
-                  v-model="nickname"
-                  required
-                ></v-text-field>
-              </v-col>
               <v-col cols="12">
-                <v-text-field label="이메일*" v-model="newemail" required></v-text-field>
+               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+                <input type="text" placeholder="이름 *" v-model="name" required>
               </v-col>
-              <v-col cols="12">
-                <v-text-field label="비밀번호*" type="password" v-model="pw" required hint="10자 이상 입력해주세요"></v-text-field>
+               <v-col cols="12">
+               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+                <input type="text" placeholder="닉네임 *" v-model="nickname" required>
               </v-col>
-              <v-col cols="12">
-                <v-text-field label="비밀번호 확인*" type="password" v-model="repw" required></v-text-field>
+               <v-col cols="12">
+                <span class="icon"><v-icon middle>mdi-email</v-icon></span>
+                 <input type="text" placeholder="이메일 *" v-model="newemail" required>
+                </v-col>
+               <v-col cols="12">
+                 <span class="icon"><v-icon>fas fa-lock</v-icon></span>
+                 <input type="password" placeholder="비밀번호 *" v-model="pw" required>
+               </v-col>
+               <v-col cols="12">
+                 <span class="icon"><v-icon>fas fa-lock</v-icon></span>
+                 <input type="password" placeholder="비밀번호 확인 *" v-model="repw" required>
+               </v-col>
              <div v-if="this.pw!=this.repw">
               <p style="color:red;">비밀번호가 일치하지 않습니다</p>
               </div>
               </v-col>
-              <v-radio-group v-model="babyYN" :mandatory="false">
-              <h6>아기가 있습니까?</h6>
+            </v-row>
+          </v-container>
+       <v-radio-group class="select"v-model="accountYN" :mandatory="false">
+              <h6>계정 공개 여부 설정 *</h6>
+              <br>
+              <v-radio label="공개" value="accountY"></v-radio>
+              <v-radio label="비공개" value="accountN"></v-radio>
+            </v-radio-group>
+        <v-radio-group class="select" v-model="followYN" :mandatory="false">
+              <h6>팔로우/팔로잉 공개 여부 설정 *</h6>
+              <br>
+              <v-radio label="공개" value="followY"></v-radio>
+              <v-radio label="비공개" value="followN"></v-radio>
+            </v-radio-group>
+           <v-radio-group class="select" v-model="babyYN" :mandatory="false">
+              <h6>아기가 있습니까? *</h6>
               <br>
               <v-radio label="있음" value="babyY"></v-radio>
               <v-radio label="없음" value="babyN"></v-radio>
             </v-radio-group>
             <div v-if="babyYN=='babyY'">
-              <v-col cols="12">
-                </v-col>
-                <v-col cols="12" style="left:200%;">
-                <v-text-field
-                  label="아기 이름"
-                  v-model="babyname"
-                ></v-text-field>
+              <v-card
+    max-width="344"
+    class="mx-auto"
+  >
+  <h1 class="headline"><strong>아기 정보</strong></h1>
+             <v-img
+             src="../images/baby.png"
+             height="150"
+             width="150"
+             class="mt-5"
+             style="left:25%;"
+           >
+           </v-img>
+           <v-card-text>
+            <div style="margin-right:100px;">
+               <v-col cols="12" style="left:25%">
+               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+                <input type="text" placeholder="아기 이름" v-model="babyname">
               </v-col>
-              <v-col cols="12" style="left:200%;" >
-                <v-text-field
-                  label="배우자 이름"
-                  v-model="spousename"
-                ></v-text-field>
+               <Calendar></Calendar>
+                 <v-col cols="12" style="left:25%">
+               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+                <input type="text" placeholder="배우자 이름" v-model="spousename">
               </v-col>
-                  <Calendar></Calendar>
+
         </div>
-            </v-row>
-          </v-container>
-       <v-radio-group v-model="accountYN" :mandatory="false">
-              <h6>계정 공개 여부 설정*</h6>
-              <br>
-              <v-radio label="공개" value="accountY"></v-radio>
-              <v-radio label="비공개" value="accountN"></v-radio>
-            </v-radio-group>
-        <v-radio-group v-model="followYN" :mandatory="false">
-              <h6>팔로우/팔로잉 공개 여부 설정*</h6>
-              <br>
-              <v-radio label="공개" value="followY"></v-radio>
-              <v-radio label="비공개" value="followN"></v-radio>
-            </v-radio-group>
+        </v-card-text>
+        </v-card>
+        </div>
         </v-card-text>
         <br>
         <small><p style="text-align:center;">*필수입력항목</p></small>
-        <small><p style="text-align:center;">*아직 아기가 태어나지 않은 경우 출산예정일을 입력해주세요 (태어난 후 아기생일로 수정해주세요)</p></small>
+        <small><p style="text-align:center;">*아직 아기가 태어나지 않은 경우 출산예정일을 입력해주세요 <br>(태어난 후 아기생일로 수정해주세요)</p></small>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">취소하기</v-btn>
-          <v-btn color="red" text @click="signup">가입하기</v-btn>
+          <v-btn color="blue darken-1" text @click="out">나가기</v-btn>
+          <v-btn color="pink" text @click="register">가입하기</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
     </v-card>
     </div>
 </template>
@@ -115,7 +121,23 @@ import Calendar from './Calendar'
     },
 
     methods: {
-    signup(){
+    out(){
+     Swal.fire({
+  title: '이 페이지에서 나가시겠습니까?',
+  text: "작성하신 내용은 저장되지 않습니다",
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: '나가기',
+  cancelButtonText: '취소'
+}).then((result) => {
+  if (result.value) {
+    history.back(-1)
+  }
+})
+    },
+    register(){
     if (!this.isValidate) {
          Swal.fire({
                   type: 'error',
@@ -134,10 +156,65 @@ import Calendar from './Calendar'
   }
 </script>
 
-<style>
+<style scoped>
+.container{
+   width: 70%;
+}
 
 h1{
-color:#1E88E5;
+color:#F8BBD0;
 text-align: center;
 }
+
+.ml-3{
+  color: #fff;
+  padding: 12px 20px;
+  margin: 20px 0;
+  border: none;
+  cursor: pointer;
+  width: 95%;
+}
+
+.ml-3:focus{
+outline: none;
+}
+
+input{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  box-sizing: border-box;
+  background-color: #EEEEEE;
+  padding-left: 50px;
+  transition: 1s;
+}
+
+input:focus{
+outline: none;
+border-color:#F8BBD0;
+box-shadow: 0 0 8px 0 #F8BBD0;
+}
+
+input::placeholder {
+  font-weight: bold;
+}
+
+h6{
+  font-weight: bold;
+}
+
+.icon{
+  position: absolute;
+  top: 15%;
+  margin-left: 17px;
+  margin-top: 17px;
+  z-index: 1;
+  color: #4f5b66;
+}
+
+.select{
+margin-left: 120px;
+}
+
 </style>
