@@ -27,7 +27,6 @@ def signup(request):
         if profile_serializer.is_valid():
             profile_instance = profile_serializer.save(user=user_instance)
 
-        
 
 def login(request):
     pass

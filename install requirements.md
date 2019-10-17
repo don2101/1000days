@@ -9,3 +9,5 @@
 - mysqlclient 1.4.4
   - 설치파일을 통해 생성( https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlclient )
 
+- django-cors-header 3.1.1
+- pyjwt 1.7.1
