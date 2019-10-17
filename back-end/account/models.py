@@ -13,6 +13,6 @@ class UserProfile(models.Model):
 
 class Baby(models.Model):
     parent = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE)
-    name = models.CharField(max_length=45)
+    name = models.CharField(max_length=45, null=False)
     birthday = models.DateField(null=False)
     spouse = models.CharField(max_length=45, null=True)

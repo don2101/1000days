@@ -1,10 +1,19 @@
 from rest_framework import serializers
 from django.conf import settings
 from .models import UserProfile, Baby
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
-    user = settings.AUTH_USER_MODEL
+    class Meta:
+        model = User
+        fields = ['email', 'password', 'username']
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
 
     class Meta:
         model = UserProfile
@@ -12,8 +21,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class BabySerializer(serializers.ModelSerializer):
-    parent = settings.AUTH_USER_MODEL
+    parent = serializers.StringRelatedField()
     
     class Meta:
         model = Baby
-        fields = ['name', 'birthday', 'spouse']
+        fields = ['parent', 'name', 'birthday', 'spouse']
