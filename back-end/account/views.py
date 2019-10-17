@@ -13,7 +13,6 @@ from .account_service import create_token, user_authenticate, set_password
 
 @api_view(["POST"])
 def signup(request):
-    # querydict is immutable. convert it to dict and update password, then recover it back to querydict
     modified_data = set_password(request)    
     
     user_serializer = UserSerializer(data=modified_data, partial=True)
@@ -43,10 +42,4 @@ def login(request):
         return Response(data={"token": token})
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-def logout(request):
-    pass
-
-
 
