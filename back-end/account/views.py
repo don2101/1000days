@@ -50,7 +50,7 @@ def signup(request):
 @api_view(["POST"])
 def login(request):
     '''
-    회원 가입을 요청하는 API
+    로그인을 요청하는 API
     ---
     ## post parameter
         email: 사용자의 email(String),
