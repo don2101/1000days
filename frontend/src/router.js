@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HomePage from './views/HomePage'
+import PersonalPage from "./views/PersonalPage";
 
 
 
@@ -16,5 +17,10 @@ export default new Router({
             name: 'HomePage',
             component: HomePage
         },
+        {
+            path:'/test/mydiary',
+            name: 'PersonalPage',
+            component: PersonalPage
+        }
     ]
 })
