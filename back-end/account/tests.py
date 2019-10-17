@@ -1,19 +1,23 @@
 from django.test import TestCase
 import requests
 
+from .account_service import decode_token
+
 # Create your tests here.
 
 class AccountTest(TestCase):
-    email = "qwe123@qwe.com"
-    password = "12345"
-    username = "test" + "123"
-
+    
     def setUp(self):
+        self.email = "qwe123@qwe.com"
+        self.password = "12345"
+        self.username = "test" + "123"
+
+    
         self.signUpUrl = "http://localhost:8000/account/signup/"
         self.signUpData = {
-            "username": username,
+            "username": self.username,
             "password": "12345",
-            "email": email,
+            "email": self.email,
             "nickname": "testing123",
             "select_baby": True,
             "account_open": True,
@@ -23,7 +27,7 @@ class AccountTest(TestCase):
         self.loginUrl = "http://localhost:8000/account/login/"
         self.loginData = {
             "email": "qwe345@qwe.com",
-            "password": password
+            "password": self.password
         }
 
 
@@ -38,4 +42,7 @@ class AccountTest(TestCase):
 
         self.assertEqual(result.status_code, 200)
         
-        
+    def test_decode_token(self):
+        token = ""
+
+        decode_token(token)

@@ -18,10 +18,23 @@ def create_token(data):
     return token
 
 
+def decode_token(token):
+    try:
+        decoded = jwt.decode(token, key, algorithms="HS256")
+        
+        return decoded
+    except jwt.ExpiredSignatureError:
+        print("Expired")
+        pass
+    except jwt.exceptions.DecodeError:
+        print("decoding error")
+        pass
+
+
 def set_payload(data):
     jwt_payload = {
         'email': data["email"],
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30)
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=300)
     }
 
     return jwt_payload
@@ -42,8 +55,8 @@ def user_authenticate(email, password):
 
 def set_password(request):
     request_dict = request.data.dict()
-    
     request_dict['password'] = make_password(request.data['password'])
+
     modified_data = QueryDict('', mutable=True)
     modified_data.update(request_dict)
 
