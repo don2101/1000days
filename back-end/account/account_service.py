@@ -8,7 +8,7 @@ from baby_project import settings
 import jwt, datetime
 
 User = get_user_model()
-key = "settings.SECRET_KEY"
+key = settings.SECRET_KEY
 
 
 def create_token(data):
