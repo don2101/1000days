@@ -66,3 +66,12 @@ def login(request):
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(["GET"])
+def personal(request, account_name):
+    pass
+
+
+@api_view(["GET"])
+def baby(request, account_name, baby_id):
+    pass
