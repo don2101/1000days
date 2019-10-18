@@ -1,14 +1,15 @@
 <template>
 <div class="container" style="margin: auto">
-HomePage
+<DiaryList></DiaryList>
 </div>
 </template>
 
 <script>
-
+import DiaryList from '../components/DiaryList'
 export default {
   name: 'HomePage',
   components: {
+  DiaryList
   },
   methods: {
   }
