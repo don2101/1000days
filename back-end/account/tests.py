@@ -8,9 +8,9 @@ from .account_service import decode_token
 class AccountTest(TestCase):
     
     def setUp(self):
-        self.email = "qwe123@qwe123.com"
-        self.password = "12345"
-        self.username = "test" + "12355"
+        self.email = "qwe1234135@qwe123.com"
+        self.password = "1234567"
+        self.username = "test" + "1235135"
 
     
         self.signUpUrl = "http://localhost:8000/account/signup/"
@@ -18,7 +18,7 @@ class AccountTest(TestCase):
             "username": self.username,
             "password": "12345",
             "email": self.email,
-            "nickname": "testing12345",
+            "nickname": "testing11232345456",
             "select_baby": True,
             "account_open": True,
             "follower_open": True
@@ -44,11 +44,16 @@ class AccountTest(TestCase):
 
         self.assertEqual(result.status_code, 200)
         
+
     def test_decode_token(self):
         token = ""
+        result = decode_token(token)
 
-        decode_token(token)
+        self.assertEqual(result.status_code, 200)
+
 
     def test_personal(self):
-        response = requests.get(self.perosnalUrl)
-        print(response)
+        result = requests.get(self.perosnalUrl)
+        
+        self.assertEqual(result.status_code, 200)
+
