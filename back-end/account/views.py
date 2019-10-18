@@ -73,6 +73,16 @@ def personal(request, account_name):
     개인 정보를 요청하는 API
     ---
     user의 nickname으로 계정을 찾아 정보를 return
+    
+    ## Get return
+        user: {
+            email: 사용자의 email(String),
+            username: 사용자의 이름(String)
+        },
+        nickname: 사용자의 계정 이름(String),
+        select_baby: baby 존재 여부(Boolean),
+        account_open: 계정 존재 여부(Boolean),
+        follower_open: Follower 정보 공개 여부(Boolean)
     ---
     """
     try:
@@ -93,9 +103,14 @@ def babies(request, account_name):
         GET: user의 nickname으로 계정을 찾아 정보를 return
         POST: user의 nickname으로 계정을 찾고, 해당 계정에 baby 정보를 입력
     ## POST parameter
-        name: baby의 이름
+        name: baby의 이름(String)
         birthday: 출생일(year-month-day)
-        spouse: 배우자 이름
+        spouse: 배우자 이름(String)
+
+    ## Get return
+        name: baby의 이름(String)
+        birthday: 출생일(year-month-day)
+        spouse: 배우자 이름(String)
     ---
     """
     # 모든 baby 출력
