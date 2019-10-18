@@ -1,14 +1,17 @@
 from django.shortcuts import render
 from django.contrib.auth.hashers import make_password, is_password_usable
+from django.contrib.auth import get_user_model
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import status
 from rest_framework_swagger import renderers
 
+from .models import UserProfile, Baby
 from .serializers import UserSerializer, UserProfileSerializer, BabySerializer
 from .account_service import create_token, user_authenticate, set_password
 
+User = get_user_model()
 
 # Create your views here.
 
@@ -69,7 +72,18 @@ def login(request):
 
 @api_view(["GET"])
 def personal(request, account_name):
-    pass
+    try:
+        user_profile = UserProfile.objects.get(nickname=account_name)
+        
+        if user_profile:
+            serializer = UserProfileSerializer(user_profile)
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    except UserProfile.DoesNotExist:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])

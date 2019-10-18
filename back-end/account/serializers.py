@@ -23,7 +23,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class BabySerializer(serializers.ModelSerializer):
-    parent = UserSerializer
+    parent = UserSerializer()
     
     class Meta:
         model = Baby
