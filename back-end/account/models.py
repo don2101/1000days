@@ -9,7 +9,9 @@ class UserProfile(models.Model):
     select_baby = models.BooleanField(null=False)
     account_open = models.BooleanField(null=False)
     follower_open = models.BooleanField(null=False)
-
+    following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="following")
+    follower = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="follower")
+    
 
 class Baby(models.Model):
     parent = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE)

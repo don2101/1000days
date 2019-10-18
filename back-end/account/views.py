@@ -144,3 +144,37 @@ def babies(request, account_name):
             
         except UserProfile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["GET", "POST"])
+def follow(request, account_name):
+    if request.method == "GET":
+        # 1. following, follower 들을 찾아서 출력
+
+        pass
+    elif request.method == "POST":
+        # 1. 해당 유저를 follow 한다
+        # 2. 해당 유저가 following에 저장되어 있는지 확인
+        # 3. 저장되어있지 않다면, 해당 유저를 following에 추가
+        # 4. 해당 유저의 follower에 요청 유저를 저장
+        # 5. 저장되어있다면, 해당 유저를 following에서 제거
+        # 6. 해당 유저의 follower에서 요청 유저를 제거
+
+        try:
+            user_profile = UserProfile.objects.get(nickname=account_name)
+            following_user = UserProfile.objects.get(nickname=request.data['follow'])
+
+            if following_user in user_profile.following.all():
+                # 있는 경우, follow 취소
+                user_profile.following.remove(following_user.user)
+                following_user.follower.remove(user_profile.user)
+            
+            else:
+                # 없는 경우, follow 한다
+                user_profile.following.add(following_user.user)
+                following_user.follower.add(user_profile.user)
+
+            return Response(status=status.HTTP_200_OK)
+            
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
