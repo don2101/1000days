@@ -25,7 +25,7 @@
                  <span class="icon"><v-icon>fas fa-lock</v-icon></span>
                  <input type="password" placeholder="비밀번호 확인 *" v-model="repw" required>
                </v-col>
-             <div v-if="this.pw!=this.repw">
+             <div v-if="this.pw!=this.repw&&this.repw.length>0">
               <p style="color:red;">비밀번호가 일치하지 않습니다</p>
               </div>
               </v-col>
@@ -111,6 +111,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Calendar from './Calendar'
   export default {
     data: () => ({
@@ -125,7 +126,6 @@ import Calendar from './Calendar'
       spousename: null,
       accountYN: true,
       followYN: true,
-      showaccount: true,
     }),
     components:{
         Calendar
@@ -168,16 +168,25 @@ import Calendar from './Calendar'
         alert('비밀번호를 확인해주세요')
     }
     else {
-    axios.post('http://localhost:8000/account/login/', {'email': this.email, 'password': this.password})
+    axios.post('http://localhost:8000/account/signup/', {
+            "username": this.name,
+            "password": this.pw,
+            "email": this.newemail,
+            "nickname": this.nickname,
+            "select_baby": this.babyYN,
+            "account_open": this.accountYN,
+            "follower_open": this.followYN
+        })
         .then(res => {
-                        alert('회원가입 성공')
+                        alert('회원가입 성공');
+                        this.dialog = false
 
                     })
                     .catch(err => {
                         alert('회원가입 실패');
+                        this.dialog = false
                     })
-    alert('회원가입이 완료되었습니다')
-    this.dialog = false
+
     }
   },
   }
