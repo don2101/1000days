@@ -30,26 +30,43 @@
               </div>
               </v-col>
             </v-row>
-          </v-container>
-       <v-radio-group class="select"v-model="accountYN" :mandatory="false">
-              <h6>계정 공개 여부 설정 *</h6>
-              <br>
-              <v-radio label="공개" value="accountY"></v-radio>
-              <v-radio label="비공개" value="accountN"></v-radio>
-            </v-radio-group>
-        <v-radio-group class="select" v-model="followYN" :mandatory="false">
-              <h6>팔로우/팔로잉 공개 여부 설정 *</h6>
-              <br>
-              <v-radio label="공개" value="followY"></v-radio>
-              <v-radio label="비공개" value="followN"></v-radio>
-            </v-radio-group>
-           <v-radio-group class="select" v-model="babyYN" :mandatory="false">
-              <h6>아기가 있습니까? *</h6>
-              <br>
-              <v-radio label="있음" value="babyY"></v-radio>
-              <v-radio label="없음" value="babyN"></v-radio>
-            </v-radio-group>
-            <div v-if="babyYN=='babyY'">
+
+            <h6>계정 공개 여부 설정 *</h6>
+              <div v-if="this.accountYN==true">
+              <v-container fluid>
+    <v-switch v-model="accountYN" :label="'공개'"></v-switch>
+  </v-container>
+  </div>
+  <div v-else>
+              <v-container fluid>
+    <v-switch v-model="accountYN" :label="'비공개'"></v-switch>
+  </v-container>
+  </div>
+  <h6>팔로우/팔로잉 공개 여부 설정 *</h6>
+              <div v-if="this.followYN==true">
+              <v-container fluid>
+    <v-switch v-model="followYN" :label="'공개'"></v-switch>
+  </v-container>
+  </div>
+  <div v-else>
+              <v-container fluid>
+    <v-switch v-model="followYN" :label="'비공개'"></v-switch>
+  </v-container>
+  </div>
+   <h6>아기가 있습니까? *</h6>
+              <div v-if="this.babyYN==true">
+              <v-container fluid>
+    <v-switch v-model="babyYN" :label="'있음'"></v-switch>
+  </v-container>
+  </div>
+  <div v-else>
+              <v-container fluid>
+    <v-switch v-model="babyYN" :label="'없음'"></v-switch>
+  </v-container>
+  </div>
+   </v-container>
+
+            <div v-if="babyYN==true">
               <v-card
     max-width="344"
     class="mx-auto"
@@ -103,11 +120,12 @@ import Calendar from './Calendar'
       newemail:null,
       pw: null,
       repw: null,
-      babyYN: 'babyY',
+      babyYN: true,
       babyname: null,
       spousename: null,
-      accountYN: 'accountY',
-      followYN: 'followY'
+      accountYN: true,
+      followYN: true,
+      showaccount: true,
     }),
     components:{
         Calendar
@@ -150,6 +168,14 @@ import Calendar from './Calendar'
         alert('비밀번호를 확인해주세요')
     }
     else {
+    axios.post('http://localhost:8000/account/login/', {'email': this.email, 'password': this.password})
+        .then(res => {
+                        alert('회원가입 성공')
+
+                    })
+                    .catch(err => {
+                        alert('회원가입 실패');
+                    })
     alert('회원가입이 완료되었습니다')
     this.dialog = false
     }
@@ -204,6 +230,7 @@ input::placeholder {
 
 h6{
   font-weight: bold;
+  margin-right:10px;
 }
 
 .icon{

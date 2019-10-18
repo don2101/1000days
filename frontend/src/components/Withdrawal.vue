@@ -47,6 +47,13 @@ export default {
     }),
   methods: {
    withdrawal(){
+   if (this.checkbox==false){
+   Swal.fire({
+                  type: 'warning',
+                  text: '체크박스를 눌러주세요',
+        })
+   }
+   else{
      Swal.fire({
   title: '정말 탈퇴하시겠습니까?',
   text: "탈퇴취소는 불가능합니다",
@@ -63,7 +70,8 @@ export default {
     })
   }
 })
-    },
+    }
+    }
     }
   }
 </script>

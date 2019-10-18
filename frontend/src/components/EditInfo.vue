@@ -32,18 +32,20 @@
               </v-col>
  </v-row>
  </v-container>
-  <v-radio-group class="ml-10 select"v-model="accountYN" :mandatory="false">
-              <h6>계정 공개 여부 설정</h6>
-              <br>
-              <v-radio label="공개" value="accountY"></v-radio>
-              <v-radio label="비공개" value="accountN"></v-radio>
-            </v-radio-group>
-        <v-radio-group class="ml-10 select" v-model="followYN" :mandatory="false">
-              <h6>팔로우/팔로잉 공개 여부 설정</h6>
-              <br>
-              <v-radio label="공개" value="followY"></v-radio>
-              <v-radio label="비공개" value="followN"></v-radio>
-            </v-radio-group>
+   <h6>계정 공개 여부 설정 *</h6>
+  <div v-if="this.accountYN==true">
+    <v-switch v-model="accountYN" :label="'공개'"></v-switch>
+  </div>
+  <div v-else>
+    <v-switch v-model="accountYN" :label="'비공개'"></v-switch>
+  </div>
+  <h6>팔로우/팔로잉 공개 여부 설정 *</h6>
+  <div v-if="this.followYN==true">
+    <v-switch v-model="followYN" :label="'공개'"></v-switch>
+  </div>
+  <div v-else>
+    <v-switch v-model="followYN" :label="'비공개'"></v-switch>
+  </div>
 
             <v-card-actions>
                 <v-btn style="left:90%" color="pink lighten-2" @click="edit()"><i class="material-icons">save_alt 저장</i></v-btn>
@@ -64,8 +66,8 @@ export default {
       editemail:'',
       editpassword:'',
       editpasswordconfirm:'',
-      accountYN: 'accountY',
-      followYN: 'followY',
+      accountYN: true,
+      followYN: true,
       checkbox: false,
     }),
    components: {
