@@ -28,3 +28,12 @@ class BabySerializer(serializers.ModelSerializer):
     class Meta:
         model = Baby
         fields = ['parent', 'name', 'birthday', 'spouse']
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    following = serializers.StringRelatedField(many=True)
+    follower = serializers.StringRelatedField(many=True)
+    
+    class Meta:
+        model = UserProfile
+        fields = ['following', 'follower']

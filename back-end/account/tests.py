@@ -79,14 +79,14 @@ class AccountTest(TestCase):
 
         self.assertEqual(result.status_code, 201)
 
-    def test_follow(self):
+    def Test_follow(self):
         result = requests.post(self.followUrl, self.followData)
 
         self.assertEqual(result.status_code, 200)
 
-    # def test_all(self):
-    #     self.Test_signup()
-    #     self.Test_set_baby()
-    #     self.Test_login()
-    #     self.Test_personal()
-    #     self.Test_baby()
+    def test_all(self):
+        self.Test_signup()
+        self.Test_set_baby()
+        self.Test_login()
+        self.Test_personal()
+        self.Test_baby()

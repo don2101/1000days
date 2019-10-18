@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import status
 
 from .models import UserProfile, Baby
-from .serializers import UserSerializer, UserProfileSerializer, BabySerializer
+from .serializers import UserSerializer, UserProfileSerializer, BabySerializer, FollowSerializer
 from .account_service import create_token, user_authenticate, set_password
 
 User = get_user_model()
@@ -148,29 +148,42 @@ def babies(request, account_name):
 
 @api_view(["GET", "POST"])
 def follow(request, account_name):
+    """
+    follow 기능을 수행 하는 API
+    ---
+        GET: user의 nickname으로 계정을 찾아 follower, following에 대한 정보 return
+        POST: user의 nickname으로 계정을 찾고, 해당 계정에 follow 정보를 추가
+        (following: 유저가 follow 하는 사람, follower: 유저를 follow 하는 사람)
+    ## POST parameter
+        follow: follow 할 사람의 nickname(String)
+
+    ## Get return
+        following: 유저가 follow 하는 사람의 목록(List)
+        follower: 유저를 follow 하는 사람의 목록(List)
+    ---
+    """
     if request.method == "GET":
-        # 1. following, follower 들을 찾아서 출력
+        try:
+            user_profile = UserProfile.objects.get(nickname=account_name)
 
-        pass
+            serializer = FollowSerializer(user_profile)
+            print(serializer.data)
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        
+        except UserProfile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
     elif request.method == "POST":
-        # 1. 해당 유저를 follow 한다
-        # 2. 해당 유저가 following에 저장되어 있는지 확인
-        # 3. 저장되어있지 않다면, 해당 유저를 following에 추가
-        # 4. 해당 유저의 follower에 요청 유저를 저장
-        # 5. 저장되어있다면, 해당 유저를 following에서 제거
-        # 6. 해당 유저의 follower에서 요청 유저를 제거
-
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
             following_user = UserProfile.objects.get(nickname=request.data['follow'])
 
             if following_user in user_profile.following.all():
-                # 있는 경우, follow 취소
                 user_profile.following.remove(following_user.user)
                 following_user.follower.remove(user_profile.user)
             
             else:
-                # 없는 경우, follow 한다
                 user_profile.following.add(following_user.user)
                 following_user.follower.add(user_profile.user)
 
