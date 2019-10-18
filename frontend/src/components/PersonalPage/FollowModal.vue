@@ -1,6 +1,7 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="isFMon" scrollable max-width="300px">
+    <!-- v-model에 store에서 받아온 isFollowModal 걸어주기 -->
+    <v-dialog scrollable max-width="300px">
       <v-card>
         <v-card-title>Follower or Following</v-card-title>
         <v-divider></v-divider>
@@ -24,9 +25,6 @@
      },
      computed: {
          // store에서 받아오기
-         isFMon() {
-             return false
-         }
      },
 
  }

@@ -11,7 +11,7 @@
             <v-col cols="12" sm="9" style="margin: 20px 0 20px 0">
                 <v-container>
                     <AccountInfo/>
-                    <FollowModal property="isFMon"/>
+                    <FollowModal/>
                     <v-divider/>
                     <!-- View 유형이 List 인지 Calendar 인지에 따라서 뷰를 바꿔줌 -->
                     <DiaryListView/>
@@ -32,7 +32,11 @@
     import DiaryCalendarView from '../components/PersonalPage/DiaryCalendarView'
     export default {
         name: 'PersonalPage',
-        components: {LeftSideBar, AccountInfo, DiaryListView, FollowModal, DiaryCalendarView},
+        components: {
+            LeftSideBar, AccountInfo,
+            DiaryListView, FollowModal,
+            DiaryCalendarView
+        },
         props: {
           LeftSideBar
         },
