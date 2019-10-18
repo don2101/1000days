@@ -1,11 +1,9 @@
 from django.shortcuts import render
-from django.contrib.auth.hashers import make_password, is_password_usable
 from django.contrib.auth import get_user_model
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import status
-from rest_framework_swagger import renderers
 
 from .models import UserProfile, Baby
 from .serializers import UserSerializer, UserProfileSerializer, BabySerializer
@@ -43,7 +41,7 @@ def signup(request):
             profile_instance = profile_serializer.save(user=user_instance)
 
             return Response(status=status.HTTP_201_CREATED)
-        return Response(profile_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     else:
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -101,15 +99,15 @@ def babies(request, account_name):
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
             user = user_profile.user
-
-            serializer = BabySerializer(data=request.data)
-
+            
+            serializer = BabySerializer(data=request.data, partial=True)
+            
             if serializer.is_valid():
                 serializer.save(parent=user)
 
                 return Response(status=status.HTTP_201_CREATED)
 
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
         except UserProfile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
