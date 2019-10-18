@@ -1,9 +1,13 @@
-{
-	"username":"ieeju",
-	"password": "sdfsd",
-	"email": "ieeju0102@naver.com",
-	"nickname": "bs",
-	"select_baby": true,
-	"account_open": true,
-	"follower_open": true
-}
+## 요구 설치 파일
+
+### back-end
+
+- python 3.5.3
+- django 2.2.6
+- djangorestframework 3.10.3
+- django-rest-swagger 2.2.0
+- mysqlclient 1.4.4
+  - 설치파일을 통해 생성( https://www.lfd.uci.edu/~gohlke/pythonlibs/#mysqlclient )
+
+- django-cors-header 3.1.1
+- pyjwt 1.7.1
