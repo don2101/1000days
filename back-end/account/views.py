@@ -18,7 +18,7 @@ def signup(request):
     """
     회원 가입을 요청하는 API
     ---
-    ## post parameter
+    ## POST parameter
         username: 사용자의 이름(String),
         password: 사용자의 비밀번호(String),
         email: 사용자의 email(String),
@@ -52,7 +52,7 @@ def login(request):
     '''
     로그인을 요청하는 API
     ---
-    ## post parameter
+    ## POST parameter
         email: 사용자의 email(String),
         password: 사용자의 비밀번호(String),
     ---
@@ -69,6 +69,12 @@ def login(request):
 
 @api_view(["GET"])
 def personal(request, account_name):
+    """
+    개인 정보를 요청하는 API
+    ---
+    user의 nickname으로 계정을 찾아 정보를 return
+    ---
+    """
     try:
         user_profile = UserProfile.objects.get(nickname=account_name)
         serializer = UserProfileSerializer(user_profile)
@@ -81,8 +87,20 @@ def personal(request, account_name):
 
 @api_view(["GET", "POST"])
 def babies(request, account_name):
+    """
+    baby의 정보를 입력하는 API
+    ---
+        GET: user의 nickname으로 계정을 찾아 정보를 return
+        POST: user의 nickname으로 계정을 찾고, 해당 계정에 baby 정보를 입력
+    ## POST parameter
+        name: baby의 이름
+        birthday: 출생일(year-month-day)
+        spouse: 배우자 이름
+    ---
+    """
     # 모든 baby 출력
     if request.method == "GET":
+        
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
             user = user_profile.user

@@ -76,7 +76,7 @@ class AccountTest(TestCase):
         self.assertEqual(result.status_code, 201)
 
     def test_all(self):
-        # self.Test_signup()
+        self.Test_signup()
         self.Test_set_baby()
         self.Test_login()
         self.Test_personal()
