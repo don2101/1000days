@@ -38,7 +38,11 @@ class AccountTest(TestCase):
             "birthday": "2019-10-18",
             "spouse": "spouse1",
         }
-
+        
+        self.followUrl = "http://localhost:8000/account/" + self.nickname + "/follow/"
+        self.followData = {
+            "follow": "testing12345"
+        }
 
     def Test_signup(self):
         result = requests.post(self.signUpUrl, self.signUpData)
@@ -75,9 +79,14 @@ class AccountTest(TestCase):
 
         self.assertEqual(result.status_code, 201)
 
-    def test_all(self):
-        self.Test_signup()
-        self.Test_set_baby()
-        self.Test_login()
-        self.Test_personal()
-        self.Test_baby()
+    def test_follow(self):
+        result = requests.post(self.followUrl, self.followData)
+
+        self.assertEqual(result.status_code, 200)
+
+    # def test_all(self):
+    #     self.Test_signup()
+    #     self.Test_set_baby()
+    #     self.Test_login()
+    #     self.Test_personal()
+    #     self.Test_baby()
