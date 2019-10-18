@@ -16,7 +16,6 @@ User = get_user_model()
 # Create your views here.
 
 @api_view(["POST"])
-@renderer_classes([renderers.OpenAPIRenderer, renderers.SwaggerUIRenderer])
 def signup(request):
     """
     회원 가입을 요청하는 API
@@ -44,10 +43,10 @@ def signup(request):
             profile_instance = profile_serializer.save(user=user_instance)
 
             return Response(status=status.HTTP_201_CREATED)
-        return Response(profile_serializer.error,status=status.HTTP_400_BAD_REQUEST)
+        return Response(profile_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
     else:
-        return Response(user_serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
@@ -74,18 +73,43 @@ def login(request):
 def personal(request, account_name):
     try:
         user_profile = UserProfile.objects.get(nickname=account_name)
-        
-        if user_profile:
-            serializer = UserProfileSerializer(user_profile)
+        serializer = UserProfileSerializer(user_profile)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    except UserProfile.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["GET", "POST"])
+def babies(request, account_name):
+    # 모든 baby 출력
+    if request.method == "GET":
+        try:
+            user_profile = UserProfile.objects.get(nickname=account_name)
+            user = user_profile.user
+            
+            babies = user.baby_set.all()
+            serializer = BabySerializer(babies, many=True)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
-        else:
+            
+        except UserProfile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    elif request.method == "POST":
+        try:
+            user_profile = UserProfile.objects.get(nickname=account_name)
+            user = user_profile.user
+
+            serializer = BabySerializer(data=request.data)
+
+            if serializer.is_valid():
+                serializer.save(parent=user)
+
+                return Response(status=status.HTTP_201_CREATED)
+
             return Response(status=status.HTTP_400_BAD_REQUEST)
-    
-    except UserProfile.DoesNotExist:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(["GET"])
-def baby(request, account_name, baby_id):
-    pass
+            
+        except UserProfile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
