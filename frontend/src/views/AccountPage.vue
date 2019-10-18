@@ -5,7 +5,7 @@
 fail
 </div>
 <div v-else>
-<EditInfo></EditInfo>
+<MyInfo></MyInfo>
 </div>
 </div>
 </template>
@@ -13,13 +13,13 @@ fail
 
 <script>
 import Error from '../components/Error'
-import EditInfo from '../components/EditInfo'
+import MyInfo from '../components/MyInfo'
 import {mapState} from 'vuex'
 export default {
   name: 'AccountPage',
    components: {
    Error,
-   EditInfo
+   MyInfo
   },
   methods: {
    },

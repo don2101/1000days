@@ -1,14 +1,15 @@
 <template>
 <div class="container" style="margin: auto">
-HomePage
+ <Login></Login>
 </div>
 </template>
 
 <script>
-
+import Login from '../components/Login'
 export default {
-  name: 'HomePage',
+  name: 'LoginPage',
   components: {
+    Login
   },
   methods: {
   }

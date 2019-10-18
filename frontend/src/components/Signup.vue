@@ -133,7 +133,9 @@ import Calendar from './Calendar'
   cancelButtonText: '취소'
 }).then((result) => {
   if (result.value) {
-    history.back(-1)
+    this.$router.push({
+        name: 'HomePage'
+    })
   }
 })
     },

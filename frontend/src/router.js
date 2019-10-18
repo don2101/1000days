@@ -2,10 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store/index'
 import HomePage from './views/HomePage'
-import MainPage from './views/MainPage'
 import AccountPage from './views/AccountPage'
 import ConfirmPage from './views/ConfirmPage'
 import RegisterPage from './views/RegisterPage'
+import LoginPage from './views/LoginPage'
 
 Vue.use(Router)
 
@@ -18,11 +18,6 @@ export default new Router({
             path: '/',
             name: 'HomePage',
             component: HomePage
-        },
-         {
-            path: '/main',
-            name: 'MainPage',
-            component: MainPage
         },
                  {
             path: '/mypage',
@@ -39,6 +34,11 @@ export default new Router({
             path: '/signup',
             name: 'RegisterPage',
             component: RegisterPage
+        },
+          {
+            path: '/login',
+            name: 'LoginPage',
+            component: LoginPage
         },
     ]
 })
