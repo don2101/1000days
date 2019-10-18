@@ -4,7 +4,7 @@
 export default {
     namespaced: true,
     state: {
-        isFollowModal: false,
+        isFollowModal: true,
         isDetailModal: false,
         isAccSettingModal: false,
         isListView: true,

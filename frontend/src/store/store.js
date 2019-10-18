@@ -1,11 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import auth from 'modules/auth'
+import data from 'modules/data'
 import modules from './modules'
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
+    auth,
+    data,
     modules
 });
 
