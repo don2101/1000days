@@ -1,6 +1,7 @@
 <template>
 <div class="container" style="margin: auto">
  <Login></Login>
+ {{userInfo}}
 </div>
 </template>
 
@@ -12,7 +13,7 @@ export default {
     Login
   },
   methods: {
-  }
+  },
   }
 </script>
 <style>

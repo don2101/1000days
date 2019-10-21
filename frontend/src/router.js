@@ -6,7 +6,7 @@ import AccountPage from './views/AccountPage'
 import ConfirmPage from './views/ConfirmPage'
 import RegisterPage from './views/RegisterPage'
 import LoginPage from './views/LoginPage'
-
+import BabyInfoPage from './views/BabyInfoPage'
 Vue.use(Router)
 
 export default new Router({
@@ -39,6 +39,11 @@ export default new Router({
             path: '/login',
             name: 'LoginPage',
             component: LoginPage
+        },
+        {
+            path: '/babyinfo',
+            name: 'BabyInfoPage',
+            component: BabyInfoPage
         },
     ]
 })

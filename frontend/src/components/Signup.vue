@@ -30,7 +30,6 @@
               </div>
               </v-col>
             </v-row>
-
             <h6>계정 공개 여부 설정 *</h6>
               <div v-if="this.accountYN==true">
               <v-container fluid>
@@ -65,54 +64,28 @@
   </v-container>
   </div>
    </v-container>
-
-            <div v-if="babyYN==true">
-              <v-card
-    max-width="344"
-    class="mx-auto"
-  >
-  <h1 class="headline"><strong>아기 정보</strong></h1>
-             <v-img
-             src="../images/baby.png"
-             height="150"
-             width="150"
-             class="mt-5"
-             style="left:25%;"
-           >
-           </v-img>
-           <v-card-text>
-            <div style="margin-right:100px;">
-               <v-col cols="12" style="left:25%">
-               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
-                <input type="text" placeholder="아기 이름" v-model="babyname">
-              </v-col>
-               <Calendar></Calendar>
-                 <v-col cols="12" style="left:25%">
-               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
-                <input type="text" placeholder="배우자 이름" v-model="spousename">
-              </v-col>
-
-        </div>
-        </v-card-text>
-        </v-card>
-        </div>
         </v-card-text>
         <br>
         <small><p style="text-align:center;">*필수입력항목</p></small>
         <small><p style="text-align:center;">*아직 아기가 태어나지 않은 경우 출산예정일을 입력해주세요 <br>(태어난 후 아기생일로 수정해주세요)</p></small>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <div v-if="babyYN==false">
           <v-btn color="blue darken-1" text @click="out">나가기</v-btn>
           <v-btn color="pink" text @click="register">가입하기</v-btn>
+        </div>
+        <div v-else>
+        <v-btn color="blue darken-1" text @click="out">나가기</v-btn>
+          <v-btn color="pink" text @click="next">다음페이지</v-btn>
+        </div>
         </v-card-actions>
       </v-card>
     </v-card>
     </div>
 </template>
-
 <script>
 import axios from 'axios';
-import Calendar from './Calendar'
+import {mapState} from 'vuex'
   export default {
     data: () => ({
       dialog: false,
@@ -122,22 +95,21 @@ import Calendar from './Calendar'
       pw: null,
       repw: null,
       babyYN: true,
-      babyname: null,
-      spousename: null,
       accountYN: true,
       followYN: true,
     }),
     components:{
-        Calendar
     },
     computed: {
+        ...mapState({
+    userInfo: state=>state.moduleName.userInfo
+    }),
      isValidate: function() {
       if (this.name === null || this.nickname === '' || this.newemail === null || this.pw === '' || this.repw === null)
         return false
       else return true
     }
     },
-
     methods: {
     out(){
      Swal.fire({
@@ -157,6 +129,37 @@ import Calendar from './Calendar'
   }
 })
     },
+     next(){
+    if (!this.isValidate) {
+         Swal.fire({
+                  type: 'error',
+                  text: '모든 항목을 입력해주세요',
+        })
+      }
+    if (this.pw != this.repw || this.pw.length<10 ){
+        alert('비밀번호를 확인해주세요')
+    }
+    else {
+    axios.post('http://localhost:8000/account/signup/', {
+            "username": this.name,
+            "password": this.pw,
+            "email": this.newemail,
+            "nickname": this.nickname,
+            "select_baby": this.babyYN,
+            "account_open": this.accountYN,
+            "follower_open": this.followYN
+        })
+        .then(res=>this.$store.commit('setUserInfo', {
+          'nickname' : this.nickname,
+        }))
+        .then(res=> this.$router.push('/babyinfo'))
+
+                    .catch(err => {
+                        alert('회원가입 실패');
+                        this.dialog = false
+                    })
+    }
+  },
     register(){
     if (!this.isValidate) {
          Swal.fire({
@@ -177,32 +180,33 @@ import Calendar from './Calendar'
             "account_open": this.accountYN,
             "follower_open": this.followYN
         })
+        .then(res=>this.$store.commit('setUserInfo', {
+          'nickname' : this.nickname,
+        }))
         .then(res => {
-                        alert('회원가입 성공');
-                        this.dialog = false
-
+                        Swal.fire({
+                  type: 'success',
+                  text: '회원가입이 완료되었습니다',
+        })
+        .then(res=> this.$router.push('/login'))
                     })
                     .catch(err => {
                         alert('회원가입 실패');
                         this.dialog = false
                     })
-
     }
   },
-  }
+  },
   }
 </script>
-
 <style scoped>
 .container{
    width: 70%;
 }
-
 h1{
 color:#F8BBD0;
 text-align: center;
 }
-
 .ml-3{
   color: #fff;
   padding: 12px 20px;
@@ -211,11 +215,9 @@ text-align: center;
   cursor: pointer;
   width: 95%;
 }
-
 .ml-3:focus{
 outline: none;
 }
-
 input{
   width: 100%;
   padding: 12px 20px;
@@ -226,22 +228,18 @@ input{
   padding-left: 50px;
   transition: 1s;
 }
-
 input:focus{
 outline: none;
 border-color:#F8BBD0;
 box-shadow: 0 0 8px 0 #F8BBD0;
 }
-
 input::placeholder {
   font-weight: bold;
 }
-
 h6{
   font-weight: bold;
   margin-right:10px;
 }
-
 .icon{
   position: absolute;
   top: 15%;
@@ -250,9 +248,7 @@ h6{
   z-index: 1;
   color: #4f5b66;
 }
-
 .select{
 margin-left: 120px;
 }
-
 </style>

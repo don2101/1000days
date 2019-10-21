@@ -8,7 +8,7 @@
         v-model="nowMenu"
         :close-on-content-click="false"
         :nudge-right="40"
-        :return-value.sync="now"
+        :return-value.sync="birthday"
         transition="scale-transition"
         min-width="290px"
         offset-y
@@ -17,11 +17,11 @@
         <template v-slot:activator="{ on }">
             <v-col cols="12" style="left:25%">
             <span class="icon"><i class="fas fa-calendar-week" style="font-size: 1.5em"></i></span>
-                <input v-model="now" v-on="on" type="text" placeholder="아기 생년월일" readonly >
+                <input v-model="birthday" v-on="on" type="text" placeholder="아기 생년월일" readonly >
             </v-col>
         </template>
         <v-date-picker
-          v-model="now"
+          v-model="birthday"
           no-title
           scrollable
         >
@@ -36,7 +36,7 @@
           <v-btn
             text
             color="primary"
-            @click="$refs.nowMenu.save(now)"
+            @click="$refs.nowMenu.save(birthday)"
           >
             선택
           </v-btn>
@@ -50,7 +50,7 @@
   export default {
     data: () => ({
       nowMenu: false,
-      now: null,
+      birthday: null,
     }),
     computed: {
     },

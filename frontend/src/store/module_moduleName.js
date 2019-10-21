@@ -1,5 +1,5 @@
 const initialState={
-    userInfo: 'null',
+    userInfo: null,
 }
 
 const mutations= {

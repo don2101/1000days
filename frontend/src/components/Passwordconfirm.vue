@@ -9,7 +9,7 @@
     </v-card-title>
    <v-col cols="12">
      <span class="icon"><v-icon>fas fa-lock</v-icon></span>
-     <input type="repassword" placeholder="비밀번호" v-model="password" required>
+     <input type="password" placeholder="비밀번호" v-model="repassword" required>
     </v-col>
     <v-btn color="pink" class="mr-3" style="float:right" @click="enter">확인</v-btn>
     </v-card>
