@@ -1,12 +1,17 @@
 <template>
-<!--    <div>-->
-<!--        <h1>Landing View</h1>-->
-<!--    </div>-->
     <div id="fullpage">
-        <div class="section" style="background: pink">Some section</div>
-        <div class="section" style="background: ivory">Some section</div>
-        <div class="section" style="background: gray">Some section</div>
-        <div class="section" style="background: yellow">Some section</div>
+        <div class="section">
+            <img src="../images/LandingView/holdingHand-black.jpg" width="100%" height="100%" alt="">
+        </div>
+        <div class="section">
+            <img src="../images/LandingView/baby-feet-4260035_640.jpg" width="100%" height="100%" alt="">
+        </div>
+        <div class="section">
+            <img src="../images/LandingView/embracedBaby.jpg" width="100%" height="100%" alt="">
+        </div>
+        <div class="section">
+            <img src="../images/LandingView/family.jpg" width="100%" height="100%" alt="">
+        </div>
     </div>
 </template>
 
