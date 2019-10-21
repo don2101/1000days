@@ -11,6 +11,10 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 import vuetify from './plugins/vuetify';
 
+
+import VModal from 'vue-js-modal'
+Vue.use(VModal, { dynamic: true })
+
 new Vue({
   vuetify,
   Swal,
