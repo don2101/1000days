@@ -54,7 +54,7 @@ def user_authenticate(email, password):
 
 
 def set_password(request):
-    request_dict = request.data.dict()
+    request_dict = request.data
     request_dict['password'] = make_password(request.data['password'])
 
     modified_data = QueryDict('', mutable=True)
