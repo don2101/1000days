@@ -14,7 +14,7 @@ key = settings.SECRET_KEY
 def create_token(data):
     payload = set_payload(data)
     token = jwt.encode(payload, key, algorithm="HS256")
-    
+    print(token)
     return token
 
 
@@ -26,7 +26,7 @@ def decode_token(token):
     except jwt.ExpiredSignatureError:
         print("Expired")
         pass
-    except jwt.exceptions.DecodeError:
+    except jwt.DecodeError:
         print("decoding error")
         pass
 
@@ -34,7 +34,7 @@ def decode_token(token):
 def set_payload(data):
     jwt_payload = {
         'email': data["email"],
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=300)
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=300) # minutes를 second로 수정
     }
 
     return jwt_payload

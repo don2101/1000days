@@ -16,3 +16,7 @@ class Baby(models.Model):
     name = models.CharField(max_length=45, null=False)
     birthday = models.DateField(null=False)
     spouse = models.CharField(max_length=45, null=True)
+
+class Blacklist(models.Model):
+    email = models.CharField(max_length=45, null=False)
+    expiry_date = models.DateTimeField(null=False)

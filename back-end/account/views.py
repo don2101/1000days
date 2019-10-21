@@ -6,7 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 
 from .serializers import UserSerializer, UserProfileSerializer, BabySerializer
-from .account_service import create_token, user_authenticate, set_password
+from .account_service import create_token, user_authenticate, set_password, decode_token
+from .models import Blacklist
 
 
 # Create your views here.
@@ -37,9 +38,20 @@ def login(request):
     authenticated = user_authenticate(request.data["email"], request.data["password"])
     
     if authenticated:
+        # blacklist = Blacklist.objects.get(email=request.data["email"])            이것도 나중에 수정.
+        # if blacklist:
+        #     blacklist.delete()
         token = create_token(request.data)
 
         return Response(data={"token": token})
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(["POST"])
+def logout(request):
+    token = decode_token(request.data["token"])
+    print(token)
+    # blacklist = Blacklist.objects.create(email=token.get("email"), expiry_date=token.get("exp"))
+
+    return Response(status=status.HTTP_200_OK)
