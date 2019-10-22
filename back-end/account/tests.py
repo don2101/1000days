@@ -26,7 +26,7 @@ class AccountTest(TestCase):
 
         self.loginUrl = "http://localhost:8000/account/login/"
         self.loginData = {
-            "email": "qwe345@qwe.com",
+            "email": "user987@user.com",
             "password": self.password
         }
 
@@ -55,6 +55,7 @@ class AccountTest(TestCase):
 
         self.assertEqual(result.status_code, 200)
         
+        return result
 
     def Test_decode_token(self):
         token = ""
@@ -90,5 +91,4 @@ class AccountTest(TestCase):
         self.Test_login()
         self.Test_personal()
         self.Test_baby()
-
 

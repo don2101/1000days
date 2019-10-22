@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import signup, login, personal, babies, follow
+from posting.views import user_diaries
 
 
 urlpatterns = [
@@ -8,4 +9,5 @@ urlpatterns = [
     path('<str:account_name>', personal, name="personal"),
     path('<str:account_name>/babies/', babies, name="babies"),
     path('<str:account_name>/follow/', follow, name="follow"),
+    path('<str:account_name>/diaries/', user_diaries, name="diaries"),
 ]
