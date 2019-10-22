@@ -4,22 +4,24 @@
 export default {
     namespaced: true,
     state: {
-        isFollowModal: true,
+        isFollowModal: false,
         isDetailModal: false,
         isAccSettingModal: false,
         isListView: true,
         accountInfo: null,
         diaryDataSet: null,
         searchedResult: null,
+        loginedUserInfo: null,
     },
     getters: {
-        isFollowModal: state => state.isFollowModal,
-        isDetailModal: state => state.isDetailModal,
-        isAccSettingModal: state => state.isAccSettingModal,
-        isListView: state => state.isListView,
-        accountInfo: state => state.accountInfo,
-        diaryDataSet: state => state.diaryDataSet,
-        searchedResult: state => state.searchedResult,
+        isFollowModal: state => { return state.isFollowModal },
+        isDetailModal: state => { return state.isDetailModal },
+        isAccSettingModal: state => { return state.isAccSettingModal },
+        isListView: state => { return state.isListView },
+        accountInfo: state => { return state.accountInfo },
+        diaryDataSet: state => { return state.diaryDataSet },
+        searchedeRsult: state => { return state.searchedResult },
+        loginedUserInfo: state => { return state.loginedUserInfo }
     },
     actions: {
         async initStore({state, commit}, accInfo, diary) {
@@ -32,10 +34,18 @@ export default {
         },
         setSerchedResult({commit}, resultData) {
             commit('SET_SEARCHED_RESULT', resultData);
+        },
+        test({commit}, tmp) {
+            commit('TEST', tmp);
         }
 
     },
     mutations: {
+        TEST(state, tmp) {
+            console.log('test 호출 완료');
+            console.log(tmp)
+            state.loginedUserInfo = tmp;
+        },
         SET_INFOS_INIT(state, accInfo, diary) {
             state.accountInfo = accInfo;
             state.diaryDataSet = diary;

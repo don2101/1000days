@@ -1,27 +1,27 @@
 <template>
-    <div id="fullpage">
-        <div class="section">
-            <img src="../images/LandingView/holdingHand-black.jpg" width="100%" height="100%" alt="">
-        </div>
-        <div class="section">
-            <img src="../images/LandingView/baby-feet-4260035_640.jpg" width="100%" height="100%" alt="">
-        </div>
-        <div class="section">
-            <img src="../images/LandingView/embracedBaby.jpg" width="100%" height="100%" alt="">
-        </div>
-        <div class="section">
-            <img src="../images/LandingView/family.jpg" width="100%" height="100%" alt="">
-        </div>
+    <div id="fullpage" style="text-align: center; margin-top: 15px">
+        <C1/>
+        <C2/>
+        <C3/>
+        <C4/>
     </div>
 </template>
 
 
 <script>
+    import {mapActions} from 'vuex'
+    import C1 from './LandingViewSections/C1.vue'
+    import C2 from './LandingViewSections/C2.vue'
+    import C3 from './LandingViewSections/C3.vue'
+    import C4 from './LandingViewSections/C4.vue'
+
     export default {
         name: 'LandingView',
+        components: {
+          C1, C2, C3, C4
+        },
         data() {
             return {
-
             }
         },
         mounted() {
@@ -30,7 +30,8 @@
                 autoScrolling:true,
                 scrollHorizontally: true
             });
-        }
+        },
+
     }
 </script>
 

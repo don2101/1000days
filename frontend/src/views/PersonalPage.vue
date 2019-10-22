@@ -11,10 +11,10 @@
             <v-col cols="12" sm="9" style="margin: 20px 0 20px 0">
                 <v-container>
                     <AccountInfo/>
-                    <FollowModal v-if="data.isFollowModal"/>
+                    <FollowModal v-if="isFollowModal"/>
                     <v-divider/>
                     <!-- View 유형이 List 인지 Calendar 인지에 따라서 뷰를 바꿔줌 -->
-                    <DiaryListView v-if="data.isListView"/>
+                    <DiaryListView v-if="isListView"/>
                     <DiaryCalendarView v-else />
                 </v-container>
 
@@ -31,8 +31,7 @@
     import FollowModal from '../components/PersonalPage/FollowModal'
     import DiaryCalendarView from '../components/PersonalPage/DiaryCalendarView'
 
-    import { createNamespacedHelpers } from 'vuex'
-    const { mapState, mapGetters, mapActions } = createNamespacedHelpers("data");
+    import { mapGetters, mapActions } from 'vuex'
 
     export default {
         name: 'PersonalPage',
@@ -52,7 +51,7 @@
 
         },
         computed: {
-            ...mapGetters(['isFollowModal'])
+            ...mapGetters('data', ['isFollowModal', 'isListView'])
         }
     }
 </script>
