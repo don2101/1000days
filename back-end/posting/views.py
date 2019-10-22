@@ -1,0 +1,49 @@
+from django.shortcuts import render
+from django.contrib.auth import get_user_model
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework import status
+
+from .models import Diary
+from .serializers import DiarySerializer
+
+from account.serializers import UserProfileSerializer
+from account.account_service import decode_token
+
+# Create your views here.
+
+User = get_user_model()
+
+@api_view(["POST"])
+def post_diary(request):
+    token = request.data['token']
+    decoded_token = decode_token(token)
+
+    if not decoded_token:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    user = User.objects.get(email=decoded_token['email'])
+
+    if not user:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    # 부분적으로 이름이 일치하는 column에 대해 입력
+    serializer = DiarySerializer(data=request.data, partial=True)
+
+    if serializer.is_valid():
+        # 객체를 직접 연결 => model에서 처리하는 로직
+        serializer.save(writer=user)
+
+        return Response(status=status.HTTP_201_CREATED)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def user_diaries(request, user_id):
+    # GET diaries
+    pass
+
+
+def diary(request, diary_id):
+    # GET, PUT, DELETE
+    pass

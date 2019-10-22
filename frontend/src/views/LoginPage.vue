@@ -1,18 +1,19 @@
 <template>
 <div class="container" style="margin: auto">
-<DiaryList></DiaryList>
+ <Login></Login>
+ {{userInfo}}
 </div>
 </template>
 
 <script>
-import DiaryList from '../components/DiaryList'
+import Login from '../components/Login'
 export default {
-  name: 'HomePage',
+  name: 'LoginPage',
   components: {
-  DiaryList
+    Login
   },
   methods: {
-  }
+  },
   }
 </script>
 <style>

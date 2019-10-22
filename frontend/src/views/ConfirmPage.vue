@@ -1,15 +1,18 @@
 <template>
 <div class="container" style="margin: auto">
-<DiaryList></DiaryList>
+<Passwordconfirm></Passwordconfirm>
 </div>
 </template>
 
+
 <script>
-import DiaryList from '../components/DiaryList'
+import Passwordconfirm from '../components/Passwordconfirm'
 export default {
-  name: 'HomePage',
+  name: 'ConfirmPage',
+   data: () => ({
+    }),
   components: {
-  DiaryList
+    Passwordconfirm
   },
   methods: {
   }

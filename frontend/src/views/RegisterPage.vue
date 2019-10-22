@@ -1,15 +1,15 @@
 <template>
 <div class="container" style="margin: auto">
-<DiaryList></DiaryList>
+ <Signup></Signup>
 </div>
 </template>
 
 <script>
-import DiaryList from '../components/DiaryList'
+import Signup from '../components/Signup'
 export default {
-  name: 'HomePage',
+  name: 'RegisterPage',
   components: {
-  DiaryList
+    Signup
   },
   methods: {
   }
