@@ -25,7 +25,7 @@
                  <span class="icon"><v-icon>fas fa-lock</v-icon></span>
                  <input type="password" placeholder="비밀번호 확인 *" v-model="repw" required>
                </v-col>
-             <div v-if="this.pw!=this.repw&&this.repw.length>0">
+             <div v-if="this.pw!=this.repw">
               <p style="color:red;">비밀번호가 일치하지 않습니다</p>
               </div>
               </v-col>
