@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.conf import settings
-from .models import UserProfile, Baby, Blacklist
+from .models import UserProfile, Baby
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -26,9 +26,3 @@ class BabySerializer(serializers.ModelSerializer):
     class Meta:
         model = Baby
         fields = ['parent', 'name', 'birthday', 'spouse']
-
-
-class BlacklistSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Blacklist
-        fields = ['email', 'exp']

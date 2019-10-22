@@ -6,8 +6,9 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 
 from .serializers import UserSerializer, UserProfileSerializer, BabySerializer
-from .account_service import create_token, user_authenticate, set_password, decode_token
-from .models import Blacklist
+from .account_service import user_authenticate, set_password
+from webtoken.token_service import create_token, decode_token
+from webtoken.models import Blacklist
 
 from datetime import timezone, datetime
 

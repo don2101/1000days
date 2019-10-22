@@ -5,38 +5,7 @@ from django.http import QueryDict
 
 from baby_project import settings
 
-import jwt, datetime
-
 User = get_user_model()
-key = settings.SECRET_KEY
-
-
-def create_token(data):
-    payload = set_payload(data)
-    token = jwt.encode(payload, key, algorithm="HS256")
-    return token
-
-
-def decode_token(token):
-    try:
-        decoded = jwt.decode(token, key, algorithms="HS256")
-        
-        return decoded
-    except jwt.ExpiredSignatureError:
-        print("Expired")
-        pass
-    except jwt.DecodeError:
-        print("decoding error")
-        pass
-
-
-def set_payload(data):
-    jwt_payload = {
-        'email': data["email"],
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=300) # minutes를 second로 수정
-    }
-
-    return jwt_payload
 
 
 def user_authenticate(email, password):

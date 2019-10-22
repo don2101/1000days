@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'account',
-    'jwt',
+    'webtoken',
 ]
 
 MIDDLEWARE = [

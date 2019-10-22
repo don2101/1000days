@@ -42,15 +42,15 @@ class AccountTest(TestCase):
         self.assertEqual(result.status_code, 201)
         
 
-    def test_login(self):
-        result = requests.post(self.loginUrl, self.loginData)
+    # def test_login(self):
+    #     result = requests.post(self.loginUrl, self.loginData)
 
-        self.assertEqual(result.status_code, 200)
+    #     self.assertEqual(result.status_code, 200)
         
-    def test_logout(self):
-        result = requests.post(self.logoutUrl, self.logoutData)
+    # def test_logout(self):
+    #     result = requests.post(self.logoutUrl, self.logoutData)
 
-        self.assertEqual(result.status_code, 200)
+    #     self.assertEqual(result.status_code, 200)
 
     # def test_all(self):
     #     self.Test_signup()
