@@ -1,5 +1,5 @@
 <template>
-      <div class="container">
+      <div style="margin-top:100px; margin-bottom: 100px;" class="container">
         <v-card>
           <h1 class="headline"><strong>회원 정보</strong></h1>
         <v-card-text>
@@ -201,7 +201,7 @@ import {mapState} from 'vuex'
 </script>
 <style scoped>
 .container{
-   width: 70%;
+    width:70%
 }
 h1{
 color:#F8BBD0;

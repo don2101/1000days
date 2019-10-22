@@ -1,7 +1,6 @@
 <template>
 <div class="container" style="margin: auto">
  <Login></Login>
- {{userInfo}}
 </div>
 </template>
 

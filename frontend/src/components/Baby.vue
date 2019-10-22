@@ -6,8 +6,7 @@
              src="../images/baby.png"
              height="200"
              width="200"
-             class="mt-5"
-             style="float:left;"
+             style="float:left; margin-top:80px;"
            >
            </v-img>
             <div style="float:right;">
