@@ -1,10 +1,80 @@
 <template>
-    <div></div>
+    <v-app-bar
+      app clipped-left
+      color="#FDEDEC" style="height: 70px; margin: auto;"
+    >
+      <!--로고와 사이트 이름-->
+      <img style="margin-top: 15px" width="43px" height="43px" src="https://img.icons8.com/nolan/64/000000/baby-feet.png">
+      <!-- <img style="margin-top: 15px" src="../../public/favicon.png"> -->
+      <span @click="$router.push('/')" class="ml-3 mr-5 site-title">1000 Days&nbsp;</span>
 
+      <!-- 다른 계정 검색창 -->
+      <v-text-field
+          placeholder="Search"
+          single-line
+          color="white"
+          hide-details
+          v-model=searchText
+          style="margin-left: 12%"
+        ></v-text-field><img class="c-pointer" width="20px" height="20px" src="https://img.icons8.com/wired/50/000000/search.png">
+      <v-spacer></v-spacer>
+
+      <span class="username">{{username}}</span>
+      <!-- 상단 메뉴 -->
+      <div class="text-center">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-avatar color="#99A3A4" v-on="on" class="c-pointer">
+              <v-icon dark>mdi-account-circle</v-icon>
+            </v-avatar>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="menu in menus"
+              :key="menu"
+            >
+              <v-list-item-title>{{ menu }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
+
+
+    </v-app-bar>
 </template>
 
 <script>
     export default {
-    }
+      name: "Header",
+      data() {
+        return {
+          searchText: '',
+          menus: ['logout', 'home', 'account', 'diary'],
+          searchResult: ['dfd', 'dfd', 'sdfadf', 'asdfadfl;kj'],
+          username: '아따맘마',
+        }
+      },
+      watch: {
+        searchText() {
+          console.log(this.searchText)
+        }
+      },
+      mounted() {
+      },
+  }
 </script>
-ssss
+
+<style>
+    .site-title {
+        font-family: 'Plaster', cursive;
+        font-size: 25px;
+        cursor: pointer;
+    }
+
+    .c-pointer {
+      cursor: pointer;
+    }
+  .username {
+    margin-right: 5px
+  }
+</style>

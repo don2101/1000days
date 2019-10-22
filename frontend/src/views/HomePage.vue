@@ -1,7 +1,8 @@
 <template>
-<div class="container" style="margin: auto">
-<DiaryList></DiaryList>
-</div>
+  <div class="container" style="margin: auto">
+    <br><br><br>
+    <DiaryList></DiaryList>
+  </div>
 </template>
 
 <script>
