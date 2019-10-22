@@ -2,7 +2,9 @@
 <div>
 <v-container>
 <v-card>
-<h1 class="headline"><strong>개인 정보 수정</strong></h1>
+<div class="title">
+<h1>개인 정보 수정</h1>
+</div>
 <v-card-text>
 <v-container>
  <v-row>
@@ -95,12 +97,20 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap');
+
+h1{
+    color: #F8BBD0;
+    text-align: center;
+   font-family: 'Black Han Sans', sans-serif;
+}
 .container{
    width: 100%;
    margin-top: 100px;
 }
 
 h1{
+font-family: 'Black Han Sans', sans-serif;
 color:#F8BBD0;
 text-align: center;
 }
