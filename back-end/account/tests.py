@@ -1,7 +1,6 @@
 from django.test import TestCase
 import requests
 
-# from .account_service import decode_token
 import jwt
 
 # Create your tests here.
@@ -37,7 +36,7 @@ class AccountTest(TestCase):
         }
 
 
-    def Test_signup(self):
+    def test_signup(self):
         result = requests.post(self.signUpUrl, self.signUpData)
 
         self.assertEqual(result.status_code, 201)
@@ -48,11 +47,12 @@ class AccountTest(TestCase):
 
         self.assertEqual(result.status_code, 200)
         
-    def Test_logout(self):
+    def test_logout(self):
         result = requests.post(self.logoutUrl, self.logoutData)
 
         self.assertEqual(result.status_code, 200)
 
-    def test_all(self):
-        self.Test_signup()
-        self.Test_login()
+    # def test_all(self):
+    #     self.Test_signup()
+    #     self.Test_login()
+    #     self.Test_logout()

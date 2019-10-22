@@ -14,7 +14,6 @@ key = settings.SECRET_KEY
 def create_token(data):
     payload = set_payload(data)
     token = jwt.encode(payload, key, algorithm="HS256")
-    print(token)
     return token
 
 

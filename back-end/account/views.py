@@ -9,6 +9,7 @@ from .serializers import UserSerializer, UserProfileSerializer, BabySerializer
 from .account_service import create_token, user_authenticate, set_password, decode_token
 from .models import Blacklist
 
+from datetime import timezone, datetime
 
 # Create your views here.
 
@@ -27,10 +28,10 @@ def signup(request):
             profile_instance = profile_serializer.save(user=user_instance)
 
             return Response(status=status.HTTP_201_CREATED)
-        return Response(profile_serializer.error,status=status.HTTP_400_BAD_REQUEST)
+        return Response(profile_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
     else:
-        return Response(user_serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
@@ -38,9 +39,9 @@ def login(request):
     authenticated = user_authenticate(request.data["email"], request.data["password"])
     
     if authenticated:
-        # blacklist = Blacklist.objects.get(email=request.data["email"])            이것도 나중에 수정.
-        # if blacklist:
-        #     blacklist.delete()
+        blacklist = Blacklist.objects.filter(email=request.data["email"])
+        if blacklist:
+            blacklist.delete()
         token = create_token(request.data)
 
         return Response(data={"token": token})
@@ -51,7 +52,7 @@ def login(request):
 @api_view(["POST"])
 def logout(request):
     token = decode_token(request.data["token"])
-    print(token)
-    # blacklist = Blacklist.objects.create(email=token.get("email"), expiry_date=token.get("exp"))
-
+    blacklist = Blacklist(email=token.get("email"), expiry_date=datetime.fromtimestamp(token.get("exp"), timezone.utc))
+    blacklist.save()
+    
     return Response(status=status.HTTP_200_OK)
