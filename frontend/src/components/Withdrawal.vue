@@ -33,7 +33,8 @@
       </v-row>
 
       <v-card-actions>
-<v-btn style="left:90%;" color="pink lighten-2" @click="withdrawal()"><i class="fas fa-sign-out-alt"></i><small style="font-weight: bold;color:#fff">탈퇴</small></v-btn>
+       <v-spacer></v-spacer>
+<v-btn color="pink lighten-2" @click="withdrawal()"><i class="fas fa-sign-out-alt"></i><small style="font-weight: bold;color:#fff">탈퇴</small></v-btn>
 </v-card-actions>
 </v-card-text>
 </v-card>
@@ -41,10 +42,17 @@
 </div>
 </template>
 <script>
+import axios from 'axios';
+import {mapState} from 'vuex'
 export default {
  data: () => ({
       checkbox: false,
     }),
+       computed: {
+        ...mapState({
+    userInfo: state=>state.moduleName.userInfo
+    })
+    },
   methods: {
    withdrawal(){
    if (this.checkbox==false){

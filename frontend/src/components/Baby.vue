@@ -84,13 +84,13 @@ import {mapState} from 'vuex'
     }),
      computed: {
         ...mapState({
-    userInfo: state=>state.moduleName.userInfo
+    signupInfo: state=>state.moduleName.signupInfo
     })
     },
     methods: {
       babyinfo(){
   var vm;
-  vm = `http://127.0.0.1:8000/account/${this.userInfo.nickname}/babies/`;
+  vm = `http://127.0.0.1:8000/account/${this.signupInfo.nickname}/babies/`;
   axios.post(vm,
   {
             "name": this.babyname,

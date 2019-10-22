@@ -102,7 +102,7 @@ import {mapState} from 'vuex'
     },
     computed: {
         ...mapState({
-    userInfo: state=>state.moduleName.userInfo
+    signupInfo: state=>state.moduleName.signupInfo
     }),
      isValidate: function() {
       if (this.name === null || this.nickname === '' || this.newemail === null || this.pw === '' || this.repw === null)
@@ -149,7 +149,7 @@ import {mapState} from 'vuex'
             "account_open": this.accountYN,
             "follower_open": this.followYN
         })
-        .then(res=>this.$store.commit('setUserInfo', {
+        .then(res=>this.$store.commit('setNicknameInfo', {
           'nickname' : this.nickname,
         }))
         .then(res=> this.$router.push('/babyinfo'))
@@ -180,7 +180,7 @@ import {mapState} from 'vuex'
             "account_open": this.accountYN,
             "follower_open": this.followYN
         })
-        .then(res=>this.$store.commit('setUserInfo', {
+        .then(res=>this.$store.commit('setNicknameInfo', {
           'nickname' : this.nickname,
         }))
         .then(res => {

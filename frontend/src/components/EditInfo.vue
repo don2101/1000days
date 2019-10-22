@@ -50,7 +50,8 @@
   </div>
 
             <v-card-actions>
-                <v-btn style="left:90%" color="pink lighten-2" @click="edit()"><i class="material-icons">save_alt 저장</i></v-btn>
+             <v-spacer></v-spacer>
+                <v-btn color="pink lighten-2" @click="edit()"><i class="material-icons">save_alt 저장</i></v-btn>
              </v-card-actions>
                 </v-card-text>
  </v-card>

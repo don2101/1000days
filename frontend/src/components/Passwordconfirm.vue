@@ -4,14 +4,19 @@
     max-width="600"
       height="220"
     >
-    <v-card-title>
+<div class="title">
     <h1>비밀번호를 입력해주세요</h1>
-    </v-card-title>
+    </div>
+    <v-card-text>
    <v-col cols="12">
      <span class="icon"><v-icon>fas fa-lock</v-icon></span>
      <input type="password" placeholder="비밀번호" v-model="repassword" required>
     </v-col>
-    <v-btn color="pink" class="mr-3" style="float:right" @click="enter">확인</v-btn>
+    <v-card-actions>
+       <v-spacer></v-spacer>
+    <v-btn color="pink" class="mr-3" @click="enter">확인</v-btn>
+    </v-card-actions>
+     </v-card-text>
     </v-card>
     </div>
 </template>

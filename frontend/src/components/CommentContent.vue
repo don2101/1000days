@@ -1,9 +1,20 @@
 <template>
-<div>
-<v-col cols="12">
-<i class="far fa-comment-dots fa-2x"></i>
-</v-col>
-<input class="mt-5" type="text" placeholder="댓글을 남겨주세요" v-model="comment">
+<div class="content">
+<strong class="ml-3">pink</strong><p>&nbsp;&nbsp즐거운 시간 보내셨군요!</p>
+<div class="ml-3 row">
+<strong>lemon</strong>
+<p>&nbsp;&nbsp;부러워</p>
+ <v-spacer></v-spacer>
+  x 수정
+  </div>
+<div class="ml-2 more"
+        @click="show = !show"
+      >
+        댓글 더보기...
+      </div>
+      <div v-show="show">
+         good!
+      </div>
 </div>
 </template>
 
@@ -13,6 +24,7 @@
   name:'Comment',
   data: () => ({
       comment: null,
+      show: false,
     }),
 }
 </script>
@@ -41,5 +53,10 @@ input::placeholder {
   margin-top: 55px;
   z-index: 1;
   color: #F57F17;
+}
+
+.more{
+ color: #B0BEC5;
+ cursor: pointer;
 }
 </style>

@@ -1,11 +1,15 @@
 const initialState={
+    signupInfo: null,
     userInfo: null,
 }
 
 const mutations= {
-     setUserInfo(state, info) {
-        state.userInfo = info
+     setNicknameInfo(state, info) {
+        state.signupInfo = info
       },
+      setUserInfo(state,info){
+        state.userInfo = info
+      }
   }
 
   export default{
