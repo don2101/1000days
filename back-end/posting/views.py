@@ -10,6 +10,7 @@ from .serializers import DiarySerializer, DiaryImageSerializer
 
 from account.serializers import UserProfileSerializer
 from account.account_service import decode_token
+from account.models import UserProfile
 
 # Create your views here.
 
@@ -68,16 +69,26 @@ def post_image(request, diary_id):
 
         try:
             images = diary.diaryimage_set.all()
-            serializer = DiaryImageSerializer(images, partial=True, many=True)
+            serializer = DiaryImageSerializer(images, many=True)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(["GET"])
+def user_diaries(request, account_name):
+    try:
+        user = UserProfile.objects.get(nickname=account_name).user
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-def user_diaries(request, user_id):
-    # GET diaries
-    pass
+    try:
+        diaries = user.diary_set.all()
+        serializer = DiarySerializer(diaries, many=True)
+        
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 def diary(request, diary_id):
