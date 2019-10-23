@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import status
 
 from .models import Diary
-from .serializers import DiarySerializer
+from .serializers import DiarySerializer, DiaryImageSerializer
 
 from account.serializers import UserProfileSerializer
 from account.account_service import decode_token
@@ -37,6 +37,22 @@ def post_diary(request):
 
         return Response(status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def post_image(request, diary_id):
+    try:
+        serializer = DiaryImageSerializer(data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            diary = Diary.objects.get(pk=diary_id)
+            serializer.save(diary=diary)
+
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+    except Exception:
+        Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 def user_diaries(request, user_id):
