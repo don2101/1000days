@@ -75,6 +75,7 @@ def post_image(request, diary_id):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(["GET"])
 def user_diaries(request, account_name):
     try:
@@ -91,6 +92,56 @@ def user_diaries(request, account_name):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(["GET", "PUT", "DELETE"])
 def diary(request, diary_id):
-    # GET, PUT, DELETE
-    pass
+    try:
+        diary = Diary.objects.get(pk=diary_id)
+    except Diary.DoesNoteExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    if request.method == "GET":
+        serializer = DiarySerializer(diary)
+
+        return Response(data=serializer, status=status.HTTP_200_OK)
+    elif request.method == "PUT":
+        token = request.data['token']
+        decoded_token = decode_token(token)
+
+        if not same_user(diary, decoded_token):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = DiarySerializer(data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = DiaryImageSerializer(data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+    elif request.method == "DELETE":
+        token = request.data['token']
+        decoded_token = decode_token(token)
+
+        if not same_user(diary, decoded_token):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        diary.delete()
+
+        return Response(status=status.HTTP_200_OK)
+
+
+def same_user(diary, token):
+    if diary.writer == User.objects.get(email=token['token']):
+        return True
+    
+    return False
