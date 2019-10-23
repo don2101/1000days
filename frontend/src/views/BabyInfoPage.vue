@@ -14,7 +14,7 @@ import Baby from '../components/Baby'
     methods: {},
   }
 </script>
-<style>
+<style scoped>
 .container{
    width: 70%;
 }

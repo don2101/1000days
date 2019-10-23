@@ -1,8 +1,6 @@
 // 로그인, 회원가입과 관련된 데이터스토어
 // session storage에 저장
 
-import createPersistedState from 'vuex-persistedstate'
-
 export default {
     namespaced: true,
     state: {
@@ -11,22 +9,23 @@ export default {
     },
     getters: {
     userInfo: state => { return state.userInfo},
+    signupInfo: state => {return state.signupInfo}
     },
     actions: {
-    saveuserinfo({commit}, info){
+    saveuserInfo({commit},info){
         commit('SAVE_USER_INFO', info);
-        }
-
+    },
+    savenickname({commit},nickname){
+        commit('SAVE_NICKNAME_INFO', nickname)}
     },
     mutations: {
-        SAVE_USER_INFO(state,info){
-         state.userInfo = info
-         }
+        SAVE_USER_INFO(state,Info){
+         state.userInfo = Info
+         },
+        SAVE_NICKNAME_INFO(state,nickname){
+            state.signupInfo = nickname
+        }
     },
-  plugins: [createPersistedState(
-        {storage: window.localStorage}
-    )],
-
 }
 
 

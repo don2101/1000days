@@ -1,5 +1,5 @@
 <template>
-   <div class="container">
+   <div class="container" style="margin-top:100px; margin-bottom: 100px;">
       <v-row dense>
         <v-col
           v-for="card in cards"
@@ -9,6 +9,7 @@
 
           <v-card
             max-width="500"
+            class="ml-5 mr-5 mt-5 mb-5"
     >
             <v-img
              data-toggle="modal"
@@ -98,7 +99,7 @@ import Comment from'./Comment'
   }
 </script>
 
-<style>
+<style scoped>
 
 .container{
 width:70%

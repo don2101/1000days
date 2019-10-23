@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container" style="margin-top:100px; margin-bottom: 100px;">
 <div class="row">
   <div class="col-3">
     <h1>My Page</h1>
@@ -30,6 +30,8 @@ export default {
    components: {
     Withdrawal,
     EditInfo
+  },
+  computed:{
   },
   methods: {
     remove(){

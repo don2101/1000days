@@ -12,8 +12,11 @@ export default new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     modules: {
         data,
-        auth
-    }
+        auth,
+    },
+    plugins: [createPersistedState(
+        {storage: window.localStorage}
+    )],
 });
 
 

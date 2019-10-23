@@ -13,8 +13,8 @@
         <v-flex xs12 sm6>
             <v-img
               src="https://jira.ssafy.com/secure/useravatar?avatarId=10339&s=48"
-              height="100%"
-              width="100%"
+              height="80%"
+              width="80%"
               style="align-items: flex-end; margin: auto;"
             ></v-img>
         </v-flex>
@@ -33,7 +33,7 @@
             justify="center"
           >
             <div class="ml-3 diarycontent">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
+           육아일기 내용 미리보기 3줄 이상이면 생략 육아일기 내용 육아일기 내용 육아일기 육아일기 내용 육아일기 내용 육아일기 내용
             </div>
              <v-col class="px-0">
             <CommentContent></CommentContent>

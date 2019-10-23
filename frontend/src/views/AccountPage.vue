@@ -1,8 +1,7 @@
 <template>
 <div class="container" style="margin: auto">
-<div v-if="userInfo=='null'">
+<div v-if="checkToken==null">
 <Error></Error>
-fail
 </div>
 <div v-else>
 <MyInfo></MyInfo>
@@ -24,13 +23,13 @@ export default {
   methods: {
    },
    computed: {
-    ...mapState({
-        userInfo: state => state.moduleName.userInfo
-        }),
+       checkToken(){
+       return sessionStorage.getItem('token')
+}
         }
   }
 </script>
-<style>
+<style scoped>
 .container{
    width: 70%;
 }

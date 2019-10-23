@@ -4,6 +4,7 @@
 <i class="far fa-comment-dots fa-2x"></i>
 </v-col>
 <input class="mt-5" type="text" placeholder="댓글을 남겨주세요" v-model="comment">
+<v-btn @click="createcomment" color="#FF6F00" class="ml-3">확인</v-btn>
 </div>
 </template>
 
@@ -14,6 +15,14 @@
   data: () => ({
       comment: null,
     }),
+    methods:{
+    createcomment(){
+         Swal.fire({
+          type: 'success',
+          text: '댓글이 작성되었습니다',
+        })
+    }
+    }
 }
 </script>
 
@@ -41,5 +50,11 @@ input::placeholder {
   margin-top: 55px;
   z-index: 1;
   color: #F57F17;
+}
+
+.ml-3{
+color: #fff;
+margin-top:-35px;
+float:right;
 }
 </style>

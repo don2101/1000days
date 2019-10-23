@@ -1,12 +1,14 @@
         <template>
-        <div class="container">
+          <div style="margin-top:100px;margin-bottom:100px;" class="container">
   <h1 class="headline"><strong>아기 정보</strong></h1>
   <br>
+  <v-row>
              <v-img
              src="../images/baby.png"
              height="200"
              width="200"
-             style="float:left; margin-top:80px;"
+             class="mt-10"
+             style="float:left;"
            >
            </v-img>
             <div style="float:right;">
@@ -60,12 +62,15 @@
     </v-col>
   </v-row>
                  <v-col cols="12" style="left:25%">
-               <span style="font-size: 1.5em; margin-top:-1px;" class="icon"><i class="far fa-id-card"></i></span>
+               <span style="font-size: 1.5em;" class="icon"><i class="far fa-id-card"></i></span>
                 <input type="text" placeholder="배우자 이름" v-model="spousename">
-               <button class="register" @click="babyinfo">가입하기</button>
-</v-col>
-
+                </v-col>
+                <v-col cols="12" style="left:25%">
+                  <button class="otherbaby" @click="otherbaby">다른 아기 정보 입력하기</button>
+               <button class="ml-3 register" @click="babyinfo">가입하기</button>
+                </v-col>
         </div>
+        </v-row>
         </div>
 </template>
 
@@ -82,14 +87,35 @@ import {mapState} from 'vuex'
       birthday: null,
     }),
      computed: {
-        ...mapState({
-    signupInfo: state=>state.moduleName.signupInfo
-    })
+      usernickname(){
+       var m =JSON.parse(localStorage.getItem("vuex"))
+       return m.auth.signupInfo
+    }
     },
     methods: {
+    otherbaby(){
+  var vm;
+  vm = `http://127.0.0.1:8000/account/${this.usernickname}/babies/`;
+  axios.post(vm,
+  {
+            "name": this.babyname,
+            "birthday": this.birthday,
+            "spouse": this.spousename,
+        })
+  .then(res => {
+                        Swal.fire({
+                  type: 'success',
+                  text: '아기정보가 저장되었습니다.',
+        })
+        .then(res=> location.reload());
+                    })
+                    .catch(err => {
+                        alert('아기정보 저장 실패');
+                    })
+  },
       babyinfo(){
   var vm;
-  vm = `http://127.0.0.1:8000/account/${this.signupInfo.nickname}/babies/`;
+  vm = `http://127.0.0.1:8000/account/${this.usernickname}/babies/`;
   axios.post(vm,
   {
             "name": this.babyname,
@@ -149,11 +175,19 @@ input::placeholder {
   margin: 20px 0;
   border: none;
   cursor: pointer;
-  width: 100%;
 }
 
 .register:focus{
 outline: none;
+}
+
+.otherbaby{
+  background-color: #90CAF9;
+  color: white;
+  padding: 12px 20px;
+  margin: 20px 0;
+  border: none;
+  cursor: pointer;
 }
 
 .icon{

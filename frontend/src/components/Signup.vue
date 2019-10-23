@@ -85,7 +85,7 @@
 </template>
 <script>
 import axios from 'axios';
-import {mapState} from 'vuex'
+import {mapState, mapGetters, mapActions} from 'vuex';
   export default {
     data: () => ({
       dialog: false,
@@ -101,9 +101,12 @@ import {mapState} from 'vuex'
     components:{
     },
     computed: {
-        ...mapState({
-    signupInfo: state=>state.moduleName.signupInfo
-    }),
+    userInfo() {
+        return this.$store.state.data.auth.signupInfo
+        },
+        ...mapGetters(
+        'auth', ['signupInfo']
+    ),
      isValidate: function() {
       if (this.name === null || this.nickname === '' || this.newemail === null || this.pw === '' || this.repw === null)
         return false
@@ -111,6 +114,7 @@ import {mapState} from 'vuex'
     }
     },
     methods: {
+    ...mapActions('auth', ['savenickname']),
     out(){
      Swal.fire({
   title: '이 페이지에서 나가시겠습니까?',
@@ -149,9 +153,7 @@ import {mapState} from 'vuex'
             "account_open": this.accountYN,
             "follower_open": this.followYN
         })
-        .then(res=>this.$store.commit('setNicknameInfo', {
-          'nickname' : this.nickname,
-        }))
+        .then(res=>this.savenickname(this.nickname))
         .then(res=> this.$router.push('/babyinfo'))
 
                     .catch(err => {
