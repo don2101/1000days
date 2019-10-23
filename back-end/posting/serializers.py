@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from account.serializers import UserSerializer
-from .models import Diary
+from .models import Diary, DiaryImage
 
 
 class DiarySerializer(serializers.ModelSerializer):
@@ -13,3 +13,14 @@ class DiarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Diary
         fields = ['writer', 'title', 'content', 'created_at', 'updated_at']
+
+
+class DiaryImageSerializer(serializers.ModelSerializer):
+    diary = DiarySerializer()
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+    thumb_nail = serializers.ImageField()
+
+    class Meta:
+        model = DiaryImage
+        fields = ['diary', 'image', 'thumb_nail', 'created_at', 'updated_at']
