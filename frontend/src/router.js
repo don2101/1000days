@@ -49,6 +49,7 @@ export default new Router({
             component: BabyInfoPage
         },
         {
+            // test 자리에 username이 들어가도록 함
             path:'/test/mydiary',
             name: 'PersonalPage',
             component: PersonalPage

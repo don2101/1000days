@@ -4,7 +4,10 @@
         <!--로그인한 사람이 계정 주인이라면 다 보여주고, 아니라면 공개 설정 된 글만 보여주기!!!!!!-->
         <v-card v-for="i in 10" :key="i" class="mx-auto" style="margin-top: 20px;">
             <v-container>
-                <div>title, d-day ♥ 아기이름, 작성한 날짜</div>
+                <v-card-title>
+
+                    디데이, title, 아기이름, 작성한 날짜
+                </v-card-title>
               <v-row justify="space-between">
                 <v-col cols="auto">
                     <!-- 사진이 여러장인 경우 carousel 로 나타내주기-->
