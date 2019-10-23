@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = serializers.StringRelatedField()
 
     class Meta:
         model = UserProfile
@@ -21,7 +21,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class BabySerializer(serializers.ModelSerializer):
-    parent = UserSerializer()
+    parent = serializers.StringRelatedField()
     
     class Meta:
         model = Baby
