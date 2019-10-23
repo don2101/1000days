@@ -1,7 +1,7 @@
 from django.test import TestCase
 import requests
 
-from .account_service import decode_token
+import jwt
 
 # Create your tests here.
 
@@ -26,7 +26,7 @@ class AccountTest(TestCase):
 
         self.loginUrl = "http://localhost:8000/account/login/"
         self.loginData = {
-            "email": "qwe345@qwe.com",
+            "email": "qwe123@qwe.com",
             "password": self.password
         }
 
@@ -43,6 +43,11 @@ class AccountTest(TestCase):
         self.followData = {
             "follow": "testing12345"
         }
+        self.logoutUrl = "http://localhost:8000/account/logout/"
+        self.logoutData = {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoZGNqZjkwMzlAZ21haWwuY29tIiwiZXhwIjoiMjAxOS0xMC0yMSAwNjoxNTowOS42NTE5MTkifQ.Y-f_ciy7N2O_udH2jfN-B4dM1PSK9Bp7LfOdwQyHYQc"
+        }
+
 
     def Test_signup(self):
         result = requests.post(self.signUpUrl, self.signUpData)
@@ -61,6 +66,12 @@ class AccountTest(TestCase):
         result = decode_token(token)
 
         self.assertEqual(result.status_code, 200)
+
+
+    def test_logout(self):
+            result = requests.post(self.logoutUrl, self.logoutData)
+
+            self.assertEqual(result.status_code, 200)
 
 
     def Test_personal(self):
@@ -84,9 +95,12 @@ class AccountTest(TestCase):
 
         self.assertEqual(result.status_code, 200)
 
+
+
     def test_all(self):
         self.Test_signup()
         self.Test_set_baby()
         self.Test_login()
         self.Test_personal()
         self.Test_baby()
+    

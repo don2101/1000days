@@ -6,8 +6,12 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import status
 
 from .models import UserProfile, Baby
+from webtoken.models import Blacklist
 from .serializers import UserSerializer, UserProfileSerializer, BabySerializer, FollowSerializer
-from .account_service import create_token, user_authenticate, set_password
+from .account_service import user_authenticate, set_password
+from webtoken.token_service import create_token, decode_token
+
+from datetime import timezone, datetime
 
 User = get_user_model()
 
@@ -60,6 +64,9 @@ def login(request):
     authenticated = user_authenticate(request.data["email"], request.data["password"])
     
     if authenticated:
+        blacklist = Blacklist.objects.filter(email=request.data["email"])
+        if blacklist:
+            blacklist.delete()
         token = create_token(request.data)
 
         return Response(data={"token": token})
@@ -191,3 +198,19 @@ def follow(request, account_name):
             
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["POST"])
+def logout(request):
+    '''
+    로그아웃을 요청하는 API
+    ---
+    ## POST parameter
+        token: 사용자가 로그인할 때 받은 JWT(String),
+    ---
+    '''
+    token = decode_token(request.data["token"])
+    blacklist = Blacklist(email=token.get("email"), expiry_date=datetime.fromtimestamp(token.get("exp"), timezone.utc))
+    blacklist.save()
+    
+    return Response(status=status.HTTP_200_OK)
