@@ -223,3 +223,21 @@ def logout(request):
         return Response(status=status.HTTP_200_OK)
     else:
         return Response(blacklist_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def authuser(request):
+    '''
+    Mypage 입장허가를 요청하는 API
+    ---
+    ## POST parameter
+        token: 사용자의 JWT(String)
+        password: 사용자의 비밀번호(String),
+    ---
+    '''
+    token = decode_token(request.data["token"])
+    authenticated = user_authenticate(token.get("email"), request.data["password"])
+    if authenticated:
+        return Response(status=status.HTTP_202_ACCEPTED)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
