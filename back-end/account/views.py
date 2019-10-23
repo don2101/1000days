@@ -8,6 +8,7 @@ from rest_framework import status
 from .models import UserProfile, Baby
 from webtoken.models import Blacklist
 from .serializers import UserSerializer, UserProfileSerializer, BabySerializer, FollowSerializer
+from webtoken.serializers import BlacklistSerializer
 from .account_service import user_authenticate, set_password
 from webtoken.token_service import create_token, decode_token
 
@@ -212,7 +213,13 @@ def logout(request):
     ---
     '''
     token = decode_token(request.data["token"])
-    blacklist = Blacklist(email=token.get("email"), expiry_date=datetime.fromtimestamp(token.get("exp"), timezone.utc)) # serializer를 사용하여 수정
-    blacklist.save()
+    email = token.get("email")
+    expiry_date = datetime.fromtimestamp(token.get("exp"), timezone.utc)
+    blacklist_serializer = BlacklistSerializer(data={"email": email, "expiry_date": expiry_date})
+
+    if blacklist_serializer.is_valid():
+        blacklist_serializer.save()
     
-    return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
+    else:
+        return Response(blacklist_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

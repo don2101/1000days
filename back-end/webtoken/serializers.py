@@ -5,4 +5,4 @@ from .models import Blacklist
 class BlacklistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blacklist
-        fields = ['email', 'exp']
+        fields = ['email', 'expiry_date']

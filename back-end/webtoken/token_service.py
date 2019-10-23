@@ -16,11 +16,9 @@ def decode_token(token):
         
         return decoded
     except jwt.ExpiredSignatureError:
-        print("Expired")
-        pass
+        return False
     except jwt.DecodeError:
-        print("decoding error")
-        pass
+        return False
 
 
 def set_payload(data):

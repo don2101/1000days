@@ -68,7 +68,7 @@ class AccountTest(TestCase):
         self.assertEqual(result.status_code, 200)
 
 
-    def test_logout(self):
+    def Test_logout(self):
             result = requests.post(self.logoutUrl, self.logoutData)
 
             self.assertEqual(result.status_code, 200)
@@ -99,8 +99,8 @@ class AccountTest(TestCase):
 
     def test_all(self):
         self.Test_signup()
-        self.Test_set_baby()
-        self.Test_login()
-        self.Test_personal()
-        self.Test_baby()
+        # self.Test_set_baby()
+        # self.Test_login()
+        # self.Test_personal()
+        # self.Test_baby()
     
