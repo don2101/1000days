@@ -16,7 +16,7 @@ class DiarySerializer(serializers.ModelSerializer):
 
 
 class DiaryImageSerializer(serializers.ModelSerializer):
-    diary = DiarySerializer()
+    diary = serializers.StringRelatedField()
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
     thumb_nail = serializers.ImageField()

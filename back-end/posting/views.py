@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import status
 
-from .models import Diary
+from .models import Diary, DiaryImage
 from .serializers import DiarySerializer, DiaryImageSerializer
 
 from account.serializers import UserProfileSerializer
@@ -39,20 +39,40 @@ def post_diary(request):
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["POST"])
+@api_view(["GET", "POST"])
 def post_image(request, diary_id):
-    try:
-        serializer = DiaryImageSerializer(data=request.data, partial=True)
-        
-        if serializer.is_valid():
+    if request.method == "POST":
+        try:
             diary = Diary.objects.get(pk=diary_id)
-            serializer.save(diary=diary)
+        except Diary.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        try:
+            serializer = DiaryImageSerializer(data=request.data, partial=True)
+            
+            if serializer.is_valid():
+                
+                serializer.save(diary=diary)
+
+                return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        except Exception:
+            Response(status=status.HTTP_400_BAD_REQUEST)
     
-    except Exception:
-        Response(status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "GET":
+        try:
+            diary = Diary.objects.get(pk=diary_id)
+        except Diary.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            images = diary.diaryimage_set.all()
+            serializer = DiaryImageSerializer(images, partial=True, many=True)
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 def user_diaries(request, user_id):

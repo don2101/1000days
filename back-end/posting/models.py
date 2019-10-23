@@ -12,6 +12,9 @@ class Diary(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.title
+
 
 class DiaryImage(models.Model):
     diary = models.ForeignKey(Diary, null=False, on_delete=models.CASCADE)
