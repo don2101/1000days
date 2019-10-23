@@ -55,6 +55,9 @@ def login(request):
     ## POST parameter
         email: 사용자의 email(String),
         password: 사용자의 비밀번호(String),
+
+    ## POST return
+        token: 사용자의 정보가 담긴 jwt
     ---
     '''
     authenticated = user_authenticate(request.data["email"], request.data["password"])
