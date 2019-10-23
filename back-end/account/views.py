@@ -45,8 +45,10 @@ def signup(request):
             profile_instance = profile_serializer.save(user=user_instance)
 
             return Response(status=status.HTTP_201_CREATED)
-        return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        else:
+            userprofile = UserProfile.objects.get(email = request.data["email"])
+            userprofile.delete()
+            return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -210,7 +212,7 @@ def logout(request):
     ---
     '''
     token = decode_token(request.data["token"])
-    blacklist = Blacklist(email=token.get("email"), expiry_date=datetime.fromtimestamp(token.get("exp"), timezone.utc))
+    blacklist = Blacklist(email=token.get("email"), expiry_date=datetime.fromtimestamp(token.get("exp"), timezone.utc)) # serializer를 사용하여 수정
     blacklist.save()
     
     return Response(status=status.HTTP_200_OK)
