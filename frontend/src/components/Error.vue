@@ -1,14 +1,17 @@
 <template>
 <div>
 <div class="container">
-<v-card>
+<v-card class="mr-3">
+<v-layout wrap>
+        <v-flex xs12 sm6>
      <v-img
              src="../images/family.png"
              height="200"
              width="200"
-             class="mr-5"
-             style="float:left;"
+             class="mt-5 ml-5"
            ></v-img>
+           </v-flex>
+             <v-flex xs12 sm6>
     <v-card-text>
       <h1>ERROR</h1>
     <h4 class="mt-5 mb-10">
@@ -19,10 +22,12 @@
     </h5>
     <v-card-actions>
       <v-spacer></v-spacer>
-      로그인 하러 가기
-    <v-btn color="pink" class="ml-3 mr-3" @click="$router.push('/login')"><i class="fas fa-hand-pointer"></i>&nbsp;click</v-btn>
+      <h6>로그인 하러 가기</h6>
+      <v-btn color="pink" class="ml-3 mr-3" @click="$router.push('/login')"><i class="fas fa-hand-pointer"></i>&nbsp;click</v-btn>
     </v-card-actions>
     </v-card-text>
+    </v-flex>
+    </v-layout>
     </v-card>
     </div>
     </div>
@@ -42,11 +47,12 @@
 
 h1{
 color:red;
+font-family: 'Chewy', cursive;
 }
 
-h4{
-margin-left:75px;
-font-weight: bold;
+h4, h5, h6{
+color:grey;
+font-family: 'Jua', sans-serif;
 }
 
 .text{

@@ -8,7 +8,7 @@
 </div>
 <v-card-text>
 <div class="text1">
-<h5>▶ 사용하고 계신 아이디는 탈퇴할 경우 재사용 및 복구가 불가합니다.</h5>
+<h5>▶ 사용하고 계신 아이디({{userId}})는 탈퇴할 경우 재사용 및 복구가 불가합니다.</h5>
 탈퇴한 아이디는 본인과 타인 모두 재사용 및 복구가 불가하오니 신중하게 선택하시기 바랍니다.<br>
 </div>
 <div class="text2">
@@ -34,7 +34,7 @@
 
       <v-card-actions>
        <v-spacer></v-spacer>
-<v-btn color="pink lighten-2" @click="withdrawal()"><i class="fas fa-sign-out-alt"></i><small style="font-weight: bold;color:#fff">탈퇴</small></v-btn>
+<v-btn class="withdrawal"color="pink lighten-2" @click="withdrawal()"><i class="fas fa-sign-out-alt"></i><small>탈퇴</small></v-btn>
 </v-card-actions>
 </v-card-text>
 </v-card>
@@ -43,15 +43,16 @@
 </template>
 <script>
 import axios from 'axios';
-import {mapState} from 'vuex'
 export default {
  data: () => ({
       checkbox: false,
     }),
        computed: {
-        ...mapState({
-    userInfo: state=>state.moduleName.userInfo
-    })
+
+      userId(){
+       var m =JSON.parse(localStorage.getItem("vuex"))
+       return m.auth.userInfo
+    },
     },
   methods: {
    withdrawal(){
@@ -73,6 +74,10 @@ export default {
   cancelButtonText: '취소'
 }).then((result) => {
   if (result.value) {
+  Swal.fire({
+  text: "탈퇴 처리되었습니다",
+  type: 'success',
+  })
     this.$router.push({
         name: 'HomePage'
     })
@@ -89,13 +94,18 @@ export default {
 h1{
     color: #F8BBD0;
     text-align: center;
-   font-family: 'Black Han Sans', sans-serif;
+    font-family: 'Jua', sans-serif;
+}
+
+.container{
+   margin-bottom: 100px;
+   padding: 0 0 0 80px;
 }
 
 .sub{
     color: #B0BEC5;
     text-align: center;
-    font-family: 'Black Han Sans', sans-serif;
+    font-family: 'Jua', sans-serif;
 }
 h1{
 color:#F8BBD0;
@@ -120,5 +130,10 @@ color:red;
 
 .fa-sign-out-alt{
 color:#fff;
+}
+
+.withdrawal{
+font-family: 'Do Hyeon', sans-serif;
+color: #fff;
 }
 </style>

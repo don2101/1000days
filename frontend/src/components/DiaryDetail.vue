@@ -2,7 +2,7 @@
  <div class="modal fade" id="Diarydetail" tabindex="-1" role="dialog" aria-labelledby="DiaryTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header" style="background-color:#F8BBD0;">
+      <div class="modal-header">
       <h5 class="modal-title" id="DiaryTitle">Title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -29,13 +29,17 @@
          </div>
          <div class="mt-5 content">
           <v-row
-            class="flex-column ma-2 fill-height"
+            class="flex-column ma-0 fill-height"
             justify="center"
           >
+          <div class="mb-3 ml-3 favoriteuer">
+          <v-icon color="red">mdi-heart</v-icon>
+          <br>좋아하는 사람 lemon외 3명
+          </div>
             <div class="ml-3 diarycontent">
            육아일기 내용 미리보기 3줄 이상이면 생략 육아일기 내용 육아일기 내용 육아일기 육아일기 내용 육아일기 내용 육아일기 내용
             </div>
-             <v-col class="px-0">
+             <v-col class="px-0" style="margin-top:50px">
             <CommentContent></CommentContent>
             </v-col>
             </v-row>
@@ -84,6 +88,10 @@ import CommentContent from './CommentContent'
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             color:red;
+}
+
+button:focus{
+outline: none;
 }
 
 </style>

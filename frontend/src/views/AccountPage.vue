@@ -30,7 +30,4 @@ export default {
   }
 </script>
 <style scoped>
-.container{
-   width: 70%;
-}
 </style>

@@ -22,20 +22,10 @@
               <v-card-title v-text="card.title"></v-card-title>
             </v-img>
              <v-card-actions>
-<v-tooltip bottom>
-      <template v-slot:activator="{ on }">
-        <v-btn color="red" text v-on="on"><v-icon>mdi-heart</v-icon></v-btn></v-btn>
-      </template>
-      <span>좋아요</span>
-    </v-tooltip>
 
+        <v-btn color="red" text v-on="on"><v-icon>mdi-heart</v-icon>0</v-btn></v-btn>
 
-<v-tooltip bottom>
-      <template v-slot:activator="{ on }">
-        <v-btn color="blue" text v-on="on"><v-icon>mdi-comment</v-icon></v-btn></v-btn>
-      </template>
-      <span>댓글</span>
-    </v-tooltip>
+        <v-btn color="blue" text v-on="on" data-toggle="modal" data-target="#Commentdetail"><v-icon>mdi-comment</v-icon>0</v-btn></v-btn>
 
 <v-tooltip bottom>
       <template v-slot:activator="{ on }">
@@ -67,16 +57,19 @@
           </v-card>
         </v-col>
        <DiaryDetail></DiaryDetail>
+       <CommentDetail></CommentDetail>
       </v-row>
     </div>
 </template>
 
 <script>
 import DiaryDetail from'./DiaryDetail'
+import CommentDetail from'./CommentDetail'
 import Comment from'./Comment'
   export default {
     components:{
     DiaryDetail,
+    CommentDetail,
     Comment
     },
     data: () => ({

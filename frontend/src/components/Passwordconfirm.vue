@@ -5,7 +5,7 @@
       height="220"
     >
 <div class="title">
-    <h1>비밀번호를 입력해주세요</h1>
+    <h1>Enter your Password</h1>
     </div>
     <v-card-text>
    <v-col cols="12">
@@ -26,7 +26,6 @@
 export default {
    data: () => ({
       repassword: null,
-      show: false,
     }),
   components: {
   },
@@ -64,6 +63,7 @@ export default {
 h1{
 color:#F8BBD0;
 text-align: center;
+font-family: 'Chewy', cursive;
 }
 
 input{
@@ -98,5 +98,6 @@ input::placeholder {
 
 .mr-3{
 color:#fff;
+font-family: 'Jua', sans-serif;
 }
 </style>

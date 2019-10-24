@@ -1,9 +1,5 @@
 <template>
 <div class="content">
-<div class="ml-3">
-댓글 없으면 <br>'아직 댓글이 없습니다. 댓글을 작성해보세요!'
-<br>댓글 있으면 보여주기
-</div>
 <div class="mt-5 ml-3 row">
 <strong>lemon</strong>
 <p v-model="comment">&nbsp;{{comment}}</p>
@@ -28,15 +24,16 @@
 </template>
 
 <script>
-
   export default {
-  name:'Comment',
+  name:'CommentContent',
   data: () => ({
       comment: '부러워',
       editcomment:'',
       show: false,
       showedit:false,
+
     }),
+    components:{Comment},
     methods:{
     edit(){
         this.showedit=!this.showedit
@@ -95,4 +92,5 @@ input::placeholder {
 left:90%;
 margin-top:-100px;
 }
+
 </style>

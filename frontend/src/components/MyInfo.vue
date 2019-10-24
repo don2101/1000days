@@ -1,20 +1,21 @@
 <template>
-<div class="container" style="margin-top:100px; margin-bottom: 100px;">
+<div class="container" style="margin-top:100px;">
 <div class="row">
   <div class="col-3">
     <h1>My Page</h1>
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-      <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" @click="editinfo()" role="tab" aria-selected="false">회원정보</a>
-      <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" @click="remove()" role="tab" aria-selected="true">회원탈퇴</a>
+      <a class="nav-link" id="v-profile-tab" data-toggle="pill" @click="editinfo()" role="tab" aria-selected="false">회원정보</a>
+      <a class="nav-link active" id="v-withdrawal-tab" data-toggle="pill" @click="remove()" role="tab" aria-selected="true">회원탈퇴</a>
     </div>
   </div>
-</div>
-<div v-if="show==true">
+  <div v-if="show==true">
 <EditInfo></EditInfo>
 </div>
 <div  v-if="show==false">
 <Withdrawal></Withdrawal>
 </div>
+</div>
+
 </div>
 </template>
 
@@ -45,13 +46,11 @@ export default {
 </script>
 
 <style scoped>
-.container{
-   width: 70%;
-}
 
 h1{
 color:#F8BBD0;
 text-align: center;
+font-family: 'Chewy', cursive;
 }
 
 input{
@@ -88,4 +87,7 @@ input::placeholder {
 color:#fff;
 }
 
+a{
+font-family: 'Jua', sans-serif;
+}
 </style>

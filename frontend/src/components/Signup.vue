@@ -1,8 +1,7 @@
 <template>
       <div style="margin-top:100px; margin-bottom: 100px;" class="container">
         <v-card>
-          <h1 class="headline"><strong>회원 정보</strong></h1>
-        <v-card-text>
+          <h1>User Information</h1>
           <v-container>
             <v-row>
               <v-col cols="12">
@@ -29,52 +28,45 @@
              <p class="ml-2" style="color:red;">{{PWCheck}}</p>
               </v-col>
             </v-row>
+            <v-col cols="12">
             <h6>계정 공개 여부 설정 *</h6>
               <div v-if="this.accountYN==true">
-              <v-container fluid>
     <v-switch v-model="accountYN" :label="'공개'"></v-switch>
-  </v-container>
   </div>
   <div v-else>
-              <v-container fluid>
     <v-switch v-model="accountYN" :label="'비공개'"></v-switch>
-  </v-container>
   </div>
+  </v-col>
+  <v-col cols="12">
   <h6>팔로우/팔로잉 공개 여부 설정 *</h6>
               <div v-if="this.followYN==true">
-              <v-container fluid>
     <v-switch v-model="followYN" :label="'공개'"></v-switch>
-  </v-container>
   </div>
   <div v-else>
-              <v-container fluid>
     <v-switch v-model="followYN" :label="'비공개'"></v-switch>
-  </v-container>
   </div>
+  </v-col>
+  <v-col cols="12">
    <h6>아기가 있습니까? *</h6>
               <div v-if="this.babyYN==true">
-              <v-container fluid>
     <v-switch v-model="babyYN" :label="'있음'"></v-switch>
-  </v-container>
   </div>
   <div v-else>
-              <v-container fluid>
     <v-switch v-model="babyYN" :label="'없음'"></v-switch>
-  </v-container>
   </div>
+  </v-col>
    </v-container>
-        </v-card-text>
         <br>
         <small><p style="text-align:center;">*필수입력항목</p></small>
         <v-card-actions>
           <v-spacer></v-spacer>
           <div v-if="babyYN==false">
-          <v-btn color="blue darken-1" text @click="out">나가기</v-btn>
-          <v-btn color="pink" text @click="register">가입하기</v-btn>
+          <v-btn class="move" color="blue darken-1" text @click="out">나가기</v-btn>
+          <v-btn class="move" color="pink" text @click="register">가입하기</v-btn>
         </div>
         <div v-else>
-        <v-btn color="blue darken-1" text @click="out">나가기</v-btn>
-          <v-btn color="pink" text @click="next">다음페이지</v-btn>
+        <v-btn class="move" color="blue darken-1" text @click="out">나가기</v-btn>
+          <v-btn class="move" color="pink" text @click="next">아기 정보 입력하기</v-btn>
         </div>
         </v-card-actions>
       </v-card>
@@ -177,7 +169,10 @@ import {mapState, mapGetters, mapActions} from 'vuex';
         .then(res=> this.$router.push('/babyinfo'))
 
                     .catch(err => {
-                        alert('회원가입 실패');
+                         Swal.fire({
+                 type: 'error',
+                 text: '회원가입 실패',
+       })
                         this.dialog = false
                     })
     }
@@ -230,12 +225,14 @@ import {mapState, mapGetters, mapActions} from 'vuex';
   }
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Chewy&display=swap');
 .container{
     width:70%
 }
 h1{
 color:#F8BBD0;
 text-align: center;
+font-family: 'Chewy', cursive;
 }
 .ml-3{
   color: #fff;
@@ -280,5 +277,10 @@ h6{
 }
 .select{
 margin-left: 120px;
+}
+
+.move{
+font-family: 'Jua', sans-serif;
+font-size: 15px;
 }
 </style>

@@ -1,6 +1,6 @@
         <template>
           <div style="margin-top:100px;margin-bottom:100px;" class="container">
-  <h1 class="headline"><strong>아기 정보</strong></h1>
+  <h1>Baby Information</h1>
   <br>
   <v-row>
              <v-img
@@ -69,9 +69,9 @@
                   <small><p style="text-align:center;">*필수입력항목</p></small>
         <small><p style="text-align:center;">*아직 아기가 태어나지 않은 경우 출산예정일을 입력해주세요 <br>(출생 이후 아기생일로 수정해주세요)</p></small>
                 </v-col>
-                <v-col cols="12" style="left:25%">
+                <v-col cols="12" style="left:30%">
                   <button class="otherbaby" @click="otherbaby">다른 아기 정보 입력하기</button>
-               <button class="ml-3 register" @click="babyinfo">가입하기</button>
+               <button class="ml-5 register" @click="babyinfo">가입하기</button>
                 </v-col>
         </div>
         </v-row>
@@ -148,6 +148,7 @@ import {mapState} from 'vuex'
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Chewy&display=swap');
   .container {
       width: 70%;
 }
@@ -155,6 +156,7 @@ import {mapState} from 'vuex'
 h1{
     color:#F8BBD0;
     text-align: center;
+    font-family: 'Chewy', cursive;
 }
 
 input{
@@ -198,6 +200,11 @@ outline: none;
   margin: 20px 0;
   border: none;
   cursor: pointer;
+  font-family: 'Jua', sans-serif;
+}
+
+.ml-5{
+font-family: 'Jua', sans-serif;
 }
 
 .icon{
