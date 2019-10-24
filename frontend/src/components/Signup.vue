@@ -21,13 +21,12 @@
                  <span class="icon"><v-icon>fas fa-lock</v-icon></span>
                  <input type="password" placeholder="비밀번호 *" v-model="pw" required>
                </v-col>
+              <p class="ml-2" style="color:green;">{{PW}}</p>
                <v-col cols="12">
                  <span class="icon"><v-icon>fas fa-lock</v-icon></span>
                  <input type="password" placeholder="비밀번호 확인 *" v-model="repw" required>
                </v-col>
-             <div v-if="this.pw!=this.repw">
-              <p style="color:red;">비밀번호가 일치하지 않습니다</p>
-              </div>
+             <p class="ml-2" style="color:red;">{{PWCheck}}</p>
               </v-col>
             </v-row>
             <h6>계정 공개 여부 설정 *</h6>
@@ -67,7 +66,6 @@
         </v-card-text>
         <br>
         <small><p style="text-align:center;">*필수입력항목</p></small>
-        <small><p style="text-align:center;">*아직 아기가 태어나지 않은 경우 출산예정일을 입력해주세요 <br>(태어난 후 아기생일로 수정해주세요)</p></small>
         <v-card-actions>
           <v-spacer></v-spacer>
           <div v-if="babyYN==false">
@@ -83,6 +81,7 @@
     </v-card>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
 import {mapState, mapGetters, mapActions} from 'vuex';
@@ -101,6 +100,21 @@ import {mapState, mapGetters, mapActions} from 'vuex';
     components:{
     },
     computed: {
+    PW(){
+     var passwordRules = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+        var password = this.pw;
+    if (passwordRules.test(password)==false){
+    return ('10-15자 영문자, 숫자, 특수기호의 조합을 사용해주세요')
+    }
+    else{
+    return('사용가능')
+    }
+    },
+    PWCheck(){
+    if (this.pw!=this.repw&&this.repw!=null){
+        return ('비밀번호가 일치하지 않습니다')
+    }
+    },
     userInfo() {
         return this.$store.state.data.auth.signupInfo
         },
@@ -140,10 +154,16 @@ import {mapState, mapGetters, mapActions} from 'vuex';
                   text: '모든 항목을 입력해주세요',
         })
       }
-    if (this.pw != this.repw || this.pw.length<10 ){
-        alert('비밀번호를 확인해주세요')
-    }
     else {
+    var passwordRules = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+        var password = this.pw;
+    if (this.pw != this.repw||passwordRules.test(password)==false){
+       Swal.fire({
+                  type: 'error',
+                  text: '비밀번호는 숫자, 영문자, 특수문자의 조합으로 10~15자리를 사용해야 합니다'
+        })
+    }
+    else{
     axios.post('http://localhost:8000/account/signup/', {
             "username": this.name,
             "password": this.pw,
@@ -161,6 +181,7 @@ import {mapState, mapGetters, mapActions} from 'vuex';
                         this.dialog = false
                     })
     }
+    }
   },
     register(){
     if (!this.isValidate) {
@@ -168,11 +189,17 @@ import {mapState, mapGetters, mapActions} from 'vuex';
                   type: 'error',
                   text: '모든 항목을 입력해주세요',
         })
-      }
-    if (this.pw != this.repw || this.pw.length<10 ){
-        alert('비밀번호를 확인해주세요')
-    }
+}
     else {
+     var passwordRules = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+        var password = this.pw;
+    if (this.pw != this.repw||passwordRules.test(password)==false){
+       Swal.fire({
+                  type: 'error',
+                  text: '비밀번호는 숫자, 영문자, 특수문자의 조합으로 10~15자리를 사용해야 합니다'
+        })
+    }
+    else{
     axios.post('http://localhost:8000/account/signup/', {
             "username": this.name,
             "password": this.pw,
@@ -197,8 +224,9 @@ import {mapState, mapGetters, mapActions} from 'vuex';
                         this.dialog = false
                     })
     }
+  }
   },
-  },
+  }
   }
 </script>
 <style scoped>

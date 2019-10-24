@@ -14,7 +14,7 @@
             <div style="float:right;">
                <v-col cols="12" style="left:25%">
                <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
-                <input type="text" placeholder="아기 이름" v-model="babyname">
+                <input type="text" placeholder="아기 이름 *" v-model="babyname">
               </v-col>
                 <v-row>
     <v-col
@@ -34,7 +34,7 @@
         <template v-slot:activator="{ on }">
             <v-col cols="12" style="left:25%">
             <span class="icon"><i class="fas fa-calendar-week" style="font-size: 1.5em"></i></span>
-                <input v-model="birthday" v-on="on" type="text" placeholder="아기 생년월일" readonly >
+                <input v-model="birthday" v-on="on" type="text" placeholder="아기 생년월일 *" readonly >
             </v-col>
         </template>
         <v-date-picker
@@ -64,6 +64,10 @@
                  <v-col cols="12" style="left:25%">
                <span style="font-size: 1.5em;" class="icon"><i class="far fa-id-card"></i></span>
                 <input type="text" placeholder="배우자 이름" v-model="spousename">
+                </v-col>
+                   <v-col cols="12" style="left:25%">
+                  <small><p style="text-align:center;">*필수입력항목</p></small>
+        <small><p style="text-align:center;">*아직 아기가 태어나지 않은 경우 출산예정일을 입력해주세요 <br>(출생 이후 아기생일로 수정해주세요)</p></small>
                 </v-col>
                 <v-col cols="12" style="left:25%">
                   <button class="otherbaby" @click="otherbaby">다른 아기 정보 입력하기</button>
@@ -110,7 +114,10 @@ import {mapState} from 'vuex'
         .then(res=> location.reload());
                     })
                     .catch(err => {
-                        alert('아기정보 저장 실패');
+                       Swal.fire({
+                  type: 'error',
+                  text: '필수항목을 모두 입력해주세요',
+        })
                     })
   },
       babyinfo(){
@@ -130,7 +137,10 @@ import {mapState} from 'vuex'
         .then(res=> this.$router.push('/login'))
                     })
                     .catch(err => {
-                        alert('회원가입 실패');
+                             Swal.fire({
+                  type: 'error',
+                  text: '필수항목을 모두 입력해주세요',
+        })
                     })
   }
   }
