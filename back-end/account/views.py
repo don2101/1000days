@@ -6,8 +6,13 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import status
 
 from .models import UserProfile, Baby
+from webtoken.models import Blacklist
 from .serializers import UserSerializer, UserProfileSerializer, BabySerializer, FollowSerializer
-from .account_service import create_token, user_authenticate, set_password
+from webtoken.serializers import BlacklistSerializer
+from .account_service import user_authenticate, set_password
+from webtoken.token_service import create_token, decode_token
+
+from datetime import timezone, datetime
 
 User = get_user_model()
 
@@ -41,31 +46,42 @@ def signup(request):
             profile_instance = profile_serializer.save(user=user_instance)
 
             return Response(status=status.HTTP_201_CREATED)
-        return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        else:
+            userprofile = UserProfile.objects.get(email = request.data["email"])
+            userprofile.delete()
+            return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
 def login(request):
-    '''
+    """
     로그인을 요청하는 API
     ---
+    이메일, 비밀번호를 받아 JWT과 nickname을 return
     ## POST parameter
         email: 사용자의 email(String),
         password: 사용자의 비밀번호(String),
-
-    ## POST return
-        token: 사용자의 정보가 담긴 jwt
+    ## Get return
+        token: {
+            email: 사용자의 email(String),
+            exp: token의 만료기한(int)
+        },
+        nickname: 사용자의 계정 이름(String),
     ---
-    '''
+    token은 변조되어 있음.
+    """
     authenticated = user_authenticate(request.data["email"], request.data["password"])
     
     if authenticated:
+        blacklist = Blacklist.objects.filter(email=request.data["email"])
+        if blacklist:
+            blacklist.delete()
         token = create_token(request.data)
-
-        return Response(data={"token": token})
+        userprofile = UserProfile.objects.get(user__email=request.data["email"])
+        
+        return Response(data={"token": token, "nickname": userprofile.nickname})
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -194,3 +210,43 @@ def follow(request, account_name):
             
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["POST"])
+def logout(request):
+    '''
+    로그아웃을 요청하는 API
+    ---
+    ## POST parameter
+        token: 사용자가 로그인할 때 받은 JWT(String),
+    ---
+    '''
+    token = decode_token(request.data["token"])
+    email = token.get("email")
+    expiry_date = datetime.fromtimestamp(token.get("exp"), timezone.utc)
+    blacklist_serializer = BlacklistSerializer(data={"email": email, "expiry_date": expiry_date})
+
+    if blacklist_serializer.is_valid():
+        blacklist_serializer.save()
+    
+        return Response(status=status.HTTP_200_OK)
+    else:
+        return Response(blacklist_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def authuser(request):
+    '''
+    Mypage 입장허가를 요청하는 API
+    ---
+    ## POST parameter
+        token: 사용자의 JWT(String)
+        password: 사용자의 비밀번호(String),
+    ---
+    '''
+    token = decode_token(request.data["token"])
+    authenticated = user_authenticate(token.get("email"), request.data["password"])
+    if authenticated:
+        return Response(status=status.HTTP_202_ACCEPTED)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)

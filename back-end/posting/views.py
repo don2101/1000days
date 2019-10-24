@@ -9,8 +9,9 @@ from .models import Diary, DiaryImage
 from .serializers import DiarySerializer, DiaryImageSerializer
 
 from account.serializers import UserProfileSerializer
-from account.account_service import decode_token
 from account.models import UserProfile
+
+from webtoken.token_service import decode_token, check_user
 
 # Create your views here.
 
@@ -47,7 +48,7 @@ def post_image(request, diary_id):
             diary = Diary.objects.get(pk=diary_id)
         except Diary.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
+        
         try:
             serializer = DiaryImageSerializer(data=request.data, partial=True)
             
@@ -55,8 +56,9 @@ def post_image(request, diary_id):
                 
                 serializer.save(diary=diary)
 
-                return Response(status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response(status=status.HTTP_201_CREATED)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
         
         except Exception:
             Response(status=status.HTTP_400_BAD_REQUEST)
@@ -78,6 +80,7 @@ def post_image(request, diary_id):
 
 @api_view(["GET"])
 def user_diaries(request, account_name):
+    print(account_name)
     try:
         user = UserProfile.objects.get(nickname=account_name).user
     except User.DoesNotExist:
@@ -94,45 +97,38 @@ def user_diaries(request, account_name):
 
 @api_view(["GET", "PUT", "DELETE"])
 def diary(request, diary_id):
+    diary = None
+
     try:
         diary = Diary.objects.get(pk=diary_id)
-    except Diary.DoesNoteExist:
+    except Diary.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
         
     if request.method == "GET":
         serializer = DiarySerializer(diary)
 
-        return Response(data=serializer, status=status.HTTP_200_OK)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
     elif request.method == "PUT":
         token = request.data['token']
-        decoded_token = decode_token(token)
 
-        if not same_user(diary, decoded_token):
+        if not check_user(diary.writer, token):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-        serializer = DiarySerializer(data=request.data, partial=True)
-
-        if serializer.is_valid():
-            serializer.save()
-
-            return Response(status=status.HTTP_202_ACCEPTED)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = DiaryImageSerializer(data=request.data, partial=True)
         
+        serializer = DiarySerializer(diary, data=request.data, partial=True)
+
         if serializer.is_valid():
             serializer.save()
 
             return Response(status=status.HTTP_202_ACCEPTED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        # 이미지 수정도 추가
         
     elif request.method == "DELETE":
         token = request.data['token']
-        decoded_token = decode_token(token)
 
-        if not same_user(diary, decoded_token):
+        if not check_user(diary.writer, token):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         diary.delete()
@@ -140,8 +136,3 @@ def diary(request, diary_id):
         return Response(status=status.HTTP_200_OK)
 
 
-def same_user(diary, token):
-    if diary.writer == User.objects.get(email=token['token']):
-        return True
-    
-    return False

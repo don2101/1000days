@@ -19,7 +19,7 @@ class Diary(models.Model):
 class DiaryImage(models.Model):
     diary = models.ForeignKey(Diary, null=False, on_delete=models.CASCADE)
     image = models.ImageField(
-        upload_to="images/" + "%Y%m%d"
+        upload_to="images/" + "%Y%m%d%h"
     )
     thumb_nail = ImageSpecField(
         source='image',
