@@ -88,7 +88,7 @@ class DiaryTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-    def test_all(self):
+    # def test_all(self):
         # self.Test_post()
         # self.Test_set_image()
         # self.Test_get_iamge()
@@ -96,5 +96,3 @@ class DiaryTest(TestCase):
         # self.Test_get_diary()
         # self.Test_put_diary()
         # self.Test_delete_diary()
-
-
