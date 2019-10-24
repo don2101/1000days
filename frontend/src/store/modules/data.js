@@ -8,10 +8,10 @@ export default {
         isDetailModal: false,
         isAccSettingModal: false,
         isListView: true,
-        accountInfo: {},
+        accountInfo: {'username': 'babababa'},
         diaryDataSet: {},
         searchedResult: {},
-        loginedUserInfo: {},
+        loginedUserInfo: {'username': 'lia'},
     },
     getters: {
         isFollowModal: state => { return state.isFollowModal },
@@ -29,29 +29,21 @@ export default {
                 commit('SET_INFOS_INIT', accInfo, diary);
             }
         },
-        toggleItems({commit}, item, bool) {
-            commit('TOGGLE_ITEMS', item, bool);
+        toggleViewType({commit}, bool) {
+            commit('TOGGLE_VIEW_TYPE', bool);
         },
         setSerchedResult({commit}, resultData) {
             commit('SET_SEARCHED_RESULT', resultData);
         },
-        test({commit}, tmp) {
-            commit('TEST', tmp);
-        }
 
     },
     mutations: {
-        TEST(state, tmp) {
-            console.log('test 호출 완료');
-            console.log(tmp)
-            state.loginedUserInfo = tmp;
-        },
         SET_INFOS_INIT(state, accInfo, diary) {
             state.accountInfo = accInfo;
             state.diaryDataSet = diary;
         },
-        TOGGLE_ITEMS(state, item, bool) {
-            state.item = bool;
+        TOGGLE_VIEW_TYPE(state, bool) {
+            state.isListView = bool;
         },
         SET_SEARCHED_RESULT(state, resultData) {
             state.searchedResult = resultData;

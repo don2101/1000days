@@ -107,7 +107,7 @@
   export default {
     data: () => ({
       today: '2019-10-17',
-      focus: '2019-01-01',
+      focus: '2019-10-16',
       type: 'month',
       typeToLabel: {
         month: 'Month',

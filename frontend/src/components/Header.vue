@@ -19,7 +19,7 @@
         ></v-text-field><img class="c-pointer" width="20px" height="20px" src="https://img.icons8.com/wired/50/000000/search.png">
       <v-spacer></v-spacer>
 
-      <span class="username">{{username}}</span>
+      <span class="username">{{loginedUserInfo.username}}</span>
       <!-- 상단 메뉴 -->
       <div class="text-center">
         <v-menu offset-y>
@@ -30,10 +30,10 @@
           </template>
           <v-list>
             <v-list-item
-              v-for="menu in menus"
-              :key="menu"
+              v-for="i in menus.length"
+              :key="i"
             >
-              <v-list-item-title>{{ menu }}</v-list-item-title>
+              <v-list-item-title class="c-pointer" @click="$router.push(actions[i-1])"><i :class="icons[i-1]"></i>&nbsp {{ menus[i-1] }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -44,20 +44,25 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
     export default {
       name: "Header",
       data() {
         return {
           searchText: '',
-          menus: ['logout', 'home', 'account', 'diary'],
+          menus: ['  home','  my page','  my diary','  logout',],
+          icons: ['fas fa-home', 'far fa-user-circle','fas fa-book','fas fa-sign-out-alt'],
+          actions: ["/", "/login","/test/mydiary","/signup"],
           searchResult: ['dfd', 'dfd', 'sdfadf', 'asdfadfl;kj'],
-          username: '아따맘마',
         }
       },
       watch: {
         searchText() {
           console.log(this.searchText)
         }
+      },
+      computed: {
+        ...mapGetters('data', ['loginedUserInfo'])
       },
       mounted() {
       },

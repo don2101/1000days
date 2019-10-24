@@ -12,7 +12,7 @@
           <v-list-item-avatar>
             <v-img src="../../images/Babies/sleepingBaby.jpg"></v-img>
           </v-list-item-avatar>
-          <div>아따맘마 </div>
+          <div>{{loginedUserInfo.username}}</div>
           <div style="margin-left: 60px">
             <v-btn
               icon
@@ -59,6 +59,7 @@
 
 
 <script>
+  import {mapGetters} from 'vuex'
   export default {
     data() {
       return {
@@ -76,5 +77,8 @@
       mini: true,
       }
     },
+    computed: {
+      ...mapGetters('data', ['loginedUserInfo'])
+    }
   }
 </script>
