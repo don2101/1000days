@@ -256,8 +256,9 @@ def authuser(request):
     ---
     '''
     token = decode_token(request.data["token"])
-    authenticated = user_authenticate(token.get("email"), request.data["password"])
-    if authenticated:
-        return Response(status=status.HTTP_202_ACCEPTED)
+    if token:
+        authenticated = user_authenticate(token.get("email"), request.data["password"])
+        if authenticated:
+            return Response(status=status.HTTP_202_ACCEPTED)
     else:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
