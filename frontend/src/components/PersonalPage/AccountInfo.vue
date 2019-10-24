@@ -1,7 +1,7 @@
 <template>
     <v-container class="grey lighten-5">
         <v-row no-gutters>
-          <v-col cols="4" sm="4">
+          <v-col cols="4" sm="4" style="margin-top: 20px;">
           <div class="text-center" style="margin-bottom: 15px">
             <v-avatar>
                 <img
@@ -13,25 +13,34 @@
 
           </div>
             <div v-if="loginedUserInfo.username!==accountInfo.username">
-                <v-btn block color="blue" style="color: white;">Follow</v-btn>
+                <v-btn block color="blue" style="color: white;" @click="commitFollow()">Follow</v-btn>
             </div>
             <div class="text-center" v-else>
-                <img class="c-pointer icons" width="20px" height="20px"
-                     title="계정 설정"
-                     v-if="loginedUserInfo.username===accountInfo.username"
-                     src="https://img.icons8.com/dusk/64/000000/admin-settings-male.png">
+                <div class="c-pointer">
+                    <img class="c-pointer icons" width="20px" height="20px"
+                         title="계정 설정"
+                         v-if="loginedUserInfo.username===accountInfo.username"
+                         src="https://img.icons8.com/dusk/64/000000/admin-settings-male.png">&nbsp
+                    <small>계정 설정</small>
+                </div>
                 <!-- 글쓰기 -->
-                <img class="c-pointer icons" width="20px" height="20px"
-                     title="새 글 작성"
-                     v-if="loginedUserInfo.username===accountInfo.username"
-                     src="https://img.icons8.com/dusk/64/000000/book-and-pencil.png"
-                    @click="$router.push('/mydiary/new')">
+                <div class="c-pointer" @click="$router.push('/mydiary/new')">
+                    <img class="icons" width="20px" height="20px"
+                         title="새 글 작성"
+                         v-if="loginedUserInfo.username===accountInfo.username"
+                         src="https://img.icons8.com/dusk/64/000000/book-and-pencil.png"
+                        >&nbsp
+                    <small>글쓰기</small>
+                </div>
             </div>
           </v-col>
           <v-col cols="12" sm="8" class="text-center">
             <div>
+                <span style="display: inline-block; margin: 20px; font-family: 'Nanum Myeongjo', serif;">
+                    계정소개 계정소개 계정소개 계정소개 계정소개 계정소개 계정소개 계정소개 계정소개 계정소개
+                </span>
                 <div>
-                    <v-btn large text color="primary">Following: n명</v-btn> <v-btn large text color="primary">Follower: m명</v-btn>
+                    <v-btn large text color="primary" @click="toggleFM(true)">Following: n명</v-btn> <v-btn large text color="primary" @click="toggleFM(true)">Follower: m명</v-btn>
                 </div>
                 <div>
                     <!--검색(게시글 제목 또는 내용으로) / 달력형 뷰(아이콘) / 계정정보 수정(계정 주인한테만 보이기)-->
@@ -83,7 +92,13 @@
         }
     },
       methods: {
-          ...mapActions('data', ['toggleViewType'])
+          ...mapActions('data', ['toggleViewType', 'toggleFM']),
+          commitFollow() {
+                Swal.fire({
+                type: 'success',
+                text: 'Following 목록에 추가되었습니다.',
+            })
+          }
       },
       computed: {
           ...mapGetters('data', ['accountInfo', 'loginedUserInfo'])

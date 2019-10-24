@@ -8,10 +8,10 @@ export default {
         isDetailModal: false,
         isAccSettingModal: false,
         isListView: true,
-        accountInfo: {'username': 'babababa'},
+        accountInfo: {'username': 'hihihihihihi'},
         diaryDataSet: {},
         searchedResult: {},
-        loginedUserInfo: {'username': 'lia'},
+        loginedUserInfo: {'username': 'lialialialialialialialialia'},
     },
     getters: {
         isFollowModal: state => { return state.isFollowModal },
@@ -32,6 +32,9 @@ export default {
         toggleViewType({commit}, bool) {
             commit('TOGGLE_VIEW_TYPE', bool);
         },
+        toggleFM({commit}, bool) {
+            commit('TOGGLE_FM', bool)
+        },
         setSerchedResult({commit}, resultData) {
             commit('SET_SEARCHED_RESULT', resultData);
         },
@@ -44,6 +47,9 @@ export default {
         },
         TOGGLE_VIEW_TYPE(state, bool) {
             state.isListView = bool;
+        },
+        TOGGLE_FM(state, bool) {
+            state.isFollowModal = bool;
         },
         SET_SEARCHED_RESULT(state, resultData) {
             state.searchedResult = resultData;

@@ -28,14 +28,21 @@
               <v-icon dark>mdi-account-circle</v-icon>
             </v-avatar>
           </template>
-          <v-list>
-            <v-list-item
-              v-for="i in menus.length"
-              :key="i"
-            >
-              <v-list-item-title class="c-pointer" @click="$router.push(actions[i-1])"><i :class="icons[i-1]"></i>&nbsp {{ menus[i-1] }}</v-list-item-title>
-            </v-list-item>
+
+          <v-list dense>
+            <v-list-item-group v-model="item" color="primary">
+              <v-list-item
+                v-for="i in menus.length"
+                :key="i"
+              >
+                <v-list-item-title class="c-pointer" @click="$router.push(actions[i-1])">
+                  <i :class="icons[i-1]" :style="iconColors[i-1]"></i>&nbsp {{ menus[i-1] }}
+                </v-list-item-title>
+
+              </v-list-item>
+            </v-list-item-group>
           </v-list>
+
         </v-menu>
       </div>
 
@@ -52,6 +59,7 @@
           searchText: '',
           menus: ['  home','  my page','  my diary','  logout',],
           icons: ['fas fa-home', 'far fa-user-circle','fas fa-book','fas fa-sign-out-alt'],
+          iconColors: ['color: black', 'color: #f0d2d1', 'color: #e6f792', 'color: #a70d56'],
           actions: ["/", "/login","/test/mydiary","/signup"],
           searchResult: ['dfd', 'dfd', 'sdfadf', 'asdfadfl;kj'],
         }

@@ -4,7 +4,7 @@
         <!--로그인한 사람이 계정 주인이라면 다 보여주고, 아니라면 공개 설정 된 글만 보여주기!!!!!!-->
         <v-card v-for="i in 10" :key="i" class="mx-auto" style="margin-top: 20px;">
             <v-container>
-                <v-card-title>
+                <v-card-title class="d-title">
 
                     디데이, title, 아기이름, 작성한 날짜
                 </v-card-title>
@@ -14,11 +14,11 @@
                   <v-img
                     height="200"
                     width="200"
-                    src="https://cdn.vuetifyjs.com/images/cards/store.jpg"
+                    src="../../images/baby.png"
                   ></v-img>
                 </v-col>
                 <!--모바일 화면에서는 보여주지 않기 / 일정 글자 이상이면 자르기(상세페이지에서 전부 보여주기)-->
-                <v-col v-if="winWidth > 500" cols="auto">
+                <v-col v-if="winWidth > 700" cols="auto">
 
                   <div style="height:200px; max-width: 400px;">내용내용내영용내용</div>
                 </v-col>
@@ -86,5 +86,7 @@
 </script>
 
 <style>
-
+    .d-title {
+        font-family: 'Black Han Sans', sans-serif;
+    }
 </style>

@@ -3,6 +3,7 @@
     class="mx-auto"
     width="256"
     tile
+    style="z-index: 100;"
   >
     <v-navigation-drawer v-model="drawer"
       :mini-variant.sync="mini" permanent>
@@ -13,13 +14,7 @@
             <v-img src="../../images/Babies/sleepingBaby.jpg"></v-img>
           </v-list-item-avatar>
           <div>{{loginedUserInfo.username}}</div>
-          <div style="margin-left: 60px">
-            <v-btn
-              icon
-              @click.stop="mini = !mini"
-            >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn></div>
+
         </v-list-item>
         
 
@@ -37,6 +32,13 @@
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
+      <div :style="mini ? 'margin-left: 30%' : 'margin-left: 80%'">
+            <v-btn
+              icon
+              @click.stop="mini = !mini"
+            >
+          <v-icon>{{mini ? 'mdi-chevron-right' : 'mdi-chevron-left'}}</v-icon>
+        </v-btn></div>
       <v-list nav dense>
         <v-list-item-group v-model="item" color="primary">
           <v-list-item

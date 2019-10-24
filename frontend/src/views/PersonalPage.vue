@@ -2,13 +2,16 @@
     <div>
         <br><br><br>
 
-        <v-row no-gutters style="margin-right: 30px">
+        <v-row no-gutters style="margin-right: 10px">
 
-            <v-col cols="6" sm="3">
-                <LeftSideBar style="position: fixed; width: auto; height: 100%;"/>
+            <v-col cols="6" sm="2" md="3">
+                <LeftSideBar v-if="toggleSB" style="position: fixed; width: auto; height: 100%;"/>
+                <v-btn v-else fab color="accent-2" bottom left small fixed @click="toggleSB=true">
+                  <v-icon>mdi-menu</v-icon>
+                </v-btn>
             </v-col>
 
-            <v-col cols="12" sm="9" style="margin: 20px 0 20px 0">
+            <v-col cols="12" sm="10" md="9" style="margin: 20px 0 20px 0">
                 <v-container>
                     <AccountInfo/>
                     <FollowModal v-if="isFollowModal"/>
@@ -41,24 +44,43 @@
             DiaryCalendarView
         },
         props: {
-          LeftSideBar
         },
         data() {
             return {
+                winWidth: 0,
+                toggleSB: true,
             }
         },
         methods: {
-
+            handleResize() {
+              this.winWidth = window.innerWidth;
+            }
         },
         computed: {
-            ...mapGetters('data', ['isFollowModal', 'isListView'])
-        }
+            ...mapGetters('data', ['isFollowModal', 'isListView']),
+        },
+        watch: {
+            winWidth() {
+                if (this.winWidth > 575) {
+                    this.toggleSB = true;
+                } else {
+                    this.toggleSB = false;
+                }
+            }
+
+        },
+        created() {
+            window.addEventListener('resize', this.handleResize)
+            this.handleResize();
+        },
+        destroyed() {
+            window.removeEventListener('resize', this.handleResize)
+        },
+
     }
 </script>
 
 
 
 <style>
-
-
 </style>
