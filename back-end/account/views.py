@@ -56,7 +56,7 @@ def signup(request):
 
 @api_view(["POST"])
 def login(request):
-    '''
+    """
     로그인을 요청하는 API
     ---
     이메일, 비밀번호를 받아 JWT과 nickname을 return
@@ -71,7 +71,7 @@ def login(request):
         nickname: 사용자의 계정 이름(String),
     ---
     token은 변조되어 있음.
-    '''
+    """
     authenticated = user_authenticate(request.data["email"], request.data["password"])
     
     if authenticated:
@@ -80,6 +80,7 @@ def login(request):
             blacklist.delete()
         token = create_token(request.data)
         userprofile = UserProfile.objects.get(user__email=request.data["email"])
+        
         return Response(data={"token": token, "nickname": userprofile.nickname})
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)

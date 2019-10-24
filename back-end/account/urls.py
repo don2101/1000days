@@ -9,5 +9,5 @@ urlpatterns = [
     path('<str:account_name>/babies/', babies, name="babies"),
     path('<str:account_name>/follow/', follow, name="follow"),
     path('logout/', logout, name="logout"),
-    path('authuser/', authuser, name="authuser")
+    path('authuser/', authuser, name="authuser"),
 ]

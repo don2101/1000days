@@ -21,5 +21,6 @@ from rest_framework_swagger.views import get_swagger_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
+    path('diary/', include('posting.urls')),
     path('docs/', get_swagger_view(title="API Docs")),
 ]
