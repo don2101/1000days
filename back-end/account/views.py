@@ -23,7 +23,7 @@ def signup(request):
     """
     회원 가입을 요청하는 API
     ---
-    ## POST parameter
+    ## POST body
         username: 사용자의 이름(String),
         password: 사용자의 비밀번호(String),
         email: 사용자의 email(String),
@@ -60,10 +60,10 @@ def login(request):
     로그인을 요청하는 API
     ---
     이메일, 비밀번호를 받아 JWT과 nickname을 return
-    ## POST parameter
+    ## POST body
         email: 사용자의 email(String),
         password: 사용자의 비밀번호(String),
-    ## Get return
+    ## GET return body
         token: {
             email: 사용자의 email(String),
             exp: token의 만료기한(int)
@@ -92,8 +92,11 @@ def personal(request, account_name):
     개인 정보를 요청하는 API
     ---
     user의 nickname으로 계정을 찾아 정보를 return
+
+    ## GET parameter
+        account_name: user의 nickname
     
-    ## Get return
+    ## GET return body
         user: {
             email: 사용자의 email(String),
             username: 사용자의 이름(String)
@@ -121,12 +124,16 @@ def babies(request, account_name):
     ---
         GET: user의 nickname으로 계정을 찾아 정보를 return
         POST: user의 nickname으로 계정을 찾고, 해당 계정에 baby 정보를 입력
-    ## POST parameter
+
+    ## GET, POST parameter
+        account_name: user의 nickname
+    
+    ## POST body
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
 
-    ## Get return
+    ## Get return body
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
@@ -173,10 +180,14 @@ def follow(request, account_name):
         GET: user의 nickname으로 계정을 찾아 follower, following에 대한 정보 return
         POST: user의 nickname으로 계정을 찾고, 해당 계정에 follow 정보를 추가
         (following: 유저가 follow 하는 사람, follower: 유저를 follow 하는 사람)
-    ## POST parameter
+
+    ## GET, POST parameter
+        account_name: user의 nickname
+    
+    ## POST body
         follow: follow 할 사람의 nickname(String)
 
-    ## Get return
+    ## Get return body
         following: 유저가 follow 하는 사람의 목록(List)
         follower: 유저를 follow 하는 사람의 목록(List)
     ---
@@ -217,7 +228,7 @@ def logout(request):
     '''
     로그아웃을 요청하는 API
     ---
-    ## POST parameter
+    ## POST body
         token: 사용자가 로그인할 때 받은 JWT(String),
     ---
     '''
@@ -239,7 +250,7 @@ def authuser(request):
     '''
     Mypage 입장허가를 요청하는 API
     ---
-    ## POST parameter
+    ## POST body
         token: 사용자의 JWT(String)
         password: 사용자의 비밀번호(String),
     ---

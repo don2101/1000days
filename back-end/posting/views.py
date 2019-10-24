@@ -19,6 +19,15 @@ User = get_user_model()
 
 @api_view(["POST"])
 def post_diary(request):
+    """
+    diary를 작성하는 API
+    ---
+    ## POST body
+        title: diary의 제목(String, Nullable)
+        content: diary의 내용(String, Nullable)
+        token: 유저 인증 jwt(String)
+    ---
+    """
     token = request.data['token']
     decoded_token = decode_token(token)
 
@@ -43,6 +52,25 @@ def post_diary(request):
 
 @api_view(["GET", "POST"])
 def post_image(request, diary_id):
+    """
+    image를 작성하고 조회하는 API
+    ---
+        POST: image를 upload하면 해당 diary_id를 가진 diary와 연결
+        GET: diary_id를 가진 diary에 연결된 image의 url을 불러온다
+    ## POST, GET parameter
+        diary_id: diary의 id(Int)
+
+    ## POST body
+        image: 이미지 파일(File)
+
+    ## Get return body
+        diary: 연결된 idary(String)
+        image: image의 url(String)
+        thumb_nail: thumbnail의 url(String)
+        created_at: 최초 upload 일시(Date)
+        updated_at: 최근 수정 일시(Date)
+    ---
+    """
     if request.method == "POST":
         try:
             diary = Diary.objects.get(pk=diary_id)
@@ -80,7 +108,20 @@ def post_image(request, diary_id):
 
 @api_view(["GET"])
 def user_diaries(request, account_name):
-    print(account_name)
+    """
+    해당 user가 작성한 모든 diary를 조회하는 API
+    ---
+    ## GET parameter
+        account_name: user의 nickname(String)
+
+    ## Get return body(List)
+        writer: 작성자의 이름(String)
+        title: diary의 제목(String)
+        content: diary의 내용(String)
+        created_at: 최초 작성 일자(Date)
+        updated_at: 최근 수정 일자(Date)
+    ---
+    """
     try:
         user = UserProfile.objects.get(nickname=account_name).user
     except User.DoesNotExist:
@@ -97,6 +138,28 @@ def user_diaries(request, account_name):
 
 @api_view(["GET", "PUT", "DELETE"])
 def diary(request, diary_id):
+    """
+    diary에 대해 조회, 수정, 삭제를 요청하는 API
+    ---
+    ## GET, PUT, DELETE parameter
+        diary_id: diary의 id(Int)
+
+    ## Get return body
+        writer: 작성자의 이름(String)
+        title: diary의 제목(String)
+        content: diary의 내용(String)
+        created_at: 최초 작성 일자(Date)
+        updated_at: 최근 수정 일자(Date)
+
+    ## PUT body
+        title: diary의 제목(String)
+        content: diary의 내용(String)
+        token: 유저 인증 jwt(String)
+
+    ## DELETE body
+        token: 유저 인증 jwt(String)
+    ---
+    """
     diary = None
 
     try:

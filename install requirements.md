@@ -14,3 +14,5 @@
 - django-imagekit 4.0.2
 - boto3 1.9.253
 - pilkit 2.0
+- django-storage
+
