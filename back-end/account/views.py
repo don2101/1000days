@@ -101,7 +101,7 @@ def personal(request, account_name):
             email: 사용자의 email(String),
             username: 사용자의 이름(String)
         },
-        nickname: 사용자의 계정 이름(String),
+        nickname: 사용자의 계정 nickname(String),
         select_baby: baby 존재 여부(Boolean),
         account_open: 계정 존재 여부(Boolean),
         follower_open: Follower 정보 공개 여부(Boolean)

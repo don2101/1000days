@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # Create your models here.
 class UserProfile(models.Model):
@@ -18,3 +19,9 @@ class Baby(models.Model):
     name = models.CharField(max_length=45, null=False)
     birthday = models.DateField(null=False)
     spouse = models.CharField(max_length=45, null=True)
+
+
+def get_nickname(self):
+    return self.userprofile.nickname
+
+User.add_to_class("__str__", get_nickname)
