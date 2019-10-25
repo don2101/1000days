@@ -115,6 +115,7 @@ def user_diaries(request, account_name):
         account_name: user의 nickname(String)
 
     ## Get return body(List)
+        id: diary의 id(Int)
         writer: 작성자의 nickname(String)
         title: diary의 제목(String)
         content: diary의 내용(String)

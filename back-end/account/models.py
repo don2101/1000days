@@ -7,6 +7,7 @@ User = get_user_model()
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=45, null=False, unique=True)
+    introduce = models.TextField(null=True)
     select_baby = models.BooleanField(null=False)
     account_open = models.BooleanField(null=False)
     follower_open = models.BooleanField(null=False)
