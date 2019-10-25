@@ -7,31 +7,34 @@ import jwt
 
 class AccountTest(TestCase):
     def setUp(self):
+        self.base_url = "http://13.124.234.2:8000/"
+
         self.email = "myuser123@gmail.com"
         self.password = "12345"
         self.username = "park"
         self.nickname = "summoner123"
 
     
-        self.signUpUrl = "http://localhost:8000/account/signup/"
+        self.signUpUrl = self.base_url + "account/signup/"
         self.signUpData = {
             "username": self.username,
             "password": self.password,
             "email": self.email,
+            "introduce": "introducing me",
             "nickname": self.nickname,
             "select_baby": True,
             "account_open": True,
             "follower_open": True
         }
 
-        self.loginUrl = "http://localhost:8000/account/login/"
+        self.loginUrl = self.base_url + "account/login/"
         self.loginData = {
             "email": self.email,
             "password": self.password
         }
 
-        self.perosnalUrl = "http://localhost:8000/account/" + self.nickname
-        self.babyUrl = "http://localhost:8000/account/" + self.nickname + "/babies/"
+        self.perosnalUrl = self.base_url + "account/" + self.nickname
+        self.babyUrl = self.base_url + "account/" + self.nickname + "/babies/"
 
         self.babyData = {
             "name": "park's baby",
@@ -39,11 +42,11 @@ class AccountTest(TestCase):
             "spouse": "park's spouse",
         }
         
-        self.followUrl = "http://localhost:8000/account/" + self.nickname + "/follow/"
+        self.followUrl = self.base_url + "account/" + self.nickname + "/follow/"
         self.followData = {
             "follow": "testing12345"
         }
-        self.logoutUrl = "http://localhost:8000/account/logout/"
+        self.logoutUrl = self.base_url + "account/logout/"
         self.logoutData = {
             "token": ""
         }
