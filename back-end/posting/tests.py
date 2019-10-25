@@ -5,7 +5,8 @@ import requests
 # Create your tests here.
 class DiaryTest(TestCase):
     def setUp(self):
-        self.postUrl = "http://localhost:8000/diary/"
+        self.base_url = "http://13.124.234.2:8000/"
+        self.postUrl = self.base_url + "diary/"
 
         self.post_body = {
             "title": "title1",
@@ -13,17 +14,17 @@ class DiaryTest(TestCase):
             "token": ""
         }
 
-        self.diary_id = "4"
+        self.diary_id = "7"
 
-        self.imageUrl = "http://localhost:8000/diary/" + self.diary_id + "/images/"
+        self.imageUrl = self.base_url + "diary/" + self.diary_id + "/images/"
         self.imageData = {
             'image': './testing1.gif'
         }
 
         self.user_name = "summoner123"
-        self.user_diary_url = "http://localhost:8000/diary/" + self.user_name + "/" 
+        self.user_diary_url = self.base_url + "diary/" + self.user_name + "/" 
 
-        self.diary_url = "http://localhost:8000/diary/" + self.diary_id + "/"
+        self.diary_url = self.base_url + "diary/" + self.diary_id + "/"
 
         self.put_body = {
             "title": "title2",
@@ -65,13 +66,11 @@ class DiaryTest(TestCase):
 
     def Test_get_user_diary(self):
         response = requests.get(self.user_diary_url)
-        print(response.json())
 
         self.assertEqual(response.status_code, 200)
 
     def Test_get_diary(self):
         response = requests.get(self.diary_url)
-        print(response.json())
 
         self.assertEqual(response.status_code, 200)
         
