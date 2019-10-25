@@ -27,6 +27,7 @@ def signup(request):
         username: 사용자의 이름(String),
         password: 사용자의 비밀번호(String),
         email: 사용자의 email(String),
+        introduce: 사용자 소개 문구(String),
         nickname: 사용자의 계정 이름(String),
         select_baby: 아기 존재 여부(Boolean),
         account_open: 계정 정보 공개 여부(Boolean),
