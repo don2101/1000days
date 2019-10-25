@@ -25,7 +25,11 @@ SECRET_KEY = '6xpg_3ompl2b-80m^7%#-2sa=#x&p%z999jf@urr@p^8$uhw^^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+        '127.0.0.1',
+        'ap-northeast-2.compute.amazonaws.com',
+        '13.124.234.2'
+        ]
 
 
 # Application definition
@@ -88,10 +92,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'baby_project',
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'USER': 'baby',
+        'PASSWORD': 'baby1234',
         'HOST': '127.0.0.1',
-        'PORT': '3316'
+        'PORT': '3306'
     }
 }
 
