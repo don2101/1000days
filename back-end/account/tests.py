@@ -7,7 +7,7 @@ import jwt
 
 class AccountTest(TestCase):
     def setUp(self):
-        self.base_url = "http://localhost:8000/"
+        self.base_url = "http://13.124.234.2:8000/"
 
         self.email = "myuser12345@gmail.com"
         self.password = "12345"
@@ -106,7 +106,7 @@ class AccountTest(TestCase):
     #     self.Test_personal()
     #     self.Test_baby()
     #     self.Test_follow()
-    #     self.Test_logout()
+        # self.Test_logout()
 
     # def test_login_and_logout(self):
     #     response = self.Test_login()
