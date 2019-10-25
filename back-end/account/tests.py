@@ -15,7 +15,7 @@ class AccountTest(TestCase):
         self.nickname = "summoner123"
 
     
-        self.signUpUrl = "http://13.124.234.2:8000/" + "account/signup/"
+        self.signUpUrl = self.base_url + "account/signup/"
         self.signUpData = {
             "username": self.username,
             "password": self.password,
@@ -27,14 +27,14 @@ class AccountTest(TestCase):
             "follower_open": True
         }
 
-        self.loginUrl = "http://13.124.234.2:8000/" + "account/login/"
+        self.loginUrl = self.base_url + "account/login/"
         self.loginData = {
             "email": self.email,
             "password": self.password
         }
 
-        self.perosnalUrl = "http://13.124.234.2:8000/" + "account/" + self.nickname
-        self.babyUrl = "http://13.124.234.2:8000/" + "account/" + self.nickname + "/babies/"
+        self.perosnalUrl = self.base_url + "account/" + self.nickname
+        self.babyUrl = self.base_url + "account/" + self.nickname + "/babies/"
 
         self.babyData = {
             "name": "park's baby",
@@ -42,11 +42,11 @@ class AccountTest(TestCase):
             "spouse": "park's spouse",
         }
         
-        self.followUrl = "http://13.124.234.2:8000/" + "account/" + self.nickname + "/follow/"
+        self.followUrl = self.base_url + "account/" + self.nickname + "/follow/"
         self.followData = {
             "follow": "testing12345"
         }
-        self.logoutUrl = "http://13.124.234.2:8000/" + "account/logout/"
+        self.logoutUrl = self.base_url + "account/logout/"
         self.logoutData = {
             "token": ""
         }
