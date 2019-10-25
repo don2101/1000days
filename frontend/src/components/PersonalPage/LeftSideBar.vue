@@ -1,5 +1,6 @@
 <template>
   <v-card
+    v-if="showLeftSidebar"
     class="mx-auto"
     width="256"
     tile
@@ -35,7 +36,7 @@
       <div :style="mini ? 'margin-left: 30%' : 'margin-left: 80%'">
             <v-btn
               icon
-              @click.stop="mini = !mini"
+              @click.stop="toggle()"
             >
           <v-icon>{{mini ? 'mdi-chevron-right' : 'mdi-chevron-left'}}</v-icon>
         </v-btn></div>
@@ -61,7 +62,7 @@
 
 
 <script>
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapActions} from 'vuex'
   export default {
     data() {
       return {
@@ -79,8 +80,20 @@
       mini: true,
       }
     },
+    props: {
+      winWidth: {type: Number}
+    },
     computed: {
-      ...mapGetters('data', ['loginedUserInfo'])
+      ...mapGetters('data', ['loginedUserInfo', 'showLeftSidebar'])
+    },
+    methods: {
+      ...mapActions('data', ['toggleLB']),
+      toggle() {
+        this.mini = !this.mini;
+        if (this.mini && this.winWidth <= 575) {
+          this.toggleLB(false)
+        }
+      },
     }
   }
 </script>

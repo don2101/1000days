@@ -87,6 +87,8 @@
 
 <style>
     .d-title {
-        font-family: 'Black Han Sans', sans-serif;
+        font-family: 'Nanum Myeongjo', sans-serif;
+        font-weight: bold;
+
     }
 </style>

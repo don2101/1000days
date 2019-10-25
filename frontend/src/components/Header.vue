@@ -5,6 +5,9 @@
     >
       <!--로고와 사이트 이름-->
       <img style="margin-top: 15px" width="43px" height="43px" src="https://img.icons8.com/nolan/64/000000/baby-feet.png">
+
+
+
       <!-- <img style="margin-top: 15px" src="../../public/favicon.png"> -->
       <span @click="$router.push('/')" class="ml-3 mr-5 site-title">1000 Days&nbsp;</span>
 
@@ -30,13 +33,20 @@
           </template>
 
           <v-list dense>
-            <v-list-item-group v-model="item" color="primary">
+            <v-list-item-group>
               <v-list-item
                 v-for="i in menus.length"
                 :key="i"
               >
                 <v-list-item-title class="c-pointer" @click="$router.push(actions[i-1])">
                   <i :class="icons[i-1]" :style="iconColors[i-1]"></i>&nbsp {{ menus[i-1] }}
+                </v-list-item-title>
+
+              </v-list-item>
+
+              <v-list-item>
+                <v-list-item-title class="c-pointer" @click="logout()">
+                  <i class="fas fa-sign-out-alt" style="color: #a70d56"></i>&nbsp logout
                 </v-list-item-title>
 
               </v-list-item>
@@ -51,17 +61,20 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapActions} from 'vuex'
+  import axios from 'axios'
     export default {
       name: "Header",
       data() {
         return {
           searchText: '',
-          menus: ['  home','  my page','  my diary','  logout',],
-          icons: ['fas fa-home', 'far fa-user-circle','fas fa-book','fas fa-sign-out-alt'],
-          iconColors: ['color: black', 'color: #f0d2d1', 'color: #e6f792', 'color: #a70d56'],
-          actions: ["/", "/login","/test/mydiary","/signup"],
-          searchResult: ['dfd', 'dfd', 'sdfadf', 'asdfadfl;kj'],
+          menus: ['  home','  my page','  my diary'],
+          icons: ['fas fa-home', 'far fa-user-circle','fas fa-book'],
+          iconColors: ['color: black', 'color: #f0d2d1', 'color: #e6f792'],
+          actions: ["/", "/mypage","/test/mydiary"],
+          searchResult: [],
+          token: sessionStorage.getItem("token"),
+          url: 'http://13.124.234.2:8000'
         }
       },
       watch: {
@@ -74,6 +87,28 @@
       },
       mounted() {
       },
+      methods: {
+        ...mapActions('data', ['setLoginedUserInfo']),
+        logout() {
+          const vm = this;
+          axios.post(this.url.concat('/account/login'), {
+            token : this.token
+          })
+          .then(() => {
+            // 로그인한 유저 정보 store 에서 삭제해주기
+            vm.setLoginedUserInfo({});
+            // 세션 스토리지 비우기
+
+            Swal.fire({
+                type: 'success',
+                text: '로그아웃 되었습니다.',
+              })
+          })
+          .catch((error) => {
+            alert("로그아웃 실패: ", error)
+          });
+        }
+      }
   }
 </script>
 

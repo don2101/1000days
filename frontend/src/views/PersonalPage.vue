@@ -5,8 +5,8 @@
         <v-row no-gutters style="margin-right: 10px">
 
             <v-col cols="6" sm="2" md="3">
-                <LeftSideBar v-if="toggleSB" style="position: fixed; width: auto; height: 100%;"/>
-                <v-btn v-else fab color="accent-2" bottom left small fixed @click="toggleSB=true">
+                <LeftSideBar :winWidth="winWidth" v-if="showLeftSidebar" style="position: fixed; width: auto; height: 100%;"/>
+                <v-btn fab color="accent-2" bottom left small fixed @click="toggleLB(true)">
                   <v-icon>mdi-menu</v-icon>
                 </v-btn>
             </v-col>
@@ -48,23 +48,23 @@
         data() {
             return {
                 winWidth: 0,
-                toggleSB: true,
             }
         },
         methods: {
+            ...mapActions('data', ['toggleLB']),
             handleResize() {
               this.winWidth = window.innerWidth;
             }
         },
         computed: {
-            ...mapGetters('data', ['isFollowModal', 'isListView']),
+            ...mapGetters('data', ['isFollowModal', 'isListView', 'showLeftSidebar']),
         },
         watch: {
             winWidth() {
                 if (this.winWidth > 575) {
-                    this.toggleSB = true;
+                    this.toggleLB(true);
                 } else {
-                    this.toggleSB = false;
+                    this.toggleLB(false);
                 }
             }
 

@@ -8,6 +8,7 @@ export default {
         isDetailModal: false,
         isAccSettingModal: false,
         isListView: true,
+        showLeftSidebar: true,
         accountInfo: {'username': 'hihihihihihi'},
         diaryDataSet: {},
         searchedResult: {},
@@ -21,7 +22,8 @@ export default {
         accountInfo: state => { return state.accountInfo },
         diaryDataSet: state => { return state.diaryDataSet },
         searchedeRsult: state => { return state.searchedResult },
-        loginedUserInfo: state => { return state.loginedUserInfo }
+        loginedUserInfo: state => { return state.loginedUserInfo },
+        showLeftSidebar: state => { return state.showLeftSidebar}
     },
     actions: {
         async initStore({state, commit}, accInfo, diary) {
@@ -35,8 +37,14 @@ export default {
         toggleFM({commit}, bool) {
             commit('TOGGLE_FM', bool)
         },
+        toggleLB({commit}, bool) {
+            commit('TOGGLE_LB', bool)
+        },
         setSerchedResult({commit}, resultData) {
             commit('SET_SEARCHED_RESULT', resultData);
+        },
+        setLoginedUserInfo({commit}, payload) {
+            commit('SET_LOGINED_USER_INFO', payload)
         },
 
     },
@@ -51,8 +59,14 @@ export default {
         TOGGLE_FM(state, bool) {
             state.isFollowModal = bool;
         },
+        TOGGLE_LB(state, bool) {
+            state.showLeftSidebar = bool;
+        },
         SET_SEARCHED_RESULT(state, resultData) {
             state.searchedResult = resultData;
+        },
+        SET_LOGINED_USER_INFO(state, payload) {
+            state.loginedUserInfo = payload;
         }
     }
 
