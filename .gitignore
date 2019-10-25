@@ -125,6 +125,7 @@ migrations/
 
 ############################ Python ############################
 # Byte-compiled / optimized / DLL files
+.idea/
 __pycache__/
 *.py[cod]
 *$py.class
