@@ -13,7 +13,7 @@
            </v-img>
             <div style="float:right;">
                <v-col cols="12" style="left:25%">
-               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+               <span style="font-size: 1.5em" class="icon"><i class="fad fa-baby"></i></span>
                 <input type="text" placeholder="아기 이름 *" v-model="babyname">
               </v-col>
                 <v-row>
@@ -33,7 +33,7 @@
       >
         <template v-slot:activator="{ on }">
             <v-col cols="12" style="left:25%">
-            <span class="icon"><i class="fas fa-calendar-week" style="font-size: 1.5em"></i></span>
+            <span class="icon"><i class="fad fa-birthday-cake" style="font-size: 1.5em"></i></span>
                 <input v-model="birthday" v-on="on" type="text" placeholder="아기 생년월일 *" readonly >
             </v-col>
         </template>
@@ -62,7 +62,7 @@
     </v-col>
   </v-row>
                  <v-col cols="12" style="left:25%">
-               <span style="font-size: 1.5em;" class="icon"><i class="far fa-id-card"></i></span>
+               <span style="font-size: 1.5em;" class="icon"><i class="fad fa-rings-wedding"></i></span>
                 <input type="text" placeholder="배우자 이름" v-model="spousename">
                 </v-col>
                    <v-col cols="12" style="left:25%">
@@ -71,7 +71,7 @@
                 </v-col>
                 <v-col cols="12" style="left:30%">
                   <button class="otherbaby" @click="otherbaby">다른 아기 정보 입력하기</button>
-               <button class="ml-5 register" @click="babyinfo">가입하기</button>
+               <button class="ml-5 register" @click="babyinfo"><i class="mr-2 fad fa-user-plus"></i>가입하기</button>
                 </v-col>
         </div>
         </v-row>

@@ -21,9 +21,8 @@
      MyPage는 회원전용 페이지입니다
     </h5>
     <v-card-actions>
-      <v-spacer></v-spacer>
       <h6>로그인 하러 가기</h6>
-      <v-btn color="pink" class="ml-3 mr-3" @click="$router.push('/login')"><i class="fas fa-hand-pointer"></i>&nbsp;click</v-btn>
+      <v-btn color="pink" class="ml-3 mr-3" @click="$router.push('/login')"><i class="fas fa-mouse-pointer"></i>&nbsp;click</v-btn>
     </v-card-actions>
     </v-card-text>
     </v-flex>

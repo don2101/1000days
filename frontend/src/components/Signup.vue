@@ -5,24 +5,24 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+               <span style="font-size: 1.5em" class="icon"><i class="fad fa-id-card"></i></span>
                 <input type="text" placeholder="이름 *" v-model="name" required>
               </v-col>
                <v-col cols="12">
-               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+               <span style="font-size: 1.5em" class="icon"><i class="fad fa-id-card"></i></span>
                 <input type="text" placeholder="닉네임 *" v-model="nickname" required>
               </v-col>
                <v-col cols="12">
-                <span class="icon"><v-icon middle>mdi-email</v-icon></span>
+                <span class="icon"><i style="font-size:1.5rem" class="fad fa-envelope"></i></span>
                  <input type="text" placeholder="이메일 *" v-model="newemail" required>
                 </v-col>
                <v-col cols="12">
-                 <span class="icon"><v-icon>fas fa-lock</v-icon></span>
+                 <span class="icon"><i class="fad fa-lock" style="font-size:1.5rem"></i></span>
                  <input type="password" placeholder="비밀번호 *" v-model="pw" required>
                </v-col>
               <p class="ml-2" style="color:green;">{{PW}}</p>
                <v-col cols="12">
-                 <span class="icon"><v-icon>fas fa-lock</v-icon></span>
+                 <span class="icon"><i class="fad fa-lock" style="font-size:1.5rem"></i></span>
                  <input type="password" placeholder="비밀번호 확인 *" v-model="repw" required>
                </v-col>
              <p class="ml-2" style="color:red;">{{PWCheck}}</p>
@@ -61,11 +61,11 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <div v-if="babyYN==false">
-          <v-btn class="move" color="blue darken-1" text @click="out">나가기</v-btn>
-          <v-btn class="move" color="pink" text @click="register">가입하기</v-btn>
+          <v-btn class="move" color="blue darken-1" text @click="out"><i class="mr-2 fad fa-sign-out-alt"></i>나가기</v-btn>
+          <v-btn class="move" color="pink" text @click="register"><i class="mr-2 fad fa-user-plus"></i>가입하기</v-btn>
         </div>
         <div v-else>
-        <v-btn class="move" color="blue darken-1" text @click="out">나가기</v-btn>
+        <v-btn class="move" color="blue darken-1" text @click="out"><i class="mr-2 fad fa-sign-out-alt"></i>나가기</v-btn>
           <v-btn class="move" color="pink" text @click="next">아기 정보 입력하기</v-btn>
         </div>
         </v-card-actions>

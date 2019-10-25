@@ -2,17 +2,21 @@
 <div class="content">
 <div class="mt-5 ml-3 row">
 <strong>lemon</strong>
-<p v-model="comment">&nbsp;{{comment}}</p>
- <v-spacer></v-spacer>
-  <a class="mr-3" @click="deletecomment">x</a>
-  <a @click="edit">수정</a>
-  <div v-show="showedit">
-  <v-text-field v-model="editcomment"></v-text-field>
-   <v-btn @click="confirm" class="confirm">확인</v-btn>
   </div>
+  <div style="float:right; margin-top:-25px;">
+    <a class="mr-3" @click="deletecomment"><i class="fal fa-trash-alt"></i></a>
+  <a class="mr-3" @click="edit"><i class="fal fa-comment-edit"></i></a>
+  <a @click="bell">&#x1F6A8;</a>
+  </div>
+  <div class="mt-5 ml-3 row">
+  <p v-model="comment">&nbsp;{{comment}}</p>
+  <div class="mt-5 mr-3" v-show="showedit">
+ <v-text-field v-model="editcomment"></v-text-field>
+<button @click="confirm"><i class="fal fa-check-circle"></i></button>
+ </div>
   </div>
 
-<div class="ml-2 more"
+<div class="mt-5 ml-3 more"
         @click="show = !show"
       >
         댓글 더보기...
@@ -35,13 +39,21 @@
     }),
     components:{Comment},
     methods:{
-    edit(){
+     bell(){
+        Swal.fire({
+                  type: 'success',
+                  text: '신고가 정상적으로 접수되었습니다',
+        })
+    },
+   edit(){
         this.showedit=!this.showedit
         this.editcomment=this.comment
     },
+
     confirm(){
         this.showedit=!this.showedit
         this.comment=this.editcomment
+
         Swal.fire({
                   type: 'success',
                   text: '댓글이 수정되었습니다',
@@ -58,15 +70,9 @@
 </script>
 
 <style scoped>
-input{
-  width: 100%;
-  padding: 20px 70px;
-  background-color: #FDD835;
-}
 
 input:focus{
 outline: none;
-
 }
 
 input::placeholder {
@@ -88,9 +94,15 @@ input::placeholder {
  cursor: pointer;
 }
 
-.confirm{
-left:90%;
-margin-top:-100px;
+button{
+float:right;
+margin-top:-50px;
+margin-right:-20px;
+color:green;
+}
+
+button:focus{
+outline: none;
 }
 
 </style>

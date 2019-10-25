@@ -4,7 +4,7 @@
 <i class="far fa-comment-dots fa-2x"></i>
 </v-col>
 <input class="mt-5" type="text" placeholder="댓글을 남겨주세요" v-model="newcomment">
-<v-btn @click="createcomment" color="#D81B60" class="ml-3">확인</v-btn>
+<v-btn @click="createcomment" color="#D81B60" class="ml-3"><i style="font-size:1.2rem" class="fad fa-paper-plane"></i></v-btn>
 </div>
 </template>
 

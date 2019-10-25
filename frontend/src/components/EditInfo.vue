@@ -9,23 +9,23 @@ width="700"
 </div>
 <v-card-text>
               <v-col cols="12">
-               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+               <span style="font-size: 1.5em" class="icon"><i class="fad fa-id-card"></i></span>
                 <input type="text" placeholder="이름" v-model="editname" required>
               </v-col>
                <v-col cols="12">
-               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+               <span style="font-size: 1.5em" class="icon"><i class="fad fa-id-card"></i></span>
                 <input type="text" placeholder="닉네임" v-model="editnickname" required>
               </v-col>
                <v-col cols="12">
-                <span class="icon"><v-icon middle>mdi-email</v-icon></span>
+                <span class="icon"><i style="font-size:1.5rem" class="fad fa-envelope"></i></span>
                  <input type="text" placeholder="이메일" v-model="editemail" required readonly>
                 </v-col>
                <v-col cols="12">
-                 <span class="icon"><v-icon>fas fa-lock</v-icon></span>
+                 <span class="icon"><i class="fad fa-lock" style="font-size:1.5rem"></i></span>
                  <input type="password" placeholder="비밀번호" v-model="editpassword" required>
                </v-col>
                <v-col cols="12">
-                 <span class="icon"><v-icon>fas fa-lock</v-icon></span>
+                 <span class="icon"><i class="fad fa-lock" style="font-size:1.5rem"></i></span>
                  <input type="password" placeholder="비밀번호 확인" v-model="editpasswordconfirm" required>
                </v-col>
              <div v-if="this.editpassword!=this.editpasswordconfirm&& this.editpasswordconfirm.length>0">
@@ -53,7 +53,7 @@ width="700"
 
             <v-card-actions>
              <v-spacer></v-spacer>
-                <v-btn class="save" color="pink lighten-2" @click="edit()">저장</v-btn>
+                <v-btn class="save" color="pink lighten-2" @click="edit()"><i class="mr-2 fad fa-save"></i>저장</v-btn>
              </v-card-actions>
                 </v-card-text>
  </v-card>

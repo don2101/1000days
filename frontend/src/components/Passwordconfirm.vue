@@ -9,7 +9,7 @@
     </div>
     <v-card-text>
    <v-col cols="12">
-     <span class="icon"><v-icon>fas fa-lock</v-icon></span>
+     <span class="icon"><i class="fad fa-lock" style="font-size:1.5rem"></i></span>
      <input type="password" placeholder="비밀번호" v-model="repassword" required>
     </v-col>
     <v-card-actions>

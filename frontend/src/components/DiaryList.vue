@@ -1,5 +1,5 @@
 <template>
-   <div class="container" style="margin-top:100px; margin-bottom: 100px;">
+   <div class="container" style="margin-top:20px; margin-bottom: 100px;">
       <v-row dense>
         <v-col
           v-for="card in cards"
@@ -9,7 +9,7 @@
 
           <v-card
             max-width="500"
-            class="ml-5 mr-5 mt-5 mb-5"
+            class=""
     >
             <v-img
              data-toggle="modal"
@@ -23,17 +23,9 @@
             </v-img>
              <v-card-actions>
 
-        <v-btn color="red" text v-on="on"><v-icon>mdi-heart</v-icon>0</v-btn></v-btn>
+        <button @click="favorite" text><i id="favorite" class="fas fa-heart"></i>0</button>
 
-        <v-btn color="blue" text v-on="on" data-toggle="modal" data-target="#Commentdetail"><v-icon>mdi-comment</v-icon>0</v-btn></v-btn>
-
-<v-tooltip bottom>
-      <template v-slot:activator="{ on }">
-        <v-btn @click="bell" color="yellow" text v-on="on"><i class="fas fa-bell fa-2x"></i></v-btn>
-      </template>
-      <span>신고</span>
-    </v-tooltip>
-
+        <button class="ml-5" text v-on="on" data-toggle="modal" data-target="#Commentdetail"><i class="fal fa-comment-dots"></i>0</button>
 
       <v-spacer></v-spacer>
 
@@ -59,6 +51,22 @@
        <DiaryDetail></DiaryDetail>
        <CommentDetail></CommentDetail>
       </v-row>
+
+     <v-row dense>
+        <v-col>
+          <v-card
+            @click="more"
+            color="#E0E0E0"
+            class="mt-1"
+            >
+              <v-card-text >
+               <i class="fad fa-plus"></i>
+              </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+
+
     </div>
 </template>
 
@@ -75,18 +83,20 @@ import Comment from'./Comment'
     data: () => ({
     show:false,
        cards: [
-        { title: 'Title', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 6 },
-        { title: '제목', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-        { title: '일기', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: '육아일기제목', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
+        {src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 4 },
+        {src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 4 },
+        {src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 4 },
+         {src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 4 },
+        {src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 4 },
+        {src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 4 },
       ],
     }),
     methods:{
-    bell(){
-        Swal.fire({
-                  type: 'success',
-                  text: '신고가 정상적으로 접수되었습니다',
-        })
+
+    favorite(){
+$("#favorite").css("color","red");
+    },
+    more(){
     }
   }
   }
@@ -94,13 +104,21 @@ import Comment from'./Comment'
 
 <style scoped>
 
-.container{
-width:70%
-}
 h1{
 color:#1E88E5;
 text-align: center;
 }
 
+button:focus{
+outline: none;
+}
 
+.fa-heart:click{
+color:red;
+}
+
+.fa-plus{
+left:50%;
+font-size:1.5rem
+}
 </style>

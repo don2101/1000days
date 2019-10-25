@@ -33,7 +33,7 @@
             justify="center"
           >
           <div class="mb-3 ml-3 favoriteuer">
-          <v-icon color="red">mdi-heart</v-icon>
+          <i color="red" class="fas fa-heart"></i>
           <br>좋아하는 사람 lemon외 3명
           </div>
             <div class="ml-3 diarycontent">
