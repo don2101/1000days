@@ -27,8 +27,11 @@
       <div class="text-center">
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
-            <v-avatar color="#99A3A4" v-on="on" class="c-pointer">
-              <v-icon dark>mdi-account-circle</v-icon>
+            <v-avatar v-on="on" class="c-pointer">
+                <img
+                src="../images/test/addamom.jpg"
+                alt="profile-image"
+                >
             </v-avatar>
           </template>
 

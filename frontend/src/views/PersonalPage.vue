@@ -19,6 +19,9 @@
                     <!-- View 유형이 List 인지 Calendar 인지에 따라서 뷰를 바꿔줌 -->
                     <DiaryListView v-if="isListView"/>
                     <DiaryCalendarView v-else />
+
+
+                    <DetailModal v-if="DetailModal.data" />
                 </v-container>
 
             </v-col>
@@ -33,6 +36,7 @@
     import DiaryListView from '../components/PersonalPage/DiaryListView'
     import FollowModal from '../components/PersonalPage/FollowModal'
     import DiaryCalendarView from '../components/PersonalPage/DiaryCalendarView'
+    import DetailModal from '../components/PersonalPage/DiaryDetailModal'
 
     import { mapGetters, mapActions } from 'vuex'
 
@@ -41,7 +45,7 @@
         components: {
             LeftSideBar, AccountInfo,
             DiaryListView, FollowModal,
-            DiaryCalendarView
+            DiaryCalendarView, DetailModal
         },
         props: {
         },
@@ -51,13 +55,13 @@
             }
         },
         methods: {
-            ...mapActions('data', ['toggleLB']),
+            ...mapActions('data', ['toggleLB', 'setDetailModal']),
             handleResize() {
               this.winWidth = window.innerWidth;
             }
         },
         computed: {
-            ...mapGetters('data', ['isFollowModal', 'isListView', 'showLeftSidebar']),
+            ...mapGetters('data', ['isFollowModal', 'isListView', 'showLeftSidebar', 'DetailModal']),
         },
         watch: {
             winWidth() {

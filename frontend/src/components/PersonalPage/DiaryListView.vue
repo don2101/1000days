@@ -27,13 +27,13 @@
                 <v-card-title class="d-title">
                     <div>D+234 ♥ 단비 | 육아...힘들다...</div>
                 </v-card-title>
-              <v-row justify="space-between">
+              <v-row justify="space-between" class="c-pointer" @click="setDetailModal({'data': true})">
                 <v-col>
                     <!-- 사진이 여러장인 경우 carousel 로 나타내주기-->
                   <v-img
                     height="200"
                     width="200"
-                    src="../../images/Babies/danbi.jpg"
+                    src="../../images/test/danbi.jpg"
                   ></v-img>
                 </v-col>
                 <!--모바일 화면에서는 보여주지 않기 / 일정 글자 이상이면 자르기(상세페이지에서 전부 보여주기)-->
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+    import {mapActions} from 'vuex'
     export default {
         name: 'DiaryList',
         data() {
@@ -70,6 +71,7 @@
             window.removeEventListener('resize', this.handleResize)
         },
         methods: {
+            ...mapActions('data', ['setDetailModal']),
             handleResize() {
               this.winWidth = window.innerWidth;
             }
@@ -93,6 +95,9 @@
         text-overflow: ellipsis;
         -o-text-overflow: ellipsis;
         overflow: hidden;
+    }
+    .c-pointer {
+        cursor: pointer;
     }
 
 </style>

@@ -5,18 +5,18 @@ export default {
     namespaced: true,
     state: {
         isFollowModal: false,
-        isDetailModal: false,
         isAccSettingModal: false,
         isListView: true,
         showLeftSidebar: true,
-        accountInfo: {'username': 'hihihihihihi'},
+        accountInfo: {'username': '영웅단비아빠'},
         diaryDataSet: {},
         searchedResult: {},
-        loginedUserInfo: {'username': 'lialialialialialialialialia'},
+        loginedUserInfo: {'username': '아따맘마'},
+        DetailModal: {'data': false},
     },
     getters: {
         isFollowModal: state => { return state.isFollowModal },
-        isDetailModal: state => { return state.isDetailModal },
+        DetailModal: state => { return state.DetailModal },
         isAccSettingModal: state => { return state.isAccSettingModal },
         isListView: state => { return state.isListView },
         accountInfo: state => { return state.accountInfo },
@@ -46,6 +46,9 @@ export default {
         setLoginedUserInfo({commit}, payload) {
             commit('SET_LOGINED_USER_INFO', payload)
         },
+        setDetailModal({commit}, detailInfo) {
+            commit('SET_DETAIL_MODAL', detailInfo)
+        }
 
     },
     mutations: {
@@ -67,6 +70,9 @@ export default {
         },
         SET_LOGINED_USER_INFO(state, payload) {
             state.loginedUserInfo = payload;
+        },
+        SET_DETAIL_MODAL(state, detailInfo) {
+            state.DetailModal = detailInfo;
         }
     }
 

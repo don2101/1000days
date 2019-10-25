@@ -12,7 +12,7 @@
       <v-list>
         <v-list-item>
           <v-list-item-avatar>
-            <v-img src="../../images/Babies/sleepingBaby.jpg"></v-img>
+            <v-img src="../../images/test/addamom.jpg"></v-img>
           </v-list-item-avatar>
           <div>{{loginedUserInfo.username}}</div>
 
@@ -21,8 +21,8 @@
 
         <v-list-item link>
           <v-list-item-content>
-            <v-list-item-title class="title">디데이</v-list-item-title>
-            <v-list-item-subtitle>아기이름</v-list-item-subtitle>
+            <v-list-item-title class="title">D+277</v-list-item-title>
+            <v-list-item-subtitle>동동이</v-list-item-subtitle>
           </v-list-item-content>
 
           <!-- 아기가 여러명일 경우 활성화 -->

@@ -5,7 +5,7 @@
           <div class="text-center" style="margin-bottom: 15px">
             <v-avatar>
                 <img
-                src="https://cdn.vuetifyjs.com/images/john.jpg"
+                src="../../images/test/daddy.jpg"
                 alt="John"
                 >
             </v-avatar>
