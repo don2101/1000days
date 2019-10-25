@@ -1,5 +1,6 @@
 <template>
     <v-footer
+      absolute
       app
       color="#EBEDEF"
       class="white--text"

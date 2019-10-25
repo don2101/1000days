@@ -1,44 +1,78 @@
 <template>
 <div class="content">
-<strong class="ml-3">pink</strong><p>&nbsp;&nbsp즐거운 시간 보내셨군요!</p>
-<div class="ml-3 row">
+<div class="mt-5 ml-3 row">
 <strong>lemon</strong>
-<p>&nbsp;&nbsp;부러워</p>
- <v-spacer></v-spacer>
-  x 수정
   </div>
-<div class="ml-2 more"
+  <div style="float:right; margin-top:-25px;">
+    <a class="mr-3" @click="deletecomment"><i class="fal fa-trash-alt"></i></a>
+  <a class="mr-3" @click="edit"><i class="fal fa-comment-edit"></i></a>
+  <a @click="bell">&#x1F6A8;</a>
+  </div>
+  <div class="mt-5 ml-3 row">
+  <p v-model="comment">&nbsp;{{comment}}</p>
+  <div class="mt-5 mr-3" v-show="showedit">
+ <v-text-field v-model="editcomment"></v-text-field>
+<button @click="confirm"><i class="fal fa-check-circle"></i></button>
+ </div>
+  </div>
+
+<div class="mt-5 ml-3 more"
         @click="show = !show"
       >
         댓글 더보기...
       </div>
       <div v-show="show">
-         good!
+         <strong class="ml-3">pink</strong><p>&nbsp;&nbsp;즐거운 시간 보내셨군요!</p>
       </div>
 </div>
 </template>
 
 <script>
-
   export default {
-  name:'Comment',
+  name:'CommentContent',
   data: () => ({
-      comment: null,
+      comment: '부러워',
+      editcomment:'',
       show: false,
+      showedit:false,
+
     }),
-}
+    components:{Comment},
+    methods:{
+     bell(){
+        Swal.fire({
+                  type: 'success',
+                  text: '신고가 정상적으로 접수되었습니다',
+        })
+    },
+   edit(){
+        this.showedit=!this.showedit
+        this.editcomment=this.comment
+    },
+
+    confirm(){
+        this.showedit=!this.showedit
+        this.comment=this.editcomment
+
+        Swal.fire({
+                  type: 'success',
+                  text: '댓글이 수정되었습니다',
+        })
+    },
+    deletecomment(){
+        Swal.fire({
+                  type: 'success',
+                  text: '댓글이 삭제되었습니다',
+        })
+    }
+    }
+    }
 </script>
 
 <style scoped>
-input{
-  width: 100%;
-  padding: 20px 70px;
-  background-color: #FDD835;
-}
 
 input:focus{
 outline: none;
-
 }
 
 input::placeholder {
@@ -59,4 +93,16 @@ input::placeholder {
  color: #B0BEC5;
  cursor: pointer;
 }
+
+button{
+float:right;
+margin-top:-50px;
+margin-right:-20px;
+color:green;
+}
+
+button:focus{
+outline: none;
+}
+
 </style>

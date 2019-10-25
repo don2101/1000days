@@ -1,91 +1,82 @@
 <template>
-      <div class="container">
+      <div style="margin-top:100px; margin-bottom: 100px;" class="container">
         <v-card>
-          <h1 class="headline"><strong>회원 정보</strong></h1>
-        <v-card-text>
+          <h1>User Information</h1>
           <v-container>
             <v-row>
               <v-col cols="12">
-               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+               <span style="font-size: 1.5em" class="icon"><i class="fad fa-id-card"></i></span>
                 <input type="text" placeholder="이름 *" v-model="name" required>
               </v-col>
                <v-col cols="12">
-               <span style="font-size: 1.5em" class="icon"><i class="far fa-id-card"></i></span>
+               <span style="font-size: 1.5em" class="icon"><i class="fad fa-id-card"></i></span>
                 <input type="text" placeholder="닉네임 *" v-model="nickname" required>
               </v-col>
                <v-col cols="12">
-                <span class="icon"><v-icon middle>mdi-email</v-icon></span>
+                <span class="icon"><i style="font-size:1.5rem" class="fad fa-envelope"></i></span>
                  <input type="text" placeholder="이메일 *" v-model="newemail" required>
                 </v-col>
                <v-col cols="12">
-                 <span class="icon"><v-icon>fas fa-lock</v-icon></span>
+                 <span class="icon"><i class="fad fa-lock" style="font-size:1.5rem"></i></span>
                  <input type="password" placeholder="비밀번호 *" v-model="pw" required>
                </v-col>
+              <p class="ml-2" style="color:green;">{{PW}}</p>
                <v-col cols="12">
-                 <span class="icon"><v-icon>fas fa-lock</v-icon></span>
+                 <span class="icon"><i class="fad fa-lock" style="font-size:1.5rem"></i></span>
                  <input type="password" placeholder="비밀번호 확인 *" v-model="repw" required>
                </v-col>
-             <div v-if="this.pw!=this.repw">
-              <p style="color:red;">비밀번호가 일치하지 않습니다</p>
-              </div>
+             <p class="ml-2" style="color:red;">{{PWCheck}}</p>
               </v-col>
             </v-row>
+            <v-col cols="12">
             <h6>계정 공개 여부 설정 *</h6>
               <div v-if="this.accountYN==true">
-              <v-container fluid>
     <v-switch v-model="accountYN" :label="'공개'"></v-switch>
-  </v-container>
   </div>
   <div v-else>
-              <v-container fluid>
     <v-switch v-model="accountYN" :label="'비공개'"></v-switch>
-  </v-container>
   </div>
+  </v-col>
+  <v-col cols="12">
   <h6>팔로우/팔로잉 공개 여부 설정 *</h6>
               <div v-if="this.followYN==true">
-              <v-container fluid>
     <v-switch v-model="followYN" :label="'공개'"></v-switch>
-  </v-container>
   </div>
   <div v-else>
-              <v-container fluid>
     <v-switch v-model="followYN" :label="'비공개'"></v-switch>
-  </v-container>
   </div>
+  </v-col>
+  <v-col cols="12">
    <h6>아기가 있습니까? *</h6>
               <div v-if="this.babyYN==true">
-              <v-container fluid>
     <v-switch v-model="babyYN" :label="'있음'"></v-switch>
-  </v-container>
   </div>
   <div v-else>
-              <v-container fluid>
     <v-switch v-model="babyYN" :label="'없음'"></v-switch>
-  </v-container>
   </div>
+  </v-col>
    </v-container>
-        </v-card-text>
         <br>
         <small><p style="text-align:center;">*필수입력항목</p></small>
-        <small><p style="text-align:center;">*아직 아기가 태어나지 않은 경우 출산예정일을 입력해주세요 <br>(태어난 후 아기생일로 수정해주세요)</p></small>
         <v-card-actions>
           <v-spacer></v-spacer>
           <div v-if="babyYN==false">
-          <v-btn color="blue darken-1" text @click="out">나가기</v-btn>
-          <v-btn color="pink" text @click="register">가입하기</v-btn>
+          <v-btn class="move" color="blue darken-1" text @click="out"><i class="mr-2 fad fa-sign-out-alt"></i>나가기</v-btn>
+          <v-btn class="move" color="pink" text @click="register"><i class="mr-2 fad fa-user-plus"></i>가입하기</v-btn>
         </div>
         <div v-else>
-        <v-btn color="blue darken-1" text @click="out">나가기</v-btn>
-          <v-btn color="pink" text @click="next">다음페이지</v-btn>
+        <v-btn class="move" color="blue darken-1" text @click="out"><i class="mr-2 fad fa-sign-out-alt"></i>나가기</v-btn>
+          <v-btn class="move" color="pink" text @click="next">아기 정보 입력하기</v-btn>
         </div>
         </v-card-actions>
       </v-card>
     </v-card>
     </div>
 </template>
+
 <script>
 import axios from 'axios';
-import {mapState} from 'vuex'
+import {mapState, mapGetters, mapActions} from 'vuex';
   export default {
     data: () => ({
       dialog: false,
@@ -101,9 +92,27 @@ import {mapState} from 'vuex'
     components:{
     },
     computed: {
-        ...mapState({
-    signupInfo: state=>state.moduleName.signupInfo
-    }),
+    PW(){
+     var passwordRules = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+        var password = this.pw;
+    if (passwordRules.test(password)==false){
+    return ('10-15자 영문자, 숫자, 특수기호의 조합을 사용해주세요')
+    }
+    else{
+    return('사용가능')
+    }
+    },
+    PWCheck(){
+    if (this.pw!=this.repw&&this.repw!=null){
+        return ('비밀번호가 일치하지 않습니다')
+    }
+    },
+    userInfo() {
+        return this.$store.state.data.auth.signupInfo
+        },
+        ...mapGetters(
+        'auth', ['signupInfo']
+    ),
      isValidate: function() {
       if (this.name === null || this.nickname === '' || this.newemail === null || this.pw === '' || this.repw === null)
         return false
@@ -111,6 +120,7 @@ import {mapState} from 'vuex'
     }
     },
     methods: {
+    ...mapActions('auth', ['savenickname']),
     out(){
      Swal.fire({
   title: '이 페이지에서 나가시겠습니까?',
@@ -136,10 +146,16 @@ import {mapState} from 'vuex'
                   text: '모든 항목을 입력해주세요',
         })
       }
-    if (this.pw != this.repw || this.pw.length<10 ){
-        alert('비밀번호를 확인해주세요')
-    }
     else {
+    var passwordRules = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+        var password = this.pw;
+    if (this.pw != this.repw||passwordRules.test(password)==false){
+       Swal.fire({
+                  type: 'error',
+                  text: '비밀번호는 숫자, 영문자, 특수문자의 조합으로 10~15자리를 사용해야 합니다'
+        })
+    }
+    else{
     axios.post('http://localhost:8000/account/signup/', {
             "username": this.name,
             "password": this.pw,
@@ -149,15 +165,17 @@ import {mapState} from 'vuex'
             "account_open": this.accountYN,
             "follower_open": this.followYN
         })
-        .then(res=>this.$store.commit('setNicknameInfo', {
-          'nickname' : this.nickname,
-        }))
+        .then(res=>this.savenickname(this.nickname))
         .then(res=> this.$router.push('/babyinfo'))
 
                     .catch(err => {
-                        alert('회원가입 실패');
+                         Swal.fire({
+                 type: 'error',
+                 text: '회원가입 실패',
+       })
                         this.dialog = false
                     })
+    }
     }
   },
     register(){
@@ -166,11 +184,17 @@ import {mapState} from 'vuex'
                   type: 'error',
                   text: '모든 항목을 입력해주세요',
         })
-      }
-    if (this.pw != this.repw || this.pw.length<10 ){
-        alert('비밀번호를 확인해주세요')
-    }
+}
     else {
+     var passwordRules = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
+        var password = this.pw;
+    if (this.pw != this.repw||passwordRules.test(password)==false){
+       Swal.fire({
+                  type: 'error',
+                  text: '비밀번호는 숫자, 영문자, 특수문자의 조합으로 10~15자리를 사용해야 합니다'
+        })
+    }
+    else{
     axios.post('http://localhost:8000/account/signup/', {
             "username": this.name,
             "password": this.pw,
@@ -195,17 +219,20 @@ import {mapState} from 'vuex'
                         this.dialog = false
                     })
     }
+  }
   },
-  },
+  }
   }
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Chewy&display=swap');
 .container{
-   width: 70%;
+    width:70%
 }
 h1{
 color:#F8BBD0;
 text-align: center;
+font-family: 'Chewy', cursive;
 }
 .ml-3{
   color: #fff;
@@ -250,5 +277,10 @@ h6{
 }
 .select{
 margin-left: 120px;
+}
+
+.move{
+font-family: 'Jua', sans-serif;
+font-size: 15px;
 }
 </style>
