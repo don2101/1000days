@@ -22,10 +22,11 @@ def user_authenticate(email, password):
 
 
 def set_password(request):
-    request_dict = request.data
-    request_dict['password'] = make_password(request.data['password'])
+    _mutable = request.data._mutable
+    request.data._mutable = True
 
-    modified_data = QueryDict('', mutable=True)
-    modified_data.update(request_dict)
+    request.data['password'] = make_password(request.data['password'])
 
-    return modified_data
+    request.data._mutable = _mutable
+
+    return request.data

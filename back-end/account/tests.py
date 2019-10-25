@@ -7,12 +7,12 @@ import jwt
 
 class AccountTest(TestCase):
     def setUp(self):
-        self.base_url = "http://13.124.234.2:8000/"
+        self.base_url = "http://localhost:8000/"
 
-        self.email = "myuser123@gmail.com"
+        self.email = "myuser12345@gmail.com"
         self.password = "12345"
-        self.username = "park"
-        self.nickname = "summoner123"
+        self.username = "park123"
+        self.nickname = "summoner12345"
 
     
         self.signUpUrl = self.base_url + "account/signup/"
@@ -44,7 +44,7 @@ class AccountTest(TestCase):
         
         self.followUrl = self.base_url + "account/" + self.nickname + "/follow/"
         self.followData = {
-            "follow": "testing12345"
+            "follow": "summoner123"
         }
         self.logoutUrl = self.base_url + "account/logout/"
         self.logoutData = {
@@ -100,13 +100,13 @@ class AccountTest(TestCase):
         self.assertEqual(result.status_code, 200)
 
     # def test_all(self):
-        # self.Test_signup()
-        # self.Test_set_baby()
-        # self.Test_login()
-        # self.Test_personal()
-        # self.Test_baby()
-        # self.Test_follow()
-        # self.Test_logout()
+    #     self.Test_signup()
+    #     self.Test_set_baby()
+    #     self.Test_login()
+    #     self.Test_personal()
+    #     self.Test_baby()
+    #     self.Test_follow()
+    #     self.Test_logout()
 
     # def test_login_and_logout(self):
     #     response = self.Test_login()
@@ -114,7 +114,7 @@ class AccountTest(TestCase):
     #     self.assertEqual(response.status_code, 200)
 
     #     self.logoutData['token'] = response.json()['token']
-    #     response = self.Test_logout()
+    #     self.Test_logout()
 
     #     self.assertEqual(response.status_code, 200)
 
