@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -14,15 +13,15 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = serializers.StringRelatedField()
 
     class Meta:
         model = UserProfile
-        fields = ['user', 'nickname', 'select_baby', 'account_open', 'follower_open']
+        fields = ['user', 'nickname', 'introduce', 'select_baby', 'account_open', 'follower_open']
 
 
 class BabySerializer(serializers.ModelSerializer):
-    parent = UserSerializer()
+    parent = serializers.StringRelatedField()
     
     class Meta:
         model = Baby
