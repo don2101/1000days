@@ -11,6 +11,7 @@ class Diary(models.Model):
     content = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    like_user = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='likes')
 
     def __str__(self):
         return self.title

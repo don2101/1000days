@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserProfile, Baby
+from .models import UserProfile, Baby, ProfileImage
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -35,3 +35,20 @@ class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['following', 'follower']
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    likes = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+
+    class Meta:
+        model = User
+        fields = ['likes']
+
+
+class ProfileImageSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    thumb_nail = serializers.ImageField()
+
+    class Meta:
+        model = ProfileImage
+        fields = ['user', 'image', 'thumb_nail']

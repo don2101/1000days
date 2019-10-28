@@ -24,3 +24,11 @@ class DiaryImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = DiaryImage
         fields = ['diary', 'image', 'thumb_nail', 'created_at', 'updated_at']
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    like_user = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Diary
+        fields = ['like_user']

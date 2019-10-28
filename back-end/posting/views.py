@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import status
 
 from .models import Diary, DiaryImage
-from .serializers import DiarySerializer, DiaryImageSerializer
+from .serializers import DiarySerializer, DiaryImageSerializer, LikeSerializer
 
 from account.serializers import UserProfileSerializer
 from account.models import UserProfile
@@ -199,4 +199,52 @@ def diary(request, diary_id):
 
         return Response(status=status.HTTP_200_OK)
 
+
+@api_view(["GET", "POST"])
+def like(request, diary_id):
+    """
+    diary를 Like하고 조회하는 API
+    ---
+    ## GET, POST parameter
+        diary_id: diary의 id(Int)
+
+    ## Get return body
+        like_user: 해당 글을 like한 유저의 nickname(List)
+
+    ## POST body
+        nickname: 해당 글을 like하는 유저의 nickname(String)
+    ---
+    """
+    diary = None
+    
+    try:
+        diary = Diary.objects.get(pk=diary_id)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "POST":
+        user = None
+        
+        try:
+            user = UserProfile.objects.get(nickname=request.data['nickname']).user
+        except UserProfile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        if user in diary.like_user.all():
+            diary.like_user.remove(user)
+
+            return Response(status=status.HTTP_200_OK)
+        else:
+            diary.like_user.add(user)
+
+            return Response(status=status.HTTP_200_OK)
+
+    elif request.method == "GET":
+        serializer = LikeSerializer(diary)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+        
 

@@ -23,5 +23,5 @@ def user_authenticate(email, password):
 
 def set_password(request):
     request.data['password'] = make_password(request.data['password'])
-
+    
     return request.data
