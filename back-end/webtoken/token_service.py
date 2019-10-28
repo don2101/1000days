@@ -34,8 +34,9 @@ def set_payload(data):
 
 def check_user(user, token):
     decoded_token = decode_token(token)
-
-    if user == User.objects.get(email=decoded_token['email']):
+    if not decoded_token:
+        return False
+    elif user == User.objects.get(email=decoded_token['email']):
         return True
     
     return False
