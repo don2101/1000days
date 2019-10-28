@@ -5,9 +5,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework import status
 
-from .models import UserProfile, Baby
+from .models import UserProfile, Baby, ProfileImage
 from webtoken.models import Blacklist
-from .serializers import UserSerializer, UserProfileSerializer, BabySerializer, FollowSerializer, LikeSerializer
+from .serializers import UserSerializer, UserProfileSerializer, BabySerializer, FollowSerializer, LikeSerializer, ProfileImageSerializer
 from webtoken.serializers import BlacklistSerializer
 from .account_service import user_authenticate, set_password
 from webtoken.token_service import create_token, decode_token
@@ -332,4 +332,64 @@ def like(request, account_name):
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    
+
+@api_view(["GET", "POST", "PUT", "DELETE"])
+def profile_image(request, account_name):
+    user = None
+
+    try:
+        user = UserProfile.objects.get(nickname=account_name).user
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    if request.method == "GET":
+        image = None
+        
+        try:
+            image = user.profile_image
+        except ProfileImage.DoesNotExist:
+            return Response(data={"image": ""}, status=status.HTTP_200_OK)
+
+        serializer = ProfileImageSerializer(image)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == "POST":
+        serializer = ProfileImageSerializer(data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save(user=user)
+
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "PUT":
+        image = None
+        
+        try:
+            image = user.profile_image
+        except ProfileImage.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ProfileImageSerializer(image, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "DELETE":
+        image = None
+
+        try:
+            image = user.profile_image
+
+            image.delete()
+
+            return Response(status=status.HTTP_202_ACCEPTED)
+
+        except ProfileImage.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)

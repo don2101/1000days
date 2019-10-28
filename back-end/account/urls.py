@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup, login, personal, babies, follow, logout, authuser, like
+from .views import signup, login, personal, babies, follow, logout, authuser, like, profile_image
 
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', logout, name="logout"),
     path('authuser/', authuser, name="authuser"),
     path('<str:account_name>/likes/', like, name="like"),
+    path('<str:account_name>/profile_image/', profile_image, name="profile_image")
 ]
