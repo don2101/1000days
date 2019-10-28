@@ -1,12 +1,13 @@
 from rest_framework import serializers
 from account.serializers import UserSerializer
-from .model import Comment
+from .models import Comment
 
-class CommentSerializer(serializers.ModelSerializer)
+class CommentSerializer(serializers.ModelSerializer):
 	writer = serializers.StringRelatedField()
+	diary = serializers.StringRelatedField()
 	created_at = serializers.DateTimeField(read_only=True)
 	updated_at = serializers.DateTimeField(read_only=True)
 
 	class Meta:
 		model = Comment
-		fields = ['writer', 'content', 'created_at', 'updated_at']
+		fields = ['writer', 'diary', 'content', 'created_at', 'updated_at']
