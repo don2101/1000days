@@ -7,7 +7,8 @@ class CommentSerializer(serializers.ModelSerializer):
 	diary = serializers.StringRelatedField()
 	created_at = serializers.DateTimeField(read_only=True)
 	updated_at = serializers.DateTimeField(read_only=True)
+	id = serializers.PrimaryKeyRelatedField(read_only=True)
 
 	class Meta:
 		model = Comment
-		fields = ['writer', 'diary', 'content', 'created_at', 'updated_at']
+		fields = ['id', 'writer', 'diary', 'content', 'created_at', 'updated_at']

@@ -60,23 +60,36 @@ def post_comment(request):
 	return Response(status=status.HTTP_400_BAD_REQUEST)
 		
 
-# @api_view(["GET"])
-# def get_comments(request, diary_id):
-# 	pass
-# 	diary = None
-# 	try:
-# 		diary = Diary.objects.get(pk=diary_id)
-# 	except Diary.DoesNotExist:
-# 		return Response(status=status.HTTP_404_NOT_FOUND)
+@api_view(["POST"])
+def get_comments(request):
+	"""
+    해당 게시글의 모든 댓글을 조회하는 API
+    ---
+    diary_id를 받아 comment와 status을 return
+    ## POST parameter
+        diary_id: 사용자가 댓글을 조회하고자 하는 Diary의 id
+    ## Get return body
+		id: comment의 id(Int)
+		writer: 작성자의 nickname(String)
+        diary: 댓글을 작성한 diary의 제목(String)
+        content: comment의 내용(String)
+        created_at: 최초 작성 일자(Date)
+        updated_at: 최근 수정 일자(Date)
+    ---
+    """
+	diary_id=request.data["diary_id"]
+	try:
+		diary = Diary.objects.get(pk=diary_id)
+	except Diary.DoesNotExist:
+		return Response(status=status.HTTP_404_NOT_FOUND)
 
-# 	if request.method == "GET":
-# 		try:
-# 			comments = diary.comment_set.all()
-# 			serializer = CommentSerializer(data=comments, many=True)
+	try:
+		comments = diary.comment_set.all()
+		serializer = CommentSerializer(comments, many=True)
 
-# 			return Response(data=serializer.data, status=status.HTTP_200_OK)
-# 		except:		# Response data에 comment_id 추가해야 함
-# 			return Response(status=status.HTTP_400_BAD_REQUEST)
+		return Response(data=serializer.data, status=status.HTTP_200_OK)
+	except:
+		return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 # @api_view(["POST", "DELETE"])
