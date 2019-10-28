@@ -87,14 +87,15 @@ def login(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["GET"])
+@api_view(["GET", "PUT"])
 def personal(request, account_name):
     """
     개인 정보를 요청하는 API
     ---
-    user의 nickname으로 계정을 찾아 정보를 return
+    GET: user의 nickname으로 계정을 찾아 정보를 return
+    PUT: user의 개인 정보를 수정
 
-    ## GET parameter
+    ## GET, PUT parameter
         account_name: user의 nickname
     
     ## GET return body
@@ -106,17 +107,58 @@ def personal(request, account_name):
         select_baby: baby 존재 여부(Boolean),
         account_open: 계정 존재 여부(Boolean),
         follower_open: Follower 정보 공개 여부(Boolean)
+
+    ## PUT body
+        password: 사용자의 비밀번호(String),
+        introduce: 사용자 소개 문구(String),
+        nickname: 사용자의 계정 이름(String),
+        select_baby: 아기 존재 여부(Boolean),
+        account_open: 계정 정보 공개 여부(Boolean),
+        follower_open: Follower 정보 공개 여부(Boolean),
     ---
     """
+    user_profile = None
+
     try:
         user_profile = UserProfile.objects.get(nickname=account_name)
-        serializer = UserProfileSerializer(user_profile)
-
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     except UserProfile.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+
+    if request.method == "GET":
+        serializer = UserProfileSerializer(user_profile)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == "PUT":
+        try:
+            serializer = UserProfileSerializer(user_profile, data=request.data, partial=True)
+            
+            if serializer.is_valid():
+                instance = serializer.save()
+                
+                if request.data.get('password'):
+                    user = instance.user
+
+                    modified_data = set_password(request)
+                    serializer = UserSerializer(user, data=modified_data, partial=True)
+
+                    if serializer.is_valid():
+                        serializer.save()
+
+                        return Response(status=status.HTTP_202_ACCEPTED)
+
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+                else:
+                    return Response(status=status.HTTP_202_ACCEPTED)
+            
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    
 
 @api_view(["GET", "POST"])
 def babies(request, account_name):
@@ -266,6 +308,16 @@ def authuser(request):
 
 @api_view(["GET"])
 def like(request, account_name):
+    '''
+    유저가 like한 모든 글의 pk를 반환하는 API
+    ---
+    ## GET parameter
+        account_name: 유저의 nickname
+
+    ## POST body
+        likes: 유저가 like한 diary의 pk(List)
+    ---
+    '''
     user = None
     
     try:
