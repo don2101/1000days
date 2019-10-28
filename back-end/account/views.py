@@ -335,6 +335,19 @@ def like(request, account_name):
 
 @api_view(["GET", "POST", "PUT", "DELETE"])
 def profile_image(request, account_name):
+    """
+    User 프로필 사진 관련 API
+    ---
+    ## GET, POST, PUT, DELETE parameter
+        account_name: user의 nickname
+    
+    ## POST, PUT body
+        image: 프로필 이미지로 사용할 사진(File)
+
+    ## Get return body
+        image: 프로필 이미지의 url(String)
+    ---
+    """
     user = None
 
     try:
@@ -377,7 +390,7 @@ def profile_image(request, account_name):
         if serializer.is_valid():
             serializer.save()
 
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
