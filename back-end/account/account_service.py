@@ -22,11 +22,6 @@ def user_authenticate(email, password):
 
 
 def set_password(request):
-    _mutable = request.data._mutable
-    request.data._mutable = True
-
     request.data['password'] = make_password(request.data['password'])
-
-    request.data._mutable = _mutable
-
+    
     return request.data

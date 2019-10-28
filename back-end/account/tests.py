@@ -9,10 +9,10 @@ class AccountTest(TestCase):
     def setUp(self):
         self.base_url = "http://13.124.234.2:8000/"
 
-        self.email = "myuser12345@gmail.com"
+        self.email = "setpwuser@gmail.com"
         self.password = "12345"
-        self.username = "park123"
-        self.nickname = "summoner12345"
+        self.username = "setpw"
+        self.nickname = "setpw"
 
     
         self.signUpUrl = self.base_url + "account/signup/"
