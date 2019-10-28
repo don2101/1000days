@@ -92,9 +92,63 @@ def get_comments(request):
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-# @api_view(["POST", "DELETE"])
-# def comment(request, comment_id):
-# 	if request.method == "POST":
-# 		pass
-# 	elif request.method == "DELETE":
-# 		pass
+@api_view(["POST"])
+def update_comment(request):
+	"""
+    해당 댓글을 수정하는 API
+    ---
+    comment_id, content를 받아 댓글을 수정하고 status을 return
+    ## POST parameter
+		token: 유저 인증 jwt(String)
+        comment_id: 수정하고자 하는 comment의 id(Int)
+		content: 수정하고자 하는 comment의 내용(String)
+    ---
+    """
+	token = request.data['token']
+	comment_id = request.data["comment_id"]
+	content = request.data["content"]
+	
+	try:
+		comment=Comment.objects.get(id=comment_id)
+	except:
+		return Response(status=status.HTTP_400_BAD_REQUEST)
+
+	if not check_user(comment.writer, token):
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+	try:
+		comment.content=content
+		comment.save()
+
+		return Response(status=status.HTTP_200_OK)
+	except:
+		Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["POST"])
+def delete_comment(request):
+	"""
+    해당 댓글을 삭제하는 API
+    ---
+    comment_id를 받아 댓글을 삭제하고 status을 return
+    ## POST parameter
+		token: 유저 인증 jwt(String)
+        comment_id: 수정하고자 하는 comment의 id(Int)
+    ---
+    """
+	token = request.data['token']
+	comment_id = request.data["comment_id"]
+	
+	try:
+		comment=Comment.objects.get(id=comment_id)
+	except:
+		return Response(status=status.HTTP_400_BAD_REQUEST)
+
+	if not check_user(comment.writer, token):
+		return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+	try:
+		comment.delete()
+
+		return Response(status=status.HTTP_200_OK)
+	except:
+		Response(status=status.HTTP_400_BAD_REQUEST)
