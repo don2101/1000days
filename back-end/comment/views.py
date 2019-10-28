@@ -40,15 +40,11 @@ def post_comment(request):
 
 	try:
 		user = User.objects.get(email = decoded_token["email"])
-		print(user)
-		print(type(user))
 	except User.DoesNotExist:
 		return Response(status = status.HTTP_403_FORBIDDEN)
 
 	try:
 		diary = Diary.objects.get(pk = diary_id)
-		print(diary)
-		print(type(diary))
 	except Diary.DoesNotExist:
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 	
