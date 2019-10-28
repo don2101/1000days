@@ -202,6 +202,19 @@ def diary(request, diary_id):
 
 @api_view(["GET", "POST"])
 def like(request, diary_id):
+    """
+    diary를 Like하고 조회하는 API
+    ---
+    ## GET, POST parameter
+        diary_id: diary의 id(Int)
+
+    ## Get return body
+        like_user: 해당 글을 like한 유저의 nickname(List)
+
+    ## POST body
+        nickname: 해당 글을 like하는 유저의 nickname(String)
+    ---
+    """
     diary = None
     
     try:
