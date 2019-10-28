@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup, login, personal, babies, follow, logout, authuser
+from .views import signup, login, personal, babies, follow, logout, authuser, like
 
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('<str:account_name>/follow/', follow, name="follow"),
     path('logout/', logout, name="logout"),
     path('authuser/', authuser, name="authuser"),
+    path('<str:account_name>/likes/', like, name="like"),
 ]

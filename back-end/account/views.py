@@ -7,7 +7,7 @@ from rest_framework import status
 
 from .models import UserProfile, Baby
 from webtoken.models import Blacklist
-from .serializers import UserSerializer, UserProfileSerializer, BabySerializer, FollowSerializer
+from .serializers import UserSerializer, UserProfileSerializer, BabySerializer, FollowSerializer, LikeSerializer
 from webtoken.serializers import BlacklistSerializer
 from .account_service import user_authenticate, set_password
 from webtoken.token_service import create_token, decode_token
@@ -198,7 +198,6 @@ def follow(request, account_name):
             user_profile = UserProfile.objects.get(nickname=account_name)
 
             serializer = FollowSerializer(user_profile)
-            print(serializer.data)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         
@@ -263,3 +262,22 @@ def authuser(request):
             return Response(status=status.HTTP_202_ACCEPTED)
     else:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["GET"])
+def like(request, account_name):
+    user = None
+    
+    try:
+        user = UserProfile.objects.get(nickname=account_name).user
+        serializer = LikeSerializer(user)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    except UserProfile.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    

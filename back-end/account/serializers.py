@@ -35,3 +35,11 @@ class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['following', 'follower']
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    likes = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+
+    class Meta:
+        model = User
+        fields = ['likes']
