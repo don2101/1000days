@@ -26,9 +26,10 @@ SECRET_KEY = os.getenv("PROJECT_SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = [
-        '127.0.0.1',
-        '13.124.234.2',
-        "ec2-13-124-234-2.ap-northeast-2.compute.amazonaws.com"
+        # '127.0.0.1',
+        # '13.124.234.2',
+        # ".ap-northeast-2.compute.amazonaws.com"
+        "*"
 ]
 
 
