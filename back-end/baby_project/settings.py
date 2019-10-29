@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("PROJECT_SECRET_KEY")
+SECRET_KEY = "6xpg_3ompl2b-80m^7%#-2sa=#x&p%z999jf@urr@p^8$uhw^^"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
         # '127.0.0.1',
@@ -94,8 +94,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'baby_project',
-        'USER': os.getenv('DB_ID'),
-        'PASSWORD': os.getenv('DB_PW'),
+        'USER': 'baby',
+        'PASSWORD': 'baby1234',
         'HOST': '127.0.0.1',
         'PORT': '3306'
     }
@@ -147,8 +147,8 @@ AWS_REGION = 'ap-northeast-2'
 AWS_STORAGE_BUCKET_NAME = '1000days-images'
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_HOST = 's3.%s.amazonaws.com' % AWS_REGION
-AWS_ACCESS_KEY_ID = os.getenv('S3_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('S3_PW')
+AWS_ACCESS_KEY_ID = "AKIAYZYWE6D4I5MK7W6F"
+AWS_SECRET_ACCESS_KEY = "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"
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 # Static Setting
