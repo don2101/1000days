@@ -5,7 +5,7 @@ import requests
 # Create your tests here.
 class DiaryTest(TestCase):
     def setUp(self):
-        self.base_url = "http://13.124.234.2:8000/"
+        self.base_url = "http://localhost:8000/"
         self.postUrl = self.base_url + "diary/"
 
         self.post_body = {
@@ -47,7 +47,8 @@ class DiaryTest(TestCase):
     
 
     def Test_post(self):
-        response = requests.post(self.postUrl, self.post_body)
+        for i in range(10):
+            response = requests.post(self.postUrl, self.post_body)
         
         self.assertEqual(response.status_code, 201)
 
@@ -88,7 +89,7 @@ class DiaryTest(TestCase):
 
 
     # def test_all(self):
-        # self.Test_post()
+    #     self.Test_post()
         # self.Test_set_image()
         # self.Test_get_iamge()
         # self.Test_get_user_diary()
