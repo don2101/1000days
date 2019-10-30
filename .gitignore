@@ -246,6 +246,6 @@ yarn-error.log
 
 
 ############################ Django Deploy ############################
-# .config/
-# .config_secret/
+.config/
+.config_secret/
 ############################ Django Deploy ############################
