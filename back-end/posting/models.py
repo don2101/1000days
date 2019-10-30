@@ -18,7 +18,7 @@ class Diary(models.Model):
 
 
 class DiaryImage(models.Model):
-    diary = models.ForeignKey(Diary, null=False, on_delete=models.CASCADE)
+    diary = models.ForeignKey(Diary, null=False, on_delete=models.CASCADE, related_name='diary_image')
     image = models.ImageField(
         upload_to="images/" + "%Y%m%d%h"
     )
@@ -30,3 +30,6 @@ class DiaryImage(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.image

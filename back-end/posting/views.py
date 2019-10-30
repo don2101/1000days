@@ -39,11 +39,9 @@ def post_diary(request):
     if not user:
         return Response(status=status.HTTP_403_FORBIDDEN)
 
-    # 부분적으로 이름이 일치하는 column에 대해 입력
     serializer = DiarySerializer(data=request.data, partial=True)
 
     if serializer.is_valid():
-        # 객체를 직접 연결 => model에서 처리하는 로직
         serializer.save(writer=user)
 
         return Response(status=status.HTTP_201_CREATED)
@@ -246,5 +244,34 @@ def like(request, diary_id):
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-        
 
+@api_view(["GET"])
+def main_feed(request, account_name):
+    user = None
+    
+    try:
+        user = UserProfile.objects.get(nickname=account_name).user
+    except UserProfile.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    # if not check_user(user, request.data['token']):
+    #     return Response(status=status.HTTP_403_FORBIDDEN)
+
+    posts = []
+    
+    for post in user.diary_set.all():
+        posts.append(post)
+
+
+    for follower in user.follower.all():
+        for post in follower.user.diary_set.all():
+            posts.append(post)
+
+    posts = sorted(posts, key=lambda post: post.created_at, reverse=True)
+
+    serializer = DiarySerializer(posts, many=True)
+
+    return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
