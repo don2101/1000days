@@ -17,6 +17,7 @@ DB_PW = config_secret_common['DB']['pw']
 S3_ID = config_secret_common['S3']['id']
 S3_PW = config_secret_common['S3']['pw']
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'webtoken',
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -48,7 +50,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'baby_project.urls'
+
 
 TEMPLATES = [
     {
@@ -65,6 +69,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 DATABASES = {
     'default': {
@@ -105,6 +110,9 @@ USE_TZ = True
 
 
 REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
+
+CORS_ALLOW_CREDENTIALS = True
+
 
 # Image Setting
 # AWS Setting

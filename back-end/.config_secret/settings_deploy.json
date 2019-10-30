@@ -1,0 +1,9 @@
+{
+    "django": {
+        "allowed_hosts": [
+            "127.0.0.1",
+            "13.124.234.2",
+            ".ap-northeast-2.compute.amazonaws.com"
+        ]
+    }
+}
