@@ -242,3 +242,8 @@ yarn-error.log
 
 # End of https://www.gitignore.io/api/vuejs
 ############################ Vue.js ############################
+
+############################ Django Deploy ############################
+.config/
+.config_secret/
+############################ Django Deploy ############################
