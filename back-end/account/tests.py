@@ -1,5 +1,5 @@
 from django.test import TestCase
-import requests
+import requests, json
 
 import jwt
 
@@ -7,12 +7,12 @@ import jwt
 
 class AccountTest(TestCase):
     def setUp(self):
-        self.base_url = "http://13.124.234.2:8000/"
+        self.base_url = "http://localhost:8000/"
 
-        self.email = "setpwuser@gmail.com"
-        self.password = "12345"
-        self.username = "setpw"
-        self.nickname = "setpw"
+        self.email = "myuser123@gmail.com"
+        self.password = "1234567"
+        self.username = "summoner123"
+        self.nickname = "summoner123"
 
     
         self.signUpUrl = self.base_url + "account/signup/"
@@ -44,7 +44,7 @@ class AccountTest(TestCase):
         
         self.followUrl = self.base_url + "account/" + self.nickname + "/follow/"
         self.followData = {
-            "follow": "summoner123"
+            "follow": "newmember"
         }
         self.logoutUrl = self.base_url + "account/logout/"
         self.logoutData = {
@@ -53,7 +53,9 @@ class AccountTest(TestCase):
 
 
     def Test_signup(self):
-        result = requests.post(self.signUpUrl, self.signUpData)
+        headers = {'Content-Type': 'application/json; charset=utf-8'}
+
+        result = requests.post(self.signUpUrl, data=json.dumps(self.signUpData), headers=headers)
 
         self.assertEqual(result.status_code, 201)
         
@@ -95,17 +97,18 @@ class AccountTest(TestCase):
         self.assertEqual(result.status_code, 201)
 
     def Test_follow(self):
-        result = requests.post(self.followUrl, self.followData)
+        headers = {'Content-Type': 'application/json; charset=utf-8'}
+        result = requests.post(self.followUrl, data=json.dumps(self.followData), headers=headers)
 
         self.assertEqual(result.status_code, 200)
 
     # def test_all(self):
     #     self.Test_signup()
-    #     self.Test_set_baby()
-    #     self.Test_login()
-    #     self.Test_personal()
-    #     self.Test_baby()
-    #     self.Test_follow()
+        # self.Test_set_baby()
+        # self.Test_login()
+        # self.Test_personal()
+        # self.Test_baby()
+        # self.Test_follow()
         # self.Test_logout()
 
     # def test_login_and_logout(self):

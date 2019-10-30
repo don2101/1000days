@@ -269,13 +269,9 @@ def main_feed(request, account_name):
         for post in follower.user.diary_set.all():
             posts.append(post)
 
+    posts = sorted(posts, key=lambda post: post.created_at, reverse=True)
+
     serializer = DiarySerializer(posts, many=True)
 
     return Response(data=serializer.data, status=status.HTTP_200_OK)
-    
-    
-
-
-    
-
     
