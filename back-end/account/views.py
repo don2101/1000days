@@ -87,15 +87,16 @@ def login(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["GET", "PUT"])
+@api_view(["GET", "PUT", "DELETE"])
 def personal(request, account_name):
     """
     개인 정보를 요청하는 API
     ---
     GET: user의 nickname으로 계정을 찾아 정보를 return
     PUT: user의 개인 정보를 수정
+    DELETE: user 삭제
 
-    ## GET, PUT parameter
+    ## GET, PUT, DELETE parameter
         account_name: user의 nickname
     
     ## GET return body
@@ -130,6 +131,14 @@ def personal(request, account_name):
         serializer = UserProfileSerializer(user_profile)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+    elif request.method == "DELETE":
+        user = user_profile.user
+        user.delete()
+
+        return Response(status=status.HTTP_200_OK)
+
 
     elif request.method == "PUT":
         try:
