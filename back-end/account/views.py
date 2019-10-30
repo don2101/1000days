@@ -417,7 +417,7 @@ def getusers(request):
         text: nickname 검색할 문자열(String)
     
     ## Get return body
-        nickname: 사용자의 닉네임(String)
+        user: 사용자의 닉네임(String)
         image: 프로필 이미지의 url(String)
     ---
     """
@@ -427,8 +427,9 @@ def getusers(request):
     result = []
     for userprofile in userprofiles:
         try:
-            image=userprofile.user.profile_image
-            result.append({"nickname": userprofile.nickname, "image": image.image, "thumb_nail": image.thumb_nail})
+            profileimage = userprofile.user.profile_image
+            serializer = ProfileImageSerializer(profileimage)
+            result.append(serializer.data)
         except ProfileImage.DoesNotExist:
-            result.append({"nickname": userprofile.nickname})
+            result.append({"user": userprofile.nickname})
     return Response(data=result, status=status.HTTP_200_OK)
