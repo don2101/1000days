@@ -406,3 +406,29 @@ def profile_image(request, account_name):
 
         except ProfileImage.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["POST"])
+def getusers(request):
+    """
+    유저 검색 API
+    ---
+    ## POST body
+        text: nickname 검색할 문자열(String)
+    
+    ## Get return body
+        nickname: 사용자의 닉네임(String)
+        image: 프로필 이미지의 url(String)
+    ---
+    """
+    text = request.data["text"]
+    userprofiles=UserProfile.objects.filter(nickname__icontains=text)
+    user=userprofiles
+    result = []
+    for userprofile in userprofiles:
+        try:
+            image=userprofile.user.profile_image
+            result.append({"nickname": userprofile.nickname, "image": image.image, "thumb_nail": image.thumb_nail})
+        except ProfileImage.DoesNotExist:
+            result.append({"nickname": userprofile.nickname})
+    return Response(data=result, status=status.HTTP_200_OK)
