@@ -99,7 +99,7 @@ def personal(request, account_name):
     ## GET, PUT, DELETE parameter
         account_name: user의 nickname
     
-    ## GET, PUT, DELETE body
+    ## PUT, DELETE body
         token: 사용자의 JWT(String)
 
     ## GET return body
@@ -122,9 +122,6 @@ def personal(request, account_name):
     ---
     """
     user_profile = None
-    token = request.data["token"]
-    if not check_user(account_name, token):
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     try:
         user_profile = UserProfile.objects.get(nickname=account_name)
@@ -140,6 +137,9 @@ def personal(request, account_name):
 
 
     elif request.method == "DELETE":
+        token = request.data["token"]
+        if not check_user(account_name, token):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         user = user_profile.user
         user.delete()
 
@@ -147,6 +147,10 @@ def personal(request, account_name):
 
 
     elif request.method == "PUT":
+        token = request.data["token"]
+        if not check_user(account_name, token):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         try:
             serializer = UserProfileSerializer(user_profile, data=request.data, partial=True)
             
