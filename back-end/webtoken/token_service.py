@@ -38,7 +38,10 @@ def check_login(token):
     if not decoded_token:
         return False
 
-    user = User.objects.get(email=decoded_token['email'])
+    try:
+        user = User.objects.get(email=decoded_token['email'])
+    except Exception:
+        return False
 
     return user
 
