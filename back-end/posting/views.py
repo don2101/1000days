@@ -160,6 +160,7 @@ def diary(request, diary_id):
         diary_id: diary의 id(Int)
 
     ## Get return body
+        id: diary의 id
         writer: 작성자의 nickname(String)
         title: diary의 제목(String)
         content: diary의 내용(String)
