@@ -225,7 +225,7 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "POST":
-        token = decode_token(request.data["token"])
+        token = request.data["token"]
         if not check_user(account_name, token):
 	        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -246,7 +246,7 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "PUT":
-        token = decode_token(request.data["token"])
+        token = request.data["token"]
         if not check_user(account_name, token):
 	        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
