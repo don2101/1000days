@@ -260,7 +260,7 @@ def follow(request, account_name):
             user_profile = UserProfile.objects.get(nickname=account_name)
             following_user = UserProfile.objects.get(nickname=request.data['follow'])
 
-            if following_user in user_profile.following.all():
+            if following_user.user in user_profile.following.all():
                 user_profile.following.remove(following_user.user)
                 following_user.follower.remove(user_profile.user)
             

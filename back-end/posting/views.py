@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import get_user_model
 
 from rest_framework.response import Response
@@ -70,10 +70,7 @@ def post_image(request, diary_id):
     ---
     """
     if request.method == "POST":
-        try:
-            diary = Diary.objects.get(pk=diary_id)
-        except Diary.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        diary = get_object_or_404(Diary, pk=diary_id)
         
         try:
             serializer = DiaryImageSerializer(data=request.data, partial=True)
@@ -263,7 +260,6 @@ def main_feed(request, account_name):
     
     for post in user.diary_set.all():
         posts.append(post)
-
 
     for follower in user.follower.all():
         for post in follower.user.diary_set.all():
