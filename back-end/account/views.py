@@ -99,7 +99,7 @@ def personal(request, account_name):
     ## GET, PUT, DELETE parameter
         account_name: user의 nickname
     
-    ## GET, PUT, DELETE body
+    ## PUT, DELETE body
         token: 사용자의 JWT(String)
 
     ## GET return body
@@ -122,9 +122,6 @@ def personal(request, account_name):
     ---
     """
     user_profile = None
-    token = decode_token(request.data["token"])
-    if not check_user(account_name, token):
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     try:
         user_profile = UserProfile.objects.get(nickname=account_name)
@@ -140,6 +137,9 @@ def personal(request, account_name):
 
 
     elif request.method == "DELETE":
+        token = request.data["token"]
+        if not check_user(account_name, token):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         user = user_profile.user
         user.delete()
 
@@ -147,6 +147,10 @@ def personal(request, account_name):
 
 
     elif request.method == "PUT":
+        token = request.data["token"]
+        if not check_user(account_name, token):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         try:
             serializer = UserProfileSerializer(user_profile, data=request.data, partial=True)
             
@@ -225,7 +229,7 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "POST":
-        token = decode_token(request.data["token"])
+        token = request.data["token"]
         if not check_user(account_name, token):
 	        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -246,7 +250,7 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "PUT":
-        token = decode_token(request.data["token"])
+        token = request.data["token"]
         if not check_user(account_name, token):
 	        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -285,7 +289,7 @@ def follow(request, account_name):
     ## GET, POST parameter
         account_name: user의 nickname
     
-    ## POST body
+    ## GET, POST body
         follow: follow 할 사람의 nickname(String)
         token: 사용자의 JWT(String)
 
@@ -294,10 +298,12 @@ def follow(request, account_name):
         follower: 유저를 follow 하는 사람의 목록(List)
     ---
     """
+    token = request.data["token"]
+
     if request.method == "GET":
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
-            if user_profile.follower_open:
+            if user_profile.follower_open or check_user(account_name, token):
                 serializer = FollowSerializer(user_profile)
 
                 return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -308,7 +314,6 @@ def follow(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
         
     elif request.method == "POST":
-        token = decode_token(request.data["token"])
         if not check_user(account_name, token):
 	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
@@ -390,7 +395,7 @@ def profile_image(request, account_name):
     ---
     """
     user = None
-    token = decode_token(request.data["token"])
+    token = request.data["token"]
     try:
         user = UserProfile.objects.get(nickname=account_name).user
     except User.DoesNotExist:
