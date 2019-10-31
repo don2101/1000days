@@ -298,22 +298,20 @@ def follow(request, account_name):
         follower: 유저를 follow 하는 사람의 목록(List)
     ---
     """
-    token = request.data["token"]
 
     if request.method == "GET":
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
-            if user_profile.follower_open or check_user(account_name, token):
-                serializer = FollowSerializer(user_profile)
+            
+            serializer = FollowSerializer(user_profile)
 
-                return Response(data=serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
         
         except UserProfile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
     elif request.method == "POST":
+        token = request.data["token"]
         if not check_user(account_name, token):
 	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
