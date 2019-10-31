@@ -208,9 +208,7 @@ def babies(request, account_name):
         spouse: 배우자 이름(String)
     ---
     """
-    token = request.data["token"]
-    if not check_user(account_name, token):
-	    return Response(status=status.HTTP_401_UNAUTHORIZED)
+    
     # 모든 baby 출력
     if request.method == "GET":
         
@@ -227,6 +225,10 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "POST":
+        token = decode_token(request.data["token"])
+        if not check_user(account_name, token):
+	        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
             user = user_profile.user
@@ -244,6 +246,10 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "PUT":
+        token = decode_token(request.data["token"])
+        if not check_user(account_name, token):
+	        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         user = None
 
         try:
