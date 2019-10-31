@@ -169,7 +169,7 @@ def personal(request, account_name):
             return Response(status=status.HTTP_400_BAD_REQUEST)
     
 
-@api_view(["GET", "POST"])
+@api_view(["GET", "POST", "PUT"])
 def babies(request, account_name):
     """
     baby의 정보를 입력하는 API
@@ -185,7 +185,14 @@ def babies(request, account_name):
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
 
+    ## PUT body
+        id: baby의 id(Integer)
+        name: baby의 이름(String)
+        birthday: 출생일(year-month-day)
+        spouse: 배우자 이름(String)
+
     ## Get return body
+        id: baby의 id(Integer)
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
@@ -222,6 +229,29 @@ def babies(request, account_name):
             
         except UserProfile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+    elif request.method == "PUT":
+        user = None
+
+        try:
+            user = UserProfile.objects.get(nickname=account_name).user
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        baby = user.baby_set.get(id=request.data['id'])
+        
+        try:
+            serializer = BabySerializer(baby, data=request.data, partial=True)
+            
+            if serializer.is_valid():
+                serializer.save()
+
+                return Response(status=status.HTTP_201_CREATED)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+        except UserProfile.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET", "POST"])
