@@ -1,5 +1,5 @@
 from django.test import TestCase
-import requests, json
+import requests, json, random
 
 import jwt
 
@@ -8,13 +8,13 @@ import jwt
 class AccountTest(TestCase):
     def setUp(self):
         self.base_url = "http://localhost:8000/"
+        self.headers = {'Content-Type': 'application/json; charset=utf-8'}
 
-        self.email = "myuser123@gmail.com"
-        self.password = "1234567"
-        self.username = "summoner123"
-        self.nickname = "summoner123"
+        self.email = "user" + str(random.randint(1000, 10000)) + "@gmail.com"
+        self.password = "12345"
+        self.username = "yhd" + str(random.randint(1000, 10000))
+        self.nickname = "summoner" + str(random.randint(1000, 10000))
 
-    
         self.signUpUrl = self.base_url + "account/signup/"
         self.signUpData = {
             "username": self.username,
@@ -33,7 +33,7 @@ class AccountTest(TestCase):
             "password": self.password
         }
 
-        self.perosnalUrl = self.base_url + "account/" + self.nickname
+        self.personalUrl = self.base_url + "account/" + self.nickname
         self.babyUrl = self.base_url + "account/" + self.nickname + "/babies/"
 
         self.babyData = {
@@ -53,9 +53,7 @@ class AccountTest(TestCase):
 
 
     def Test_signup(self):
-        headers = {'Content-Type': 'application/json; charset=utf-8'}
-
-        result = requests.post(self.signUpUrl, data=json.dumps(self.signUpData), headers=headers)
+        result = requests.post(self.signUpUrl, data=json.dumps(self.signUpData), headers=self.headers)
 
         self.assertEqual(result.status_code, 201)
         
@@ -67,13 +65,6 @@ class AccountTest(TestCase):
         
         return result
 
-    def Test_decode_token(self):
-        token = ""
-        result = decode_token(token)
-
-        self.assertEqual(result.status_code, 200)
-
-
     def Test_logout(self):
         result = requests.post(self.logoutUrl, self.logoutData)
 
@@ -81,7 +72,7 @@ class AccountTest(TestCase):
 
 
     def Test_personal(self):
-        result = requests.get(self.perosnalUrl)
+        result = requests.get(self.personalUrl)
         
         self.assertEqual(result.status_code, 200)
 
@@ -104,12 +95,12 @@ class AccountTest(TestCase):
 
     # def test_all(self):
     #     self.Test_signup()
-        # self.Test_set_baby()
-        # self.Test_login()
-        # self.Test_personal()
-        # self.Test_baby()
-        # self.Test_follow()
-        # self.Test_logout()
+    #     self.Test_set_baby()
+    #     self.Test_login()
+    #     self.Test_personal()
+    #     self.Test_baby()
+    #     self.Test_follow()
+    #     self.Test_logout()
 
     # def test_login_and_logout(self):
     #     response = self.Test_login()
