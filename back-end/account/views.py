@@ -194,12 +194,12 @@ def babies(request, account_name):
         token: 사용자의 JWT(String)
 
     ## POST body
-        token: 사용자의 JWT(String)
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
 
     ## PUT body
+        token: 사용자의 JWT(String)
         id: baby의 id(Integer)
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
@@ -229,10 +229,6 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "POST":
-        token = request.data["token"]
-        if not check_user(account_name, token):
-	        return Response(status=status.HTTP_401_UNAUTHORIZED)
-
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
             user = user_profile.user
