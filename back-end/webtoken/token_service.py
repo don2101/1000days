@@ -32,11 +32,19 @@ def set_payload(data):
     return jwt_payload
 
 
-def check_user(user, token):
+def check_login(token):
     decoded_token = decode_token(token)
+
     if not decoded_token:
         return False
-    elif user == User.objects.get(email=decoded_token['email']):
+
+    user = User.objects.get(email=decoded_token['email'])
+
+    return user
+
+
+def check_user(login_user, user):
+    if login_user == user:
         return True
-    
+
     return False
