@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 import jwt, datetime
+from account.models import UserProfile
 
 from baby_project import settings
 
@@ -47,7 +48,8 @@ def check_login(token):
 
 
 def check_user(login_user, user):
-    if login_user == user:
+    login_user_nickname = UserProfile.objects.get(user=login_user).nickname
+    if login_user_nickname == user:
         return True
 
     return False
