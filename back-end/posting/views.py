@@ -10,8 +10,9 @@ from .serializers import DiarySerializer, DiaryImageSerializer, LikeSerializer
 
 from account.serializers import UserProfileSerializer
 from account.models import UserProfile
+from account.account_service import get_user
 
-from webtoken.token_service import decode_token, check_user
+from webtoken.token_service import check_login, check_user
 
 # Create your views here.
 
@@ -23,27 +24,22 @@ def post_diary(request):
     diary를 작성하는 API
     ---
     ## POST body
+        token: 글을 작성하는 유저의 jwt(String)
         title: diary의 제목(String, Nullable)
         content: diary의 내용(String, Nullable)
-        token: 유저 인증 jwt(String)
     ---
     """
-    token = request.data['token']
-    decoded_token = decode_token(token)
 
-    if not decoded_token:
+    result = check_login(request.data['token'])
+    
+    if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
     
-    user = User.objects.get(email=decoded_token['email'])
+    user = result
 
-    if not user:
-        return Response(status=status.HTTP_403_FORBIDDEN)
-
-    # 부분적으로 이름이 일치하는 column에 대해 입력
     serializer = DiarySerializer(data=request.data, partial=True)
 
     if serializer.is_valid():
-        # 객체를 직접 연결 => model에서 처리하는 로직
         serializer.save(writer=user)
 
         return Response(status=status.HTTP_201_CREATED)
@@ -53,7 +49,7 @@ def post_diary(request):
 @api_view(["GET", "POST"])
 def post_image(request, diary_id):
     """
-    image를 작성하고 조회하는 API
+    image를 diary에 연결하고 diary에 연결된 image를 조회하는 API
     ---
         POST: image를 upload하면 해당 diary_id를 가진 diary와 연결
         GET: diary_id를 가진 diary에 연결된 image의 url을 불러온다
@@ -61,7 +57,11 @@ def post_image(request, diary_id):
         diary_id: diary의 id(Int)
 
     ## POST body
+        token: 업로드하는 유저의 jwt(String)
         image: 이미지 파일(File)
+
+    ## GET body
+        token: 조회하는 유저의 jwt(String)
 
     ## Get return body
         diary: 연결된 idary(String)
@@ -71,11 +71,24 @@ def post_image(request, diary_id):
         updated_at: 최근 수정 일시(Date)
     ---
     """
+    result = check_login(request.data['token'])
+
+    if not result:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    user = result
+
+    diary = None
+
+    try:
+        diary = Diary.objects.get(pk=diary_id)
+    except Diary.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
     if request.method == "POST":
-        try:
-            diary = Diary.objects.get(pk=diary_id)
-        except Diary.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if not check_user(user, diary.writer):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         
         try:
             serializer = DiaryImageSerializer(data=request.data, partial=True)
@@ -93,11 +106,6 @@ def post_image(request, diary_id):
     
     elif request.method == "GET":
         try:
-            diary = Diary.objects.get(pk=diary_id)
-        except Diary.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        try:
             images = diary.diaryimage_set.all()
             serializer = DiaryImageSerializer(images, many=True)
 
@@ -109,12 +117,15 @@ def post_image(request, diary_id):
 @api_view(["GET"])
 def user_diaries(request, account_name):
     """
-    해당 user가 작성한 모든 diary를 조회하는 API
+    user가 작성한 모든 diary를 조회하는 API
     ---
     ## GET parameter
-        account_name: user의 nickname(String)
+        account_name:  diary를 작성한 user의 nickname(String)
 
-    ## Get return body(List)
+    ## GET body
+        token = diary list를 조회하는 유저의 jwt(String)
+
+    ## GET return body(List)
         id: diary의 id(Int)
         writer: 작성자의 nickname(String)
         title: diary의 제목(String)
@@ -123,10 +134,13 @@ def user_diaries(request, account_name):
         updated_at: 최근 수정 일자(Date)
     ---
     """
-    try:
-        user = UserProfile.objects.get(nickname=account_name).user
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    result = check_login(request.data['token'])
+
+    if not result:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    user = get_user(account_name)
 
     try:
         diaries = user.diary_set.all()
@@ -146,6 +160,7 @@ def diary(request, diary_id):
         diary_id: diary의 id(Int)
 
     ## Get return body
+        id: diary의 id
         writer: 작성자의 nickname(String)
         title: diary의 제목(String)
         content: diary의 내용(String)
@@ -155,12 +170,22 @@ def diary(request, diary_id):
     ## PUT body
         title: diary의 제목(String)
         content: diary의 내용(String)
-        token: 유저 인증 jwt(String)
+        token: diary를 수정하는 유저의 jwt(String)
 
     ## DELETE body
-        token: 유저 인증 jwt(String)
+        token: diary를 삭제하는 유저의 인증 jwt(String)
+
+    ## GET body
+        token: diary를 조회하는 유저의 인증 jwt(String)
     ---
     """
+    result = check_login(request.data['token'])
+
+    if not result:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    user = result
+
     diary = None
 
     try:
@@ -173,9 +198,7 @@ def diary(request, diary_id):
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
     elif request.method == "PUT":
-        token = request.data['token']
-
-        if not check_user(diary.writer, token):
+        if not check_user(user, diary.writer):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         
         serializer = DiarySerializer(diary, data=request.data, partial=True)
@@ -190,9 +213,7 @@ def diary(request, diary_id):
         # 이미지 수정도 추가
         
     elif request.method == "DELETE":
-        token = request.data['token']
-
-        if not check_user(diary.writer, token):
+        if not check_user(user, diary.writer):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         diary.delete()
@@ -203,7 +224,7 @@ def diary(request, diary_id):
 @api_view(["GET", "POST"])
 def like(request, diary_id):
     """
-    diary를 Like하고 조회하는 API
+    diary를 Like하고, diary에 like 누른 사람들을 조회하는 API
     ---
     ## GET, POST parameter
         diary_id: diary의 id(Int)
@@ -212,9 +233,19 @@ def like(request, diary_id):
         like_user: 해당 글을 like한 유저의 nickname(List)
 
     ## POST body
-        nickname: 해당 글을 like하는 유저의 nickname(String)
+        token: like 하는 유저의 jwt(String)
+
+    ## GET body
+        token: like list를 요청하는 유저의 jwt(String)
     ---
     """
+    result = check_login(request.data['token'])
+
+    if not result:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    user = result
+
     diary = None
     
     try:
@@ -223,28 +254,55 @@ def like(request, diary_id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "POST":
-        user = None
-        
-        try:
-            user = UserProfile.objects.get(nickname=request.data['nickname']).user
-        except UserProfile.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        except User.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        
         if user in diary.like_user.all():
             diary.like_user.remove(user)
 
-            return Response(status=status.HTTP_200_OK)
         else:
             diary.like_user.add(user)
 
-            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
     elif request.method == "GET":
         serializer = LikeSerializer(diary)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-        
 
+@api_view(["GET"])
+def main_feed(request, account_name):
+    """
+    main feed에서 출력할 diary 요청 API
+    ---
+    ## GET parameter
+        account_name: diary를 작성한 유저의 account_name
+
+    ## Get return body
+        like_user: 해당 글을 like한 유저의 nickname(List)
+
+    ## GET body
+        token: 유저의 jwt(String)
+    ---
+    """
+    result = check_login(request.data['token'])
+
+    if not result:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    user = get_user(account_name)
+
+    posts = []
+    
+    for post in user.diary_set.all():
+        posts.append(post)
+
+
+    for follower in user.follower.all():
+        for post in follower.user.diary_set.all():
+            posts.append(post)
+
+    posts = sorted(posts, key=lambda post: post.created_at, reverse=True)
+
+    serializer = DiarySerializer(posts, many=True)
+
+    return Response(data=serializer.data, status=status.HTTP_200_OK)
+    

@@ -4,15 +4,15 @@ from .models import Diary, DiaryImage
 
 
 class DiarySerializer(serializers.ModelSerializer):
-    # 관계를 어떻게 표현하느냐의 차이, 입력을 받아들이는 데는 상관이 없다.
-    # 그것은 model에서의 문제
+    id = serializers.IntegerField(read_only=True)
+    diary_image = serializers.StringRelatedField()
     writer = serializers.StringRelatedField()
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Diary
-        fields = ['id', 'writer', 'title', 'content', 'created_at', 'updated_at']
+        fields = ['id', 'writer', 'title', 'content', 'created_at', 'updated_at', 'diary_image']
 
 
 class DiaryImageSerializer(serializers.ModelSerializer):

@@ -21,11 +21,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class BabySerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     parent = serializers.StringRelatedField()
     
     class Meta:
         model = Baby
-        fields = ['parent', 'name', 'birthday', 'spouse']
+        fields = ['id', 'parent', 'name', 'birthday', 'spouse']
 
 
 class FollowSerializer(serializers.ModelSerializer):

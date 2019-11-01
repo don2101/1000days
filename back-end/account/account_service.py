@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from django.http import QueryDict
 
 from baby_project import settings
+from .models import UserProfile
 
 User = get_user_model()
 
@@ -25,3 +26,19 @@ def set_password(request):
     request.data['password'] = make_password(request.data['password'])
     
     return request.data
+
+
+def get_user(account_name):
+    user = None
+    
+    try:
+        user = UserProfile.objects.get(nickname=account_name).user
+
+    except UserProfile.DoesNotExist:
+        return False
+
+    except User.DoesNotExist:
+        return False
+
+    return user
+        

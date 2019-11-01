@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 import jwt, datetime
+from account.models import UserProfile
 
 from baby_project import settings
 
@@ -32,11 +33,23 @@ def set_payload(data):
     return jwt_payload
 
 
-def check_user(user, token):
+def check_login(token):
     decoded_token = decode_token(token)
+
     if not decoded_token:
         return False
-    elif user == User.objects.get(email=decoded_token['email']):
+
+    try:
+        user = User.objects.get(email=decoded_token['email'])
+    except Exception:
+        return False
+
+    return user
+
+
+def check_user(login_user, user):
+    login_user_nickname = UserProfile.objects.get(user=login_user).nickname
+    if login_user_nickname == user:
         return True
-    
+
     return False
