@@ -127,12 +127,13 @@ def get_personal(request):
 @api_view(["GET", "PUT", "DELETE"])
 def personal(request, account_name):
     """
-    개인 정보 수정 및 삭제를 요청하는 API
+    개인 정보 열람, 수정 및 삭제를 요청하는 API
     ---
+    GET: user의 개인 정보를 열람
     PUT: user의 개인 정보를 수정
     DELETE: user 삭제
 
-    ## PUT, DELETE parameter
+    ## GET, PUT, DELETE parameter
         account_name: user의 nickname
     
     ## PUT body
@@ -144,8 +145,18 @@ def personal(request, account_name):
         account_open: 계정 정보 공개 여부(Boolean),
         follower_open: Follower 정보 공개 여부(Boolean),
 
-    ## DELETE body
+    ## GET, DELETE body
         token: 사용자의 JWT(String)
+
+    ## GET return body
+        user: {
+            email: 사용자의 email(String),
+            username: 사용자의 이름(String)
+        },
+        nickname: 사용자의 계정 nickname(String),
+        select_baby: baby 존재 여부(Boolean),
+        account_open: 계정 존재 여부(Boolean),
+        follower_open: Follower 정보 공개 여부(Boolean)
     ---
     """
     user_profile = None
@@ -203,6 +214,7 @@ def personal(request, account_name):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
     
+
 @api_view(["POST"])
 def get_babies(request):
     """
@@ -243,13 +255,17 @@ def get_babies(request):
 @api_view(["GET", "POST", "PUT"])
 def babies(request, account_name):
     """
-    baby의 정보 입력, 수정을 요청하는 API
+    baby의 정보 열람, 입력 및 수정을 요청하는 API
     ---
+    GET: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 출력
     POST: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 입력
     PUT: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 수정
 
-    ## POST, PUT parameter
+    ## GET, POST, PUT parameter
         account_name: user의 nickname
+
+    ## GET body
+        token: 사용자의 JWT(String)
 
     ## POST body
         name: baby의 이름(String)
@@ -258,6 +274,12 @@ def babies(request, account_name):
 
     ## PUT body
         token: 사용자의 JWT(String)
+        id: baby의 id(Integer)
+        name: baby의 이름(String)
+        birthday: 출생일(year-month-day)
+        spouse: 배우자 이름(String)
+
+    ## GET return body
         id: baby의 id(Integer)
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
@@ -362,17 +384,25 @@ def get_follow(request):
 @api_view(["GET", "POST"])
 def follow(request, account_name):
     """
-    follow 기능을 수행 하는 API
+    follow 열람, 입력을 수행 하는 API
     ---
+    GET: user의 nickname으로 계정을 찾고, 해당 계정 follow 정보를 출력
     POST: user의 nickname으로 계정을 찾고, 해당 계정에 follow 정보를 추가
     (following: 유저가 follow 하는 사람, follower: 유저를 follow 하는 사람)
 
-    ## POST parameter
+    ## GET, POST parameter
         account_name: user의 nickname
 
-    # POST body
+    ## GET body
+        token: 사용자의 JWT(String)
+
+    ## POST body
         token: 사용자의 JWT(String)
         follow: follow 할 사람의 nickname(String)
+
+    ## GET return body
+        following: 유저가 follow 하는 사람의 목록(List)
+        follower: 유저를 follow 하는 사람의 목록(List)
     ---
     """
     token_user = check_login(request.data["token"])
@@ -489,20 +519,23 @@ def get_profile_image(request):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(["POST", "PUT", "DELETE"])
+@api_view(["GET", "POST", "PUT", "DELETE"])
 def profile_image(request, account_name):
     """
-    User 프로필 사진 생성, 수정, 삭제를 요청하는 API
+    User 프로필 사진 열람, 생성, 수정, 삭제를 요청하는 API
     ---
-    ## POST, PUT, DELETE parameter
+    ## GET, POST, PUT, DELETE parameter
         account_name: user의 nickname
     
     ## POST, PUT body
         token: 사용자의 JWT(String)
         image: 프로필 이미지로 사용할 사진(File)
 
-    ## DELETE body
+    ## GET, DELETE body
         token: 사용자의 JWT(String)
+    
+    ## GET return body
+        image: 프로필 이미지의 url(String)
     ---
     """
     user = None
@@ -511,7 +544,7 @@ def profile_image(request, account_name):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     try:
-        user = UserProfile.objects.get(nickname=request.data["account_name"]).user
+        user = UserProfile.objects.get(nickname=account_name).user
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
         
