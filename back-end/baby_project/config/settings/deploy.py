@@ -13,3 +13,9 @@ CORS_ORIGIN_WHITELIST = [
     "13.124.234.2",
     ".ap-northeast-2.compute.amazonaws.com"
 ]
+
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
+
+STATIC_ROOT = os.path.join(ROOT_DIR, '.static_root')

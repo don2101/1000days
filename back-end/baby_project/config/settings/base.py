@@ -131,7 +131,7 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 # Static Setting
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 #Media Setting
 MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
