@@ -240,7 +240,7 @@ def get_babies(request):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(["POST", "PUT"])
+@api_view(["GET", "POST", "PUT"])
 def babies(request, account_name):
     """
     baby의 정보 입력, 수정을 요청하는 API
@@ -264,6 +264,23 @@ def babies(request, account_name):
         spouse: 배우자 이름(String)
     ---
     """
+    token_user = check_login(request.data["token"])
+    if not token_user:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+    if request.method == "GET":
+        try:
+            user_profile = UserProfile.objects.get(nickname=account_name)
+            user = user_profile.user
+            
+            babies = user.baby_set.all()
+            serializer = BabySerializer(babies, many=True)
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+            
+        except UserProfile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    
     if request.method == "POST":
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
@@ -282,9 +299,6 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "PUT":
-        token_user = check_login(request.data["token"])
-        if not token_user:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
         if not check_user(token_user, account_name):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         user = None
@@ -342,7 +356,7 @@ def get_follow(request):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(["POST"])
+@api_view(["GET", "POST"])
 def follow(request, account_name):
     """
     follow 기능을 수행 하는 API
@@ -361,10 +375,21 @@ def follow(request, account_name):
     token_user = check_login(request.data["token"])
     if not token_user:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
-    if not check_user(token_user, account_name):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+    if request.method == "GET":
+        try:
+            user_profile = UserProfile.objects.get(nickname=account_name)
+            
+            serializer = FollowSerializer(user_profile)
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        
+        except UserProfile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "POST":
+        if not check_user(token_user, account_name):
+	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
             following_user = UserProfile.objects.get(nickname=request.data['follow'])
