@@ -10,7 +10,7 @@ from webtoken.models import Blacklist
 from .serializers import UserSerializer, UserProfileSerializer, BabySerializer, FollowSerializer, LikeSerializer, ProfileImageSerializer
 from webtoken.serializers import BlacklistSerializer
 from .account_service import user_authenticate, set_password
-from webtoken.token_service import create_token, decode_token, check_user
+from webtoken.token_service import create_token, decode_token, check_login, check_user
 
 from datetime import timezone, datetime
 
@@ -90,18 +90,23 @@ def login(request):
 @api_view(["GET", "PUT", "DELETE"])
 def personal(request, account_name):
     """
-    개인 정보를 요청하는 API
+    개인 정보 열람, 수정 및 삭제를 요청하는 API
     ---
-    GET: user의 nickname으로 계정을 찾아 정보를 return
-    PUT: user의 개인 정보를 수정
-    DELETE: user 삭제
-
+        GET: user의 개인 정보를 열람
+        PUT: user의 개인 정보를 수정
+        DELETE: user 삭제
     ## GET, PUT, DELETE parameter
         account_name: user의 nickname
-    
-    ## PUT, DELETE body
+    ## PUT body
+        token: 사용자의 JWT(String),
+        password: 사용자의 비밀번호(String),
+        introduce: 사용자 소개 문구(String),
+        nickname: 사용자의 계정 이름(String),
+        select_baby: 아기 존재 여부(Boolean),
+        account_open: 계정 정보 공개 여부(Boolean),
+        follower_open: Follower 정보 공개 여부(Boolean),
+    ## GET, DELETE body
         token: 사용자의 JWT(String)
-
     ## GET return body
         user: {
             email: 사용자의 email(String),
@@ -111,46 +116,36 @@ def personal(request, account_name):
         select_baby: baby 존재 여부(Boolean),
         account_open: 계정 존재 여부(Boolean),
         follower_open: Follower 정보 공개 여부(Boolean)
-
-    ## PUT body
-        password: 사용자의 비밀번호(String),
-        introduce: 사용자 소개 문구(String),
-        nickname: 사용자의 계정 이름(String),
-        select_baby: 아기 존재 여부(Boolean),
-        account_open: 계정 정보 공개 여부(Boolean),
-        follower_open: Follower 정보 공개 여부(Boolean),
     ---
     """
     user_profile = None
-
+    token_user = check_login(request.data["token"])
+    if not token_user:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
     try:
         user_profile = UserProfile.objects.get(nickname=account_name)
-
     except UserProfile.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
 
     if request.method == "GET":
         serializer = UserProfileSerializer(user_profile)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-
     elif request.method == "DELETE":
-        token = request.data["token"]
-        if not check_user(account_name, token):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if not check_user(token_user, account_name):
+	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         user = user_profile.user
-        user.delete()
-
-        return Response(status=status.HTTP_200_OK)
+        try:
+            user.delete()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
     elif request.method == "PUT":
-        token = request.data["token"]
-        if not check_user(account_name, token):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-
+        if not check_user(token_user, account_name):
+	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = UserProfileSerializer(user_profile, data=request.data, partial=True)
             
@@ -177,45 +172,42 @@ def personal(request, account_name):
 
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 @api_view(["GET", "POST", "PUT"])
 def babies(request, account_name):
     """
-    baby의 정보를 입력하는 API
+    baby의 정보 열람, 입력 및 수정을 요청하는 API
     ---
-        GET: user의 nickname으로 계정을 찾아 정보를 return
-        POST: user의 nickname으로 계정을 찾고, 해당 계정에 baby 정보를 입력
-
-    ## GET, POST parameter
+        GET: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 출력
+        POST: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 입력
+        PUT: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 수정
+    ## GET, POST, PUT parameter
         account_name: user의 nickname
-    
     ## GET body
         token: 사용자의 JWT(String)
-
     ## POST body
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
-
     ## PUT body
         token: 사용자의 JWT(String)
         id: baby의 id(Integer)
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
-
-    ## Get return body
+    ## GET return body
         id: baby의 id(Integer)
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
     ---
     """
-    
-    # 모든 baby 출력
     if request.method == "GET":
-        
+        token_user = check_login(request.data["token"])
+        if not token_user:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
             user = user_profile.user
@@ -227,7 +219,7 @@ def babies(request, account_name):
             
         except UserProfile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
+    
     elif request.method == "POST":
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
@@ -246,10 +238,11 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "PUT":
-        token = request.data["token"]
-        if not check_user(account_name, token):
-	        return Response(status=status.HTTP_401_UNAUTHORIZED)
-
+        token_user = check_login(request.data["token"])
+        if not token_user:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        if not check_user(token_user, account_name):
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         user = None
 
         try:
@@ -276,24 +269,26 @@ def babies(request, account_name):
 @api_view(["GET", "POST"])
 def follow(request, account_name):
     """
-    follow 기능을 수행 하는 API
+    follow 열람, 입력을 수행 하는 API
     ---
-        GET: user의 nickname으로 계정을 찾아 follower, following에 대한 정보 return
+        GET: user의 nickname으로 계정을 찾고, 해당 계정 follow 정보를 출력
         POST: user의 nickname으로 계정을 찾고, 해당 계정에 follow 정보를 추가
         (following: 유저가 follow 하는 사람, follower: 유저를 follow 하는 사람)
-
     ## GET, POST parameter
         account_name: user의 nickname
-    
-    ## GET, POST body
-        follow: follow 할 사람의 nickname(String)
+    ## GET body
         token: 사용자의 JWT(String)
-
-    ## Get return body
+    ## POST body
+        token: 사용자의 JWT(String)
+        follow: follow 할 사람의 nickname(String)
+    ## GET return body
         following: 유저가 follow 하는 사람의 목록(List)
         follower: 유저를 follow 하는 사람의 목록(List)
     ---
     """
+    token_user = check_login(request.data["token"])
+    if not token_user:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     if request.method == "GET":
         try:
@@ -305,10 +300,9 @@ def follow(request, account_name):
         
         except UserProfile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
     elif request.method == "POST":
-        token = request.data["token"]
-        if not check_user(account_name, token):
+        if not check_user(token_user, account_name):
 	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
@@ -372,24 +366,24 @@ def authuser(request):
 @api_view(["GET", "POST", "PUT", "DELETE"])
 def profile_image(request, account_name):
     """
-    User 프로필 사진 관련 API
+    User 프로필 사진 열람, 생성, 수정, 삭제를 요청하는 API
     ---
     ## GET, POST, PUT, DELETE parameter
         account_name: user의 nickname
-    
     ## POST, PUT body
         token: 사용자의 JWT(String)
         image: 프로필 이미지로 사용할 사진(File)
-
-    ## DELETE body
+    ## GET, DELETE body
         token: 사용자의 JWT(String)
-
-    ## Get return body
+    ## GET return body
         image: 프로필 이미지의 url(String)
     ---
     """
     user = None
-    token = request.data["token"]
+    token_user = check_login(request.data["token"])
+    if not token_user:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
     try:
         user = UserProfile.objects.get(nickname=account_name).user
     except User.DoesNotExist:
@@ -401,16 +395,15 @@ def profile_image(request, account_name):
         try:
             image = user.profile_image
         except ProfileImage.DoesNotExist:
-            return Response(data={"image": ""}, status=status.HTTP_200_OK)
+            return Response(data={"user":account_name, "image": None, "thumb_nail": None}, status=status.HTTP_200_OK)
 
         serializer = ProfileImageSerializer(image)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == "POST":
-        if not check_user(account_name, token):
+        if not check_user(token_user, account_name):
 	        return Response(status=status.HTTP_401_UNAUTHORIZED)
-
         serializer = ProfileImageSerializer(data=request.data, partial=True)
 
         if serializer.is_valid():
@@ -421,9 +414,8 @@ def profile_image(request, account_name):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "PUT":
-        if not check_user(account_name, token):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-
+        if not check_user(token_user, account_name):
+	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         image = None
         
         try:
@@ -441,9 +433,6 @@ def profile_image(request, account_name):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "DELETE":
-        if not check_user(account_name, token):
-	        return Response(status=status.HTTP_401_UNAUTHORIZED)
-
         image = None
 
         try:
@@ -464,12 +453,17 @@ def getusers(request):
     ---
     ## POST body
         text: nickname 검색할 문자열(String)
-    
+        token: 사용자의 JWT(String)
     ## Get return body
         user: 사용자의 닉네임(String)
         image: 프로필 이미지의 url(String)
+        thumb_nail: 사용자의 썸네일(String)
     ---
     """
+    token_user = check_login(request.data["token"])
+    if not token_user:
+	    return Response(status=status.HTTP_401_UNAUTHORIZED)
+
     text = request.data["text"]
     userprofiles=UserProfile.objects.filter(nickname__icontains=text)
     user=userprofiles
@@ -480,5 +474,5 @@ def getusers(request):
             serializer = ProfileImageSerializer(profileimage)
             result.append(serializer.data)
         except ProfileImage.DoesNotExist:
-            result.append({"user": userprofile.nickname})
+            result.append({"user": userprofile.nickname, "image": "", "thumb_nail": ""})
     return Response(data=result, status=status.HTTP_200_OK)
