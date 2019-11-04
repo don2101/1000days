@@ -92,13 +92,11 @@ def personal(request, account_name):
     """
     개인 정보 열람, 수정 및 삭제를 요청하는 API
     ---
-    GET: user의 개인 정보를 열람
-    PUT: user의 개인 정보를 수정
-    DELETE: user 삭제
-
+        GET: user의 개인 정보를 열람
+        PUT: user의 개인 정보를 수정
+        DELETE: user 삭제
     ## GET, PUT, DELETE parameter
         account_name: user의 nickname
-    
     ## PUT body
         token: 사용자의 JWT(String),
         password: 사용자의 비밀번호(String),
@@ -107,10 +105,8 @@ def personal(request, account_name):
         select_baby: 아기 존재 여부(Boolean),
         account_open: 계정 정보 공개 여부(Boolean),
         follower_open: Follower 정보 공개 여부(Boolean),
-
     ## GET, DELETE body
         token: 사용자의 JWT(String)
-
     ## GET return body
         user: {
             email: 사용자의 email(String),
@@ -183,28 +179,23 @@ def babies(request, account_name):
     """
     baby의 정보 열람, 입력 및 수정을 요청하는 API
     ---
-    GET: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 출력
-    POST: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 입력
-    PUT: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 수정
-
+        GET: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 출력
+        POST: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 입력
+        PUT: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 수정
     ## GET, POST, PUT parameter
         account_name: user의 nickname
-
     ## GET body
         token: 사용자의 JWT(String)
-
     ## POST body
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
-
     ## PUT body
         token: 사용자의 JWT(String)
         id: baby의 id(Integer)
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
-
     ## GET return body
         id: baby의 id(Integer)
         name: baby의 이름(String)
@@ -280,20 +271,16 @@ def follow(request, account_name):
     """
     follow 열람, 입력을 수행 하는 API
     ---
-    GET: user의 nickname으로 계정을 찾고, 해당 계정 follow 정보를 출력
-    POST: user의 nickname으로 계정을 찾고, 해당 계정에 follow 정보를 추가
-    (following: 유저가 follow 하는 사람, follower: 유저를 follow 하는 사람)
-
+        GET: user의 nickname으로 계정을 찾고, 해당 계정 follow 정보를 출력
+        POST: user의 nickname으로 계정을 찾고, 해당 계정에 follow 정보를 추가
+        (following: 유저가 follow 하는 사람, follower: 유저를 follow 하는 사람)
     ## GET, POST parameter
         account_name: user의 nickname
-
     ## GET body
         token: 사용자의 JWT(String)
-
     ## POST body
         token: 사용자의 JWT(String)
         follow: follow 할 사람의 nickname(String)
-
     ## GET return body
         following: 유저가 follow 하는 사람의 목록(List)
         follower: 유저를 follow 하는 사람의 목록(List)
@@ -383,14 +370,11 @@ def profile_image(request, account_name):
     ---
     ## GET, POST, PUT, DELETE parameter
         account_name: user의 nickname
-    
     ## POST, PUT body
         token: 사용자의 JWT(String)
         image: 프로필 이미지로 사용할 사진(File)
-
     ## GET, DELETE body
         token: 사용자의 JWT(String)
-    
     ## GET return body
         image: 프로필 이미지의 url(String)
     ---
@@ -470,7 +454,6 @@ def getusers(request):
     ## POST body
         text: nickname 검색할 문자열(String)
         token: 사용자의 JWT(String)
-    
     ## Get return body
         user: 사용자의 닉네임(String)
         image: 프로필 이미지의 url(String)
