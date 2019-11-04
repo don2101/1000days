@@ -124,7 +124,7 @@ def get_personal(request):
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(["PUT", "DELETE"])
+@api_view(["GET", "PUT", "DELETE"])
 def personal(request, account_name):
     """
     개인 정보 수정 및 삭제를 요청하는 API
@@ -152,14 +152,19 @@ def personal(request, account_name):
     token_user = check_login(request.data["token"])
     if not token_user:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
-    if not check_user(token_user, account_name):
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
     try:
         user_profile = UserProfile.objects.get(nickname=account_name)
     except UserProfile.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+    if request.method == "GET":
+        serializer = UserProfileSerializer(user_profile)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
     if request.method == "DELETE":
+        if not check_user(token_user, account_name):
+	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         user = user_profile.user
         try:
             user.delete()
@@ -169,6 +174,8 @@ def personal(request, account_name):
 
 
     elif request.method == "PUT":
+        if not check_user(token_user, account_name):
+	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = UserProfileSerializer(user_profile, data=request.data, partial=True)
             
