@@ -87,43 +87,6 @@ def login(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["POST"])
-def get_personal(request):
-    """
-    개인 정보를 요청하는 API
-    ---
-    user의 nickname으로 계정을 찾아 정보를 return
-
-    ## POST body
-        token: 사용자의 JWT(String),
-        account_name: user의 nickname(String)
-
-    ## POST return body
-        user: {
-            email: 사용자의 email(String),
-            username: 사용자의 이름(String)
-        },
-        nickname: 사용자의 계정 nickname(String),
-        select_baby: baby 존재 여부(Boolean),
-        account_open: 계정 존재 여부(Boolean),
-        follower_open: Follower 정보 공개 여부(Boolean)
-    ---
-    """
-    user_profile = None
-    token_user = check_login(request.data["token"])
-    if not token_user:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-    try:
-        user_profile = UserProfile.objects.get(nickname=request.data["account_name"])
-    except UserProfile.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    serializer = UserProfileSerializer(user_profile)
-
-    return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-
 @api_view(["GET", "PUT", "DELETE"])
 def personal(request, account_name):
     """
@@ -213,43 +176,6 @@ def personal(request, account_name):
 
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-    
-
-@api_view(["POST"])
-def get_babies(request):
-    """
-    baby의 정보를 요청하는 API
-    ---
-    user의 nickname으로 계정을 찾아 정보를 return
-    
-    ## POST body
-        token: 사용자의 JWT(String)
-        account_name: user의 nickname(String)
-
-    ## POST return body
-        id: baby의 id(Integer)
-        name: baby의 이름(String)
-        birthday: 출생일(year-month-day)
-        spouse: 배우자 이름(String)
-    ---
-    """
-    # 모든 baby 출력
-    if request.method == "POST":
-        
-        token_user = check_login(request.data["token"])
-        if not token_user:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        try:
-            user_profile = UserProfile.objects.get(nickname=request.data["account_name"])
-            user = user_profile.user
-            
-            babies = user.baby_set.all()
-            serializer = BabySerializer(babies, many=True)
-
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-            
-        except UserProfile.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["GET", "POST", "PUT"])
@@ -347,38 +273,6 @@ def babies(request, account_name):
             
         except UserProfile.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(["POST"])
-def get_follow(request):
-    """
-    follow 목록 정보를 요청하는 API
-    ---
-    POST: user의 nickname으로 계정을 찾아 follower, following에 대한 정보 return
-    
-    ## POST body
-        token: 사용자의 JWT(String)
-        account_name: user의 nickname
-
-    ## POST return body
-        following: 유저가 follow 하는 사람의 목록(List)
-        follower: 유저를 follow 하는 사람의 목록(List)
-    ---
-    """
-    token_user = check_login(request.data["token"])
-    if not token_user:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-    if request.method == "POST":
-        try:
-            user_profile = UserProfile.objects.get(nickname=request.data["account_name"])
-            
-            serializer = FollowSerializer(user_profile)
-
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-        
-        except UserProfile.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["GET", "POST"])
@@ -480,43 +374,6 @@ def authuser(request):
             return Response(status=status.HTTP_202_ACCEPTED)
     else:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-
-@api_view(["POST"])
-def get_profile_image(request):
-    """
-    User 프로필 사진을 요청하는 API
-    ---
-    
-    ## POST body
-        token: 사용자의 JWT(String)
-        account_name: user의 nickname
-
-    ## POST return body
-        image: 프로필 이미지의 url(String)
-    ---
-    """
-    user = None
-    token_user = check_login(request.data["token"])
-    if not token_user:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
-
-    try:
-        user = UserProfile.objects.get(nickname=request.data["account_name"]).user
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-        
-    if request.method == "POST":
-        image = None
-        
-        try:
-            image = user.profile_image
-        except ProfileImage.DoesNotExist:
-            return Response(data={"image": ""}, status=status.HTTP_200_OK)
-
-        serializer = ProfileImageSerializer(image)
-
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET", "POST", "PUT", "DELETE"])
