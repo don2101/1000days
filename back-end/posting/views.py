@@ -20,6 +20,7 @@ User = get_user_model()
 
 @api_view(["POST"])
 def post_diary(request):
+    # is_diary_open, selected_baby
     """
     diary를 작성하는 API
     ---
@@ -65,7 +66,7 @@ def post_image(request, diary_id):
         token: 조회하는 유저의 jwt(String)
 
     ## Get return body
-        diary: 연결된 idary(String)
+        diary: 연결된 idary(String)  
         image: image의 url(String)
         thumb_nail: thumbnail의 url(String)
         created_at: 최초 upload 일시(Date)
@@ -90,12 +91,11 @@ def post_image(request, diary_id):
 
         if not check_user(user, diary.writer):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
-        
+
         try:
             serializer = DiaryImageSerializer(data=request.data, partial=True)
-            
+
             if serializer.is_valid():
-                
                 serializer.save(diary=diary)
 
                 return Response(status=status.HTTP_201_CREATED)
@@ -107,7 +107,7 @@ def post_image(request, diary_id):
     
     elif request.method == "GET":
         try:
-            images = diary.diaryimage_set.all()
+            images = diary.diary_image.all()
             serializer = DiaryImageSerializer(images, many=True)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -131,6 +131,7 @@ def user_diaries(request, account_name):
         writer: 작성자의 nickname(String)
         title: diary의 제목(String)
         content: diary의 내용(String)
+        baby: baby의 id(Int)
         created_at: 최초 작성 일자(Date)
         updated_at: 최근 수정 일자(Date)
     ---
@@ -165,12 +166,14 @@ def diary(request, diary_id):
         writer: 작성자의 nickname(String)
         title: diary의 제목(String)
         content: diary의 내용(String)
+        baby: baby의 id(Int)
         created_at: 최초 작성 일자(Date)
         updated_at: 최근 수정 일자(Date)
 
     ## PUT body
         title: diary의 제목(String)
         content: diary의 내용(String)
+        baby: baby(Int)
         token: diary를 수정하는 유저의 jwt(String)
 
     ## DELETE body

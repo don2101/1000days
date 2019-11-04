@@ -5,7 +5,7 @@ from .models import Diary, DiaryImage
 
 class DiarySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    diary_image = serializers.StringRelatedField()
+    diary_image = serializers.StringRelatedField(many=True)
     writer = serializers.StringRelatedField()
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
