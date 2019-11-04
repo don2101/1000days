@@ -5,14 +5,14 @@ from .models import Diary, DiaryImage
 
 class DiarySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    diary_image = serializers.StringRelatedField()
+    diary_image = serializers.StringRelatedField(many=True)
     writer = serializers.StringRelatedField()
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Diary
-        fields = ['id', 'writer', 'title', 'content', 'created_at', 'updated_at', 'diary_image']
+        fields = ['id', 'writer', 'title', 'content', 'created_at', 'updated_at', 'diary_image', 'baby', 'is_open']
 
 
 class DiaryImageSerializer(serializers.ModelSerializer):
