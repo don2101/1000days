@@ -27,6 +27,7 @@ def post_diary(request):
         token: 글을 작성하는 유저의 jwt(String)
         title: diary의 제목(String, Nullable)
         content: diary의 내용(String, Nullable)
+        baby: baby의 id(Int)
     ---
     """
 

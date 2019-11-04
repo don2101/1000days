@@ -12,7 +12,7 @@ class DiarySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Diary
-        fields = ['id', 'writer', 'title', 'content', 'created_at', 'updated_at', 'diary_image']
+        fields = ['id', 'writer', 'title', 'content', 'created_at', 'updated_at', 'diary_image', 'baby']
 
 
 class DiaryImageSerializer(serializers.ModelSerializer):
