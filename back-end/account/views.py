@@ -162,7 +162,7 @@ def personal(request, account_name):
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    if request.method == "DELETE":
+    elif request.method == "DELETE":
         if not check_user(token_user, account_name):
 	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         user = user_profile.user
@@ -264,11 +264,11 @@ def babies(request, account_name):
         spouse: 배우자 이름(String)
     ---
     """
-    token_user = check_login(request.data["token"])
-    if not token_user:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
-
     if request.method == "GET":
+        token_user = check_login(request.data["token"])
+        if not token_user:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
             user = user_profile.user
@@ -281,7 +281,7 @@ def babies(request, account_name):
         except UserProfile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
     
-    if request.method == "POST":
+    elif request.method == "POST":
         try:
             user_profile = UserProfile.objects.get(nickname=account_name)
             user = user_profile.user
@@ -299,6 +299,9 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "PUT":
+        token_user = check_login(request.data["token"])
+        if not token_user:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         if not check_user(token_user, account_name):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         user = None
@@ -387,7 +390,7 @@ def follow(request, account_name):
         except UserProfile.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == "POST":
+    elif request.method == "POST":
         if not check_user(token_user, account_name):
 	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         try:
@@ -506,14 +509,27 @@ def profile_image(request, account_name):
     token_user = check_login(request.data["token"])
     if not token_user:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
-    if not check_user(token_user, account_name):
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
     try:
-        user = UserProfile.objects.get(nickname=account_name).user
+        user = UserProfile.objects.get(nickname=request.data["account_name"]).user
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    if request.method == "GET":
+        image = None
+        
+        try:
+            image = user.profile_image
+        except ProfileImage.DoesNotExist:
+            return Response(data={"image": ""}, status=status.HTTP_200_OK)
 
-    if request.method == "POST":
+        serializer = ProfileImageSerializer(image)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == "POST":
+        if not check_user(token_user, account_name):
+	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         serializer = ProfileImageSerializer(data=request.data, partial=True)
 
         if serializer.is_valid():
@@ -524,6 +540,8 @@ def profile_image(request, account_name):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "PUT":
+        if not check_user(token_user, account_name):
+	        return Response(status=status.HTTP_401_UNAUTHORIZED)
         image = None
         
         try:
