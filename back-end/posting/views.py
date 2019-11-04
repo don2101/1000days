@@ -29,6 +29,7 @@ def post_diary(request):
         title: diary의 제목(String, Nullable)
         content: diary의 내용(String, Nullable)
         baby: baby의 id(Int)
+        is_open: 공개 여부 설정(Boolean)
     ---
     """
 
@@ -134,6 +135,8 @@ def user_diaries(request, account_name):
         baby: baby의 id(Int)
         created_at: 최초 작성 일자(Date)
         updated_at: 최근 수정 일자(Date)
+        is_open: 공개 여부(Boolean)
+        diary_image: diary에 연결된 image들의 url(List)
     ---
     """
 
@@ -169,6 +172,8 @@ def diary(request, diary_id):
         baby: baby의 id(Int)
         created_at: 최초 작성 일자(Date)
         updated_at: 최근 수정 일자(Date)
+        is_open: 공개 여부(Boolean)
+        diary_image: diary에 연결된 image들의 url(List)
 
     ## PUT body
         title: diary의 제목(String)
