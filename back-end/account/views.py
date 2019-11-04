@@ -554,7 +554,7 @@ def profile_image(request, account_name):
         try:
             image = user.profile_image
         except ProfileImage.DoesNotExist:
-            return Response(data={"image": ""}, status=status.HTTP_200_OK)
+            return Response(data={"user":account_name, "image": None, "thumb_nail": None}, status=status.HTTP_200_OK)
 
         serializer = ProfileImageSerializer(image)
 
