@@ -40,18 +40,13 @@ def post_comment(request):
 		return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 	try:
-		user = User.objects.get(email = decoded_token["email"])
-	except User.DoesNotExist:
-		return Response(status = status.HTTP_403_FORBIDDEN)
-
-	try:
 		diary = Diary.objects.get(pk = diary_id)
 	except Diary.DoesNotExist:
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 	
 	serializer = CommentSerializer(data={"content": request.data["content"]}, partial=True)
 	if serializer.is_valid():
-		serializer.save(writer=user, diary=diary)
+		serializer.save(writer=token_user, diary=diary)
 
 		return Response(status=status.HTTP_201_CREATED)
 	return Response(status=status.HTTP_400_BAD_REQUEST)
