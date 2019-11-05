@@ -22,9 +22,10 @@ def post_comment(request):
 	"""
     댓글 작성을 요청하는 API
     ---
-    token, content, diary_id를 받아 status을 return
+    content, diary_id를 받아 status을 return
+	## POST headers
+		Authorization: 사용자의 token(String),
     ## POST body
-        token: 사용자의 token(String),
 		content: 사용자가 작성하고자 하는 댓글 내용
         diary_id: 사용자가 댓글을 달고자 하는 Diary의 id
     ## Get return
@@ -32,7 +33,7 @@ def post_comment(request):
     ---
     """
 	diary_id = request.data["diary_id"]
-	token = request.data['token']
+	token = request.headers.get("Authorization")
 	
 	token_user = check_login(token)
 	if not token_user:
@@ -62,8 +63,9 @@ def get_comments(request):
     해당 게시글의 모든 댓글을 조회하는 API
     ---
     diary_id를 받아 comment와 status을 return
+	## POST headers
+		Authorization: 사용자의 token(String),
     ## POST body
-		token: 사용자의 token(String),
         diary_id: 사용자가 댓글을 조회하고자 하는 Diary의 id
     ## POST return body
 		id: comment의 id(Int)
@@ -74,7 +76,7 @@ def get_comments(request):
         updated_at: 최근 수정 일자(Date)
     ---
     """
-	token_user = check_login(request.data["token"])
+	token_user = check_login(request.headers.get("Authorization"))
 	if not token_user:
 		return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -99,13 +101,14 @@ def update_comment(request):
     해당 댓글을 수정하는 API
     ---
     comment_id, content를 받아 댓글을 수정하고 status을 return
+	## POST headers
+		Authorization: 사용자의 token(String),
     ## POST body
-		token: 유저 인증 jwt(String)
         comment_id: 수정하고자 하는 comment의 id(Int)
 		content: 수정하고자 하는 comment의 내용(String)
     ---
     """
-	token = request.data['token']
+	token = request.headers.get("Authorization")
 	comment_id = request.data["comment_id"]
 	content = request.data["content"]
 
@@ -135,12 +138,13 @@ def delete_comment(request):
     해당 댓글을 삭제하는 API
     ---
     comment_id를 받아 댓글을 삭제하고 status을 return
+	## POST headers
+		Authorization: 사용자의 token(String),
     ## POST body
-		token: 유저 인증 jwt(String)
         comment_id: 수정하고자 하는 comment의 id(Int)
     ---
     """
-	token = request.data['token']
+	token = request.headers.get("Authorization")
 	comment_id = request.data["comment_id"]
 	
 	token_user = check_login(token)

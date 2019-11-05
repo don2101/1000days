@@ -24,8 +24,9 @@ def post_diary(request):
     """
     diary를 작성하는 API
     ---
+    ## POST headers
+        Authorization: 글을 작성하는 유저의 jwt(String)
     ## POST body
-        token: 글을 작성하는 유저의 jwt(String)
         title: diary의 제목(String, Nullable)
         content: diary의 내용(String, Nullable)
         baby: baby의 id(Int)
@@ -33,7 +34,7 @@ def post_diary(request):
     ---
     """
 
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
     
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -58,14 +59,10 @@ def post_image(request, diary_id):
         GET: diary_id를 가진 diary에 연결된 image의 url을 불러온다
     ## POST, GET parameter
         diary_id: diary의 id(Int)
-
+    ##GET, POST headers
+        Authorization: 업로드, 조회하는 유저의 jwt(String)
     ## POST body
-        token: 업로드하는 유저의 jwt(String)
         image: 이미지 파일(File)
-
-    ## GET body
-        token: 조회하는 유저의 jwt(String)
-
     ## Get return body
         diary: 연결된 idary(String)  
         image: image의 url(String)
@@ -74,7 +71,7 @@ def post_image(request, diary_id):
         updated_at: 최근 수정 일시(Date)
     ---
     """
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
 
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -123,10 +120,8 @@ def user_diaries(request, account_name):
     ---
     ## GET parameter
         account_name:  diary를 작성한 user의 nickname(String)
-
-    ## GET body
-        token = diary list를 조회하는 유저의 jwt(String)
-
+    ## GET headers
+        Authorization: diary list를 조회하는 유저의 jwt(String)
     ## GET return body(List)
         id: diary의 id(Int)
         writer: 작성자의 nickname(String)
@@ -140,7 +135,7 @@ def user_diaries(request, account_name):
     ---
     """
 
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
 
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -163,7 +158,6 @@ def diary(request, diary_id):
     ---
     ## GET, PUT, DELETE parameter
         diary_id: diary의 id(Int)
-
     ## Get return body
         id: diary의 id
         writer: 작성자의 nickname(String)
@@ -174,21 +168,15 @@ def diary(request, diary_id):
         updated_at: 최근 수정 일자(Date)
         is_open: 공개 여부(Boolean)
         diary_image: diary에 연결된 image들의 url(List)
-
+    ## GET, PUT, DELETE headers
+        Authorization: diary를 조회, 수정, 삭제하는 유저의 jwt(String)
     ## PUT body
         title: diary의 제목(String)
         content: diary의 내용(String)
         baby: baby(Int)
-        token: diary를 수정하는 유저의 jwt(String)
-
-    ## DELETE body
-        token: diary를 삭제하는 유저의 인증 jwt(String)
-
-    ## GET body
-        token: diary를 조회하는 유저의 인증 jwt(String)
     ---
     """
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
 
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -237,18 +225,13 @@ def like(request, diary_id):
     ---
     ## GET, POST parameter
         diary_id: diary의 id(Int)
-
     ## Get return body
         like_user: 해당 글을 like한 유저의 nickname(List)
-
-    ## POST body
-        token: like 하는 유저의 jwt(String)
-
-    ## GET body
-        token: like list를 요청하는 유저의 jwt(String)
+    ## GET, POST headers
+        Authorization: like 하는 유저의 jwt(String)
     ---
     """
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
 
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -284,15 +267,13 @@ def main_feed(request, account_name):
     ---
     ## GET parameter
         account_name: diary를 작성한 유저의 account_name
-
+    ## GET headers
+        Authorization: 유저의 jwt(String)
     ## Get return body
         like_user: 해당 글을 like한 유저의 nickname(List)
-
-    ## GET body
-        token: 유저의 jwt(String)
     ---
     """
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
 
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
