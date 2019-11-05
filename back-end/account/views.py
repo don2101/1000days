@@ -237,16 +237,7 @@ def babies(request, account_name):
 
     elif request.method == "PUT":
         token_user = check_login(request.headers.get("Authorization"))
-        if not token_user:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        if not check_user(token_user, account_name):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        user = None
-
-        try:
-            user = UserProfile.objects.get(nickname=account_name).user
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        user = token_user
 
         baby = user.baby_set.get(id=request.data['id'])
         
@@ -381,10 +372,7 @@ def profile_image(request, account_name):
     if not token_user:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    try:
-        user = UserProfile.objects.get(nickname=account_name).user
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    user = token_user
         
     if request.method == "GET":
         image = None
