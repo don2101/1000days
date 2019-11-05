@@ -98,15 +98,14 @@ def personal(request, account_name):
     ## GET, PUT, DELETE parameter
         account_name: user의 nickname
     ## PUT body
-        token: 사용자의 JWT(String),
         password: 사용자의 비밀번호(String),
         introduce: 사용자 소개 문구(String),
         nickname: 사용자의 계정 이름(String),
         select_baby: 아기 존재 여부(Boolean),
         account_open: 계정 정보 공개 여부(Boolean),
         follower_open: Follower 정보 공개 여부(Boolean),
-    ## GET, DELETE body
-        token: 사용자의 JWT(String)
+    ## GET, PUT, DELETE headers
+        Authorization: 사용자의 JWT(String)
     ## GET return body
         user: {
             email: 사용자의 email(String),
@@ -184,14 +183,13 @@ def babies(request, account_name):
         PUT: user의 nickname으로 계정을 찾고, 해당 계정 baby 정보를 수정
     ## GET, POST, PUT parameter
         account_name: user의 nickname
-    ## GET body
-        token: 사용자의 JWT(String)
+    ## GET, PUT headers
+        Authorization: 사용자의 JWT(String)
     ## POST body
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
     ## PUT body
-        token: 사용자의 JWT(String)
         id: baby의 id(Integer)
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
@@ -205,7 +203,7 @@ def babies(request, account_name):
     ---
     """
     if request.method == "GET":
-        token_user = check_login(request.data["token"])
+        token_user = check_login(request.headers.get("Authorization"))
         if not token_user:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -239,7 +237,7 @@ def babies(request, account_name):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "PUT":
-        token_user = check_login(request.data["token"])
+        token_user = check_login(request.headers.get("Authorization"))
         if not token_user:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         if not check_user(token_user, account_name):
@@ -277,17 +275,16 @@ def follow(request, account_name):
         (following: 유저가 follow 하는 사람, follower: 유저를 follow 하는 사람)
     ## GET, POST parameter
         account_name: user의 nickname
-    ## GET body
-        token: 사용자의 JWT(String)
+    ## GET, POST headers
+        Authorization: 사용자의 JWT(String)
     ## POST body
-        token: 사용자의 JWT(String)
         follow: follow 할 사람의 nickname(String)
     ## GET return body
         following: 유저가 follow 하는 사람의 목록(List)
         follower: 유저를 follow 하는 사람의 목록(List)
     ---
     """
-    token_user = check_login(request.data["token"])
+    token_user = check_login(request.headers.get("Authorization"))
     if not token_user:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -328,11 +325,11 @@ def logout(request):
     '''
     로그아웃을 요청하는 API
     ---
-    ## POST body
-        token: 사용자가 로그인할 때 받은 JWT(String),
+    ## POST headers
+        Authorization: 사용자가 로그인할 때 받은 JWT(String)
     ---
     '''
-    token = decode_token(request.data["token"])
+    token = decode_token(request.headers.get("Authorization"))
     email = token.get("email")
     expiry_date = datetime.fromtimestamp(token.get("exp"), timezone.utc)
     blacklist_serializer = BlacklistSerializer(data={"email": email, "expiry_date": expiry_date})
@@ -350,12 +347,13 @@ def authuser(request):
     '''
     Mypage 입장허가를 요청하는 API
     ---
+    ## POST headers
+        Authorization: 사용자의 JWT(String)
     ## POST body
-        token: 사용자의 JWT(String)
-        password: 사용자의 비밀번호(String),
+        password: 사용자의 비밀번호(String)
     ---
     '''
-    token = decode_token(request.data["token"])
+    token = decode_token(request.headers.get("Authorization"))
     if token:
         authenticated = user_authenticate(token.get("email"), request.data["password"])
         if authenticated:
@@ -371,17 +369,16 @@ def profile_image(request, account_name):
     ---
     ## GET, POST, PUT, DELETE parameter
         account_name: user의 nickname
+    ## GET, POST, PUT, DELETE headers
+        Authorization: 사용자의 JWT(String)
     ## POST, PUT body
-        token: 사용자의 JWT(String)
         image: 프로필 이미지로 사용할 사진(File)
-    ## GET, DELETE body
-        token: 사용자의 JWT(String)
     ## GET return body
         image: 프로필 이미지의 url(String)
     ---
     """
     user = None
-    token_user = check_login(request.data["token"])
+    token_user = check_login(request.headers.get("Authorization"))
     if not token_user:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -452,16 +449,17 @@ def getusers(request):
     """
     유저 검색 API
     ---
+    ## POST headers
+        Authorization: 사용자의 JWT(String)
     ## POST body
         text: nickname 검색할 문자열(String)
-        token: 사용자의 JWT(String)
     ## Get return body
         user: 사용자의 닉네임(String)
         image: 프로필 이미지의 url(String)
         thumb_nail: 사용자의 썸네일(String)
     ---
     """
-    token_user = check_login(request.data["token"])
+    token_user = check_login(request.headers.get("Authorization"))
     if not token_user:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
