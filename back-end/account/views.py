@@ -468,7 +468,7 @@ def getusers(request):
     try:
         userprofiles = UserProfile.objects.filter(nickname__icontains=text)
         user = userprofiles
-    
+
         result = []
         for userprofile in userprofiles:
             try:
@@ -477,5 +477,7 @@ def getusers(request):
                 result.append(serializer.data)
             except ProfileImage.DoesNotExist:
                 result.append({"user": userprofile.nickname, "image": "", "thumb_nail": ""})
+
+        return Response(data=result, status=status.HTTP_200_OK)
     except UserProfile.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
