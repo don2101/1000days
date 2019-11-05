@@ -31,6 +31,8 @@ def post_diary(request):
         content: diary의 내용(String, Nullable)
         baby: baby의 id(Int)
         is_open: 공개 여부 설정(Boolean)
+    ## POST return body
+        id: diary의 id(Int)
     ---
     """
 
@@ -46,7 +48,7 @@ def post_diary(request):
     if serializer.is_valid():
         serializer.save(writer=user)
 
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(data={'id': serializer.data['id']},status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
