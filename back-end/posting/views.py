@@ -33,7 +33,7 @@ def post_diary(request):
     ---
     """
 
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
     
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -74,7 +74,7 @@ def post_image(request, diary_id):
         updated_at: 최근 수정 일시(Date)
     ---
     """
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
 
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -140,7 +140,7 @@ def user_diaries(request, account_name):
     ---
     """
 
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
 
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -188,7 +188,7 @@ def diary(request, diary_id):
         token: diary를 조회하는 유저의 인증 jwt(String)
     ---
     """
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
 
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -248,7 +248,7 @@ def like(request, diary_id):
         token: like list를 요청하는 유저의 jwt(String)
     ---
     """
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
 
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
@@ -292,7 +292,7 @@ def main_feed(request, account_name):
         token: 유저의 jwt(String)
     ---
     """
-    result = check_login(request.data['token'])
+    result = check_login(request.headers.get("Authorization"))
 
     if not result:
         return Response(status=status.HTTP_403_FORBIDDEN)
