@@ -12,7 +12,7 @@ from .serializers import CommentSerializer
 from account.serializers import UserProfileSerializer
 from posting.serializers import DiarySerializer
 
-from webtoken.token_service import decode_token, check_user
+from webtoken.token_service import decode_token, check_user, check_login
 
 # Create your views here.
 User = get_user_model()
