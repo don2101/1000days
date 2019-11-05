@@ -464,13 +464,18 @@ def getusers(request):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     text = request.data["text"]
-    userprofiles=UserProfile.objects.filter(nickname__icontains=text)
-    user=userprofiles
-    result = []
-    for userprofile in userprofiles:
-        try:
-            profileimage = userprofile.user.profile_image
-            serializer = ProfileImageSerializer(profileimage)
-            result.append(serializer.data)
-        except ProfileImage.DoesNotExist:
-            result.append({"user": userprofile.nickname, "image": "", "thumb_nail": ""})
+
+    try:
+        userprofiles = UserProfile.objects.filter(nickname__icontains=text)
+        user = userprofiles
+    
+        result = []
+        for userprofile in userprofiles:
+            try:
+                profileimage = userprofile.user.profile_image
+                serializer = ProfileImageSerializer(profileimage)
+                result.append(serializer.data)
+            except ProfileImage.DoesNotExist:
+                result.append({"user": userprofile.nickname, "image": "", "thumb_nail": ""})
+    except UserProfile.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
