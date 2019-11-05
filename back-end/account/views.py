@@ -119,7 +119,7 @@ def personal(request, account_name):
     ---
     """
     user_profile = None
-    token_user = check_login(request.data["token"])
+    token_user = check_login(request.headers.get("Authorization"))
     if not token_user:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
     try:
@@ -198,6 +198,7 @@ def babies(request, account_name):
         spouse: 배우자 이름(String)
     ## GET return body
         id: baby의 id(Integer)
+        name: baby의 이름(String)
         name: baby의 이름(String)
         birthday: 출생일(year-month-day)
         spouse: 배우자 이름(String)
@@ -462,7 +463,7 @@ def getusers(request):
     """
     token_user = check_login(request.data["token"])
     if not token_user:
-	    return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     text = request.data["text"]
     userprofiles=UserProfile.objects.filter(nickname__icontains=text)
@@ -475,4 +476,3 @@ def getusers(request):
             result.append(serializer.data)
         except ProfileImage.DoesNotExist:
             result.append({"user": userprofile.nickname, "image": "", "thumb_nail": ""})
-    return Response(data=result, status=status.HTTP_200_OK)
